@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science ZEP Challenge - Science Portal</title>
+
+    <!-- 1. PUSAT KAWALAN FIREBASE (Termasuk push untuk Komen) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, update, onDisconnect, remove, push } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBAtbX6wmdNwmXkgUvewnfRRXRTfyq5IZ8",
+            authDomain: "jejak-sejarah-tingkatan-2.firebaseapp.com",
+            projectId: "jejak-sejarah-tingkatan-2",
+            storageBucket: "jejak-sejarah-tingkatan-2.firebasestorage.app",
+            messagingSenderId: "92872994798",
+            appId: "1:92872994798:web:9c205538a5eb8f388e68ff",
+            measurementId: "G-8RZ21D4FXY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        window.db = db;
+        window.ref = ref;
+        window.set = set;
+        window.onValue = onValue;
+        window.update = update;
+        window.onDisconnect = onDisconnect;
+        window.remove = remove;
+        window.push = push; // Kongsi fungsi push untuk komen
+        window.firebaseSedia = true;
+
+        window.namaPemainBerdaftar = ""; 
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                user.reload().then(() => {
+                    window.namaPemainBerdaftar = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+                });
+            } else {
+                window.namaPemainBerdaftar = "";
+            }
+        });
+    </script>
+    
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; display: flex; flex-direction: column; min-height: 100vh; }
+        .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
+        .header-container img { transition: transform 0.3s; }
+        .header-container img:hover { transform: scale(1.05); }
+        
+        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
+        .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 24px; font-size: 16px; font-weight: bold; transition: background 0.3s, color 0.3s; }
+        .navbar a:hover { background-color: #00c6ff; color: #fff; }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 280px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 1; border-radius: 0 0 8px 8px; overflow: hidden; max-height: 400px; overflow-y: auto; }
+        .dropdown-content a { color: #333; padding: 12px 16px; display: block; font-size: 14px; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #e3f2fd; padding-left: 24px; color: #0052D4; font-weight: bold; }
+        .dropdown:hover .dropdown-content { display: block; }
+        
+        .main-content { padding: 50px 20px; text-align: center; flex: 1; background-color: white; margin: 30px 150px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; line-height: 1.6; }
+        .footer span.highlight { color: #00c6ff; font-weight: bold; }
+
+        .butang-bab { background-color: #0052D4; color: white; padding: 15px 10px; margin: 10px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 280px; min-height: 100px; vertical-align: middle; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .butang-bab:hover { background-color: #0040a8; transform: translateY(-5px); }
+        .b1 { background-color: #0052D4; } .b2 { background-color: #11998e; } .b3 { background-color: #f2994a; }
+        .b4 { background-color: #eb5757; } .b5 { background-color: #8e44ad; } .b6 { background-color: #2980b9; }
+
+        /* SISTEM KAMERA & DUNIA */
+        #zonPeta { display: none; margin-top: 20px; }
+        
+        .bar-kawalan { display: flex; justify-content: space-between; max-width: 800px; margin: 0 auto 10px auto; }
+        .butang-aksi { padding: 8px 16px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s; color: white; }
+        .btn-keluar { background-color: #dc3545; } .btn-keluar:hover { background-color: #c82333; transform: scale(1.05); }
+        .btn-muzik { background-color: #00c6ff; color: #0d1b2a; } .btn-muzik:hover { background-color: #00a2d4; transform: scale(1.05); }
+
+        .bar-nyawa { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto 15px auto; padding: 10px 20px; background-color: #f8f9fa; border-radius: 10px; border: 2px solid #ddd; }
+        .kamera-skrin { position: relative; width: 100%; max-width: 800px; height: 500px; background-color: #e3f2fd; border: 15px solid #0052D4; border-radius: 15px; margin: 0 auto; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.3); }
+        .dunia-peta { position: absolute; width: 2000px; height: 1500px; background-color: #f4f9ff; background-image: radial-gradient(#bce0fd 15%, transparent 16%), radial-gradient(#bce0fd 15%, transparent 16%); background-size: 60px 60px; background-position: 0 0, 30px 30px; border: 10px dashed #0052D4; box-sizing: border-box; }
+        .avatar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 100; }
+        .avatar .nama { background: rgba(255,255,255,0.95); padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 2px solid #00c6ff; margin-bottom: 5px; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap; }
+        #spritePemain { display: inline-block; font-size: 60px; width: 60px; height: 60px; line-height: 60px; filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.2)); }
+
+        .bola-misi { position: absolute; text-align: center; transform: translate(-50%, -50%); animation: lompatKecil 2s infinite alternate; }
+        .bola-ikon { font-size: 45px; display: block; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3)); }
+        .bola-misi.selesai .bola-ikon { filter: grayscale(100%); opacity: 0.4; }
+        .bola-misi.selesai { animation: none; }
+        @keyframes lompatKecil { from { transform: translateY(0px); } to { transform: translateY(-8px); } }
+
+        /* KOTAK POPUP */
+        .modal-latar { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-kandungan { background-color: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .teks-soalan { font-size: 20px; color: #1a2a6c; font-weight: bold; margin-bottom: 25px; }
+        .susunan-pilihan { display: flex; flex-direction: column; gap: 12px; }
+        .butang-pilihan { background-color: #f8f9fa; border: 2px solid #cbd5e1; padding: 15px; font-size: 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: left; font-weight: bold; color: #333; }
+        .jawapan-betul { background-color: #28a745 !important; color: white !important; border-color: #1e7e34 !important; }
+        .jawapan-salah { background-color: #dc3545 !important; color: white !important; border-color: #bd2130 !important; animation: gegar 0.4s; }
+        @keyframes gegar { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } 100% { transform: translateX(0); } }
+
+        .papan-markah { font-size: 24px; color: #2c3e50; font-weight: bold; display: none; padding: 30px; background-color: #f8f9fa; border-radius: 15px; border: 3px solid #00c6ff; max-width: 500px; margin: 0 auto; }
+        @media (max-width: 900px) { .main-content { margin: 30px 20px; } }
+
+        /* KOD RESPONSIF & JOYSTICK TELEFON */
+        #zonJoystick {
+            display: none; position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%);
+            width: 35vw; height: 35vw; max-width: 140px; max-height: 140px;
+            background-color: rgba(0, 0, 0, 0.2); border-radius: 50%; z-index: 1000;
+            touch-action: none; border: 2px solid rgba(255,255,255,0.5); user-select: none;
+        }
+        #joystickKnob {
+            position: absolute; top: 50%; left: 50%; width: 14vw; height: 14vw;
+            max-width: 55px; max-height: 55px; background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            pointer-events: none; user-select: none;
+        }
+        #butangAksiBulat {
+            display: none; position: absolute; bottom: 5%; right: 5%;
+            width: 22vw; height: 22vw; max-width: 90px; max-height: 90px;
+            background-color: rgba(0, 82, 212, 0.85); border-radius: 50%; z-index: 1000;
+            border: 4px solid rgba(255,255,255,0.7); color: white; font-size: 4vw;
+            font-weight: bold; justify-content: center; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); user-select: none; touch-action: manipulation; cursor: pointer;
+        }
+        #butangAksiBulat:active { transform: scale(0.9); background-color: rgba(0, 60, 160, 1); }
+
+        @media (max-width: 800px) {
+            .main-content { margin: 10px; padding: 15px; }
+            .kamera-skrin { height: 50vh; border-width: 5px; border-radius: 10px; }
+            .navbar { flex-wrap: wrap; justify-content: center; }
+            .navbar a { padding: 10px 12px; font-size: 13px; }
+            #zonJoystick { display: block !important; }
+            #butangAksiBulat { display: flex !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <img src="logosains.png" style="height: 150px; width: auto; margin-right: 20px;" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2083/2083285.png'; this.style.height='100px';">
+        <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); font-size: 40px;">SCIENCE ZEP CHALLENGE</h1>
+    </div>
+
+    <nav class="navbar">
+        <a href="index.html">Main Lab</a>
+        <div class="dropdown">
+            <a href="#">Science Form 2 ▼</a>
+            <div class="dropdown-content">
+                <a href="science_chap1.html">Chapter 1: Biodiversity</a>
+                <a href="science_chap2.html">Chapter 2: Ecosystem</a>
+                <a href="science_chap3.html">Chapter 3: Nutrition</a>
+                <a href="science_chap4.html">Chapter 4: Human Health</a>
+                <a href="science_chap5.html">Chapter 5: Water and Solution</a>
+                <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+            </div>
+        </div>
+        <a href="interactive_lab.html">Interactive Lab</a>
+        <a href="performance.html">Scientist Analytics</a>
+        <a href="contact.html">Ask a Teacher</a>
+        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+    </nav>
+
+    <div class="main-content">
+        
+        <h2 style="color: #1a2a6c; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; display: inline-block;">
+            🔬 Form 2 Science Open World ZEP
+        </h2>
+
+        <p id="tajukKuiz" style="color: #555; margin-bottom: 30px;">Collect all science beacons under 1 minute to achieve 👑 LEGEND rank!</p>
+
+        <div id="menuKuiz" style="display: block; margin-bottom: 40px;">
+            <button class="butang-bab b1" onclick="tanyaNama(1)">🧬 Chapter 1:<br>Biodiversity</button>
+            <button class="butang-bab b2" onclick="tanyaNama(2)">🌿 Chapter 2:<br>Ecosystem</button><br>
+            <button class="butang-bab b3" onclick="tanyaNama(3)">🍎 Chapter 3:<br>Nutrition</button>
+            <button class="butang-bab b4" onclick="tanyaNama(4)">🛡️ Chapter 4:<br>Human Health</button><br>
+            <button class="butang-bab b5" onclick="tanyaNama(5)">💧 Chapter 5:<br>Water & Solution</button>
+            <button class="butang-bab b6" onclick="tanyaNama(6)">⚗️ Chapter 6:<br>Acids & Alkalis</button>
+        </div>
+
+        <div id="zonPeta">
+            <div class="bar-kawalan">
+                <button class="butang-aksi btn-keluar" onclick="keluarKeMenu()">⬅️ Exit Lab</button>
+                <button class="butang-aksi btn-muzik" id="butangMuzik" onclick="toggleMuzik()">🔊 Music ON</button>
+            </div>
+
+            <div class="bar-nyawa">
+                <span>Lives: <span style="color: #e74c3c; font-size: 24px; letter-spacing: 2px;" id="paparanNyawa">❤️❤️❤️❤️❤️</span></span>
+                <span style="font-weight:bold; color:#0052D4; font-size: 20px;">⏱️ <span id="paparanMasa">00:00</span></span>
+                <span style="font-weight:bold; color:#11998e;">Completed: <span id="skorMisi">0</span>/<span id="jumlahMisiPaparan">10</span></span>
+            </div>
+            
+            <div class="kamera-skrin" id="kameraSkrin">
+                <div class="dunia-peta" id="duniaPeta"></div>
+                
+                <div class="avatar" id="pemain">
+                    <div class="nama" id="namaDiAtasKepala">Scientist</div>
+                    <span id="spritePemain">👨‍🔬</span>
+                </div>
+
+                <div id="zonJoystick">
+                    <div id="joystickKnob"></div>
+                </div>
+                
+                <div id="butangAksiBulat" onpointerdown="tekanButangAksi()">ACTION</div>
+            </div>
+        </div>
+
+        <!-- KOTAK PAPAN KOMEN & GUESTBOOK LIVE -->
+        <div style="max-width: 800px; margin: 40px auto 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left; border: 2px solid #bce0fd;">
+            <h3 style="color: #1a2a6c; margin-top: 0; border-bottom: 2px solid #00c6ff; padding-bottom: 8px;">💬 Scientist Live Guestbook & Comments</h3>
+            <p style="color: #555; font-size: 14px;">Leave your thoughts, feedback, or words of encouragement for fellow scientists!</p>
+
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="namaKomen" placeholder="Your Name / Nickname" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #bce0fd; border-radius: 6px; box-sizing: border-box; font-size: 14px;">
+                <textarea id="teksKomen" rows="3" placeholder="Write your comment or question here..." style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #bce0fd; border-radius: 6px; box-sizing: border-box; font-family: inherit; font-size: 14px;"></textarea>
+                <button onclick="hantarKomen()" style="background-color: #0052D4; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px; box-shadow: 0 2px 5px rgba(0,82,212,0.2);">Post Comment 🚀</button>
+            </div>
+
+            <div id="senaraiKomenContainer" style="max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                <p style="color: #888; text-align: center; font-size: 14px;">Loading comments...</p>
+            </div>
+        </div>
+
+        <audio id="laguGame" src="videoplayback.mp4.mp3" loop></audio>
+
+        <!-- POPUP ISI NAMA -->
+        <div class="modal-latar" id="modalNama">
+            <div class="modal-kandungan">
+                <h2 style="color: #0052D4; margin-top: 0;">Enter Scientist Name</h2>
+                <p style="color: #555;">Please enter your name for the ZEP avatar badge.</p>
+                <input type="text" id="inputNamaPelajar" placeholder="E.g: Fatimah" style="width: 90%; padding: 12px; margin-bottom: 20px; border: 2px solid #ccc; border-radius: 8px; font-size: 18px; text-align: center; font-weight: bold;">
+                <button onclick="sahkanNamaDanMula()" style="background-color: #0052D4; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%;">Enter Lab 🚀</button>
+                <button onclick="batalIsiNama()" style="background-color: #dc3545; color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 10px;">Cancel</button>
+            </div>
+        </div>
+
+        <!-- POPUP SOALAN -->
+        <div class="modal-latar" id="modalSoalan">
+            <div class="modal-kandungan">
+                <div class="teks-soalan" id="soalan">Science question displayed here...</div>
+                <div class="susunan-pilihan">
+                    <button class="butang-pilihan" onclick="semakJawapan(0, this)" id="pilihan0">A</button>
+                    <button class="butang-pilihan" onclick="semakJawapan(1, this)" id="pilihan1">B</button>
+                    <button class="butang-pilihan" onclick="semakJawapan(2, this)" id="pilihan2">C</button>
+                    <button class="butang-pilihan" onclick="semakJawapan(3, this)" id="pilihan3">D</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- POPUP KEMENANGAN -->
+        <div class="modal-latar" id="modalMenang">
+            <div class="modal-kandungan" style="border: 4px solid #00c6ff;">
+                <h1 style="font-size: 60px; margin: 0;" id="ikonRanking">👑</h1>
+                <h2 style="color: #28a745; font-size: 28px; margin-top: 10px;">Congratulations! Lab Mission Cleared!</h2>
+                
+                <a href="index.html" style="background: linear-gradient(135deg, #0052D4, #00c6ff); color: white; padding: 12px 30px; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 18px; display: inline-block; margin-top: 15px; box-shadow: 0 4px 6px rgba(0,82,212,0.3); transition: 0.3s;">
+                    🗺️ Back to Main Lab
+                </a>
+
+                <p style="font-size: 18px; margin-top: 20px;">Rank Awarded: <strong id="teksRanking" style="color:#e67e22; font-size: 22px;">Rank: LEGEND</strong></p>
+                <p style="font-size: 16px; color: #555;">Record Time: <span id="masaAkhirMenang" style="font-weight: bold;">00:00</span></p>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button onclick="terusMerayau()" style="flex: 1; background-color: #0052D4; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Explore More 🚶‍♂️</button>
+                    <button onclick="keluarKeMenu()" style="flex: 1; background-color: #333; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Choose Other Chapter 🔄</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAPAN MARKAH KALAH -->
+        <div class="papan-markah" id="papanMarkahKalah">
+            <h1 style="font-size: 60px; margin: 0;">💥</h1>
+            <h2 style="color: #dc3545;">Experiment Failed!</h2>
+            <p style="font-size: 18px; color: #555;">You have run out of lives.</p>
+            <button onclick="keluarKeMenu()" style="background-color: #333; color: white; padding: 12px 25px; border: none; border-radius: 30px; cursor: pointer; font-size: 16px; margin-top: 15px;">Try Again</button>
+        </div>
+
+    </div>
+
+    <!-- SKRIP JAVASCRIPT: 60 SOALAN SAINS KSSM DLP + KOMEN LIVE -->
+    <script>
+        var soalanBab1 = [
+            { soalan: "What is the definition of Biodiversity?", pilihan: ["The variety of living organisms on Earth", "The study of rocks and minerals", "The measurement of weather conditions", "The recycling of plastic waste"], jawapanBetul: 0 },
+            { soalan: "Which country is recognized as one of the 12 mega-biodiverse countries in the world?", pilihan: ["United Kingdom", "Malaysia", "Japan", "Iceland"], jawapanBetul: 1 },
+            { soalan: "Which of the following is an example of an invertebrate?", pilihan: ["Frog", "Earthworm", "Bird", "Fish"], jawapanBetul: 1 },
+            { soalan: "Which vertebrate group has moist skin and reproduces via external fertilization in water?", pilihan: ["Mammals", "Reptiles", "Amphibians", "Birds"], jawapanBetul: 2 },
+            { soalan: "Plants that produce seeds inside cones (without flowers) are called...", pilihan: ["Conifers (Gymnosperms)", "Flowering plants (Angiosperms)", "Ferns", "Mosses"], jawapanBetul: 0 },
+            { soalan: "Which animal breathes through moist skin and lungs?", pilihan: ["Whale", "Frog", "Shark", "Crocodile"], jawapanBetul: 1 },
+            { soalan: "What is the main importance of biodiversity to ecosystems?", pilihan: ["Ensures ecological balance and nutrient cycling", "Increases global warming", "Reduces oxygen supply", "Causes soil erosion"], jawapanBetul: 0 },
+            { soalan: "Which of the following organisms reproduces by producing spores?", pilihan: ["Hibiscus", "Fern and Moss", "Mango tree", "Orchid"], jawapanBetul: 1 },
+            { soalan: "Endemic species are defined as species that...", pilihan: ["Can be found all over the world", "Live in a specific and restricted geographical area", "Only live in captivity", "Are extinct"], jawapanBetul: 1 },
+            { soalan: "Which action helps in the conservation and preservation of biodiversity?", pilihan: ["Illegal logging", "Uncontrolled poaching", "Establishing forest reserves and national parks", "Open burning"], jawapanBetul: 2 }
+        ];
+
+        var soalanBab2 = [
+            { soalan: "What is a species?", pilihan: ["A group of similar organisms that can interbreed and produce offspring", "All animals living in a forest", "Non-living components of an environment", "Any green plant"], jawapanBetul: 0 },
+            { soalan: "What term describes all the different populations living and interacting in a habitat?", pilihan: ["Species", "Community", "Ecosystem", "Niche"], jawapanBetul: 1 },
+            { soalan: "An organism that makes its own food through photosynthesis is called a...", pilihan: ["Consumer", "Decomposer", "Producer", "Carnivore"], jawapanBetul: 2 },
+            { soalan: "Which of the following is an example of a secondary consumer?", pilihan: ["Padi plant", "Caterpillar", "Frog (eats insects)", "Eagle"], jawapanBetul: 2 },
+            { soalan: "What does a food web represent?", pilihan: ["A single linear food chain", "Interconnected food chains in an ecosystem", "The amount of water in soil", "Weather patterns"], jawapanBetul: 1 },
+            { soalan: "Which interaction describes a relationship where both organisms benefit?", pilihan: ["Parasitism", "Mutualism", "Commensalism", "Competition"], jawapanBetul: 1 },
+            { soalan: "A tapefish living inside the intestine of a human is an example of...", pilihan: ["Mutualism", "Commensalism", "Parasitism", "Symbiosis"], jawapanBetul: 2 },
+            { soalan: "What is the role of decomposers like bacteria and fungi in an ecosystem?", pilihan: ["Produce food using sunlight", "Break down dead organisms into simple nutrients", "Hunt herbivores", "Absorb carbon dioxide"], jawapanBetul: 1 },
+            { soalan: "Biological control is a method used to...", pilihan: ["Kill pests using synthetic chemicals", "Control pest populations using their natural predators", "Fertilize soil", "Increase water pH"], jawapanBetul: 1 },
+            { soalan: "Which factor is an abiotic component of an ecosystem?", pilihan: ["Green plants", "Light intensity and pH", "Herbivores", "Decomposers"], jawapanBetul: 1 }
+        ];
+
+        var soalanBab3 = [
+            { soalan: "What is the primary function of carbohydrates in the human body?", pilihan: ["Supply energy", "Build new cells for growth", "Protect organs", "Regulate body temperature"], jawapanBetul: 0 },
+            { soalan: "Which nutrient is essential for growth and repairing damaged tissues?", pilihan: ["Carbohydrate", "Fats", "Protein", "Vitamin C"], jawapanBetul: 2 },
+            { soalan: "What disease is caused by a deficiency of Vitamin C?", pilihan: ["Rickets", "Scurvy", "Beriberi", "Goitre"], jawapanBetul: 1 },
+            { soalan: "Calorific value is defined as...", pilihan: ["The amount of heat energy released when 1g of food is completely oxidized", "The weight of food in grams", "The amount of water in food", "The sweetness level of food"], jawapanBetul: 0 },
+            { soalan: "What is the unit of measurement for energy content in food?", pilihan: ["Kilogram (kg)", "Joule or Kilojoule (kJ)", "Celsius (°C)", "Mililitre (ml)"], jawapanBetul: 1 },
+            { soalan: "Which food test uses Iodine solution to test for the presence of starch?", pilihan: ["Millon's test", "Benedict's test", "Iodine test", "Alcohol-emulsion test"], jawapanBetul: 2 },
+            { soalan: "What color change indicates a positive result when testing for reducing sugar using Benedict's solution?", pilihan: ["Blue to Brick-red precipitate", "Brown to Yellow", "Clear to Purple", "Green to Black"], jawapanBetul: 0 },
+            { soalan: "Dietary fibre (roughage) is important because it...", pilihan: ["Provides instant energy", "Prevents constipation by aiding peristalsis", "Builds strong bones", "Fights infections"], jawapanBetul: 1 },
+            { soalan: "Which organ in the human alimentary canal produces bile to emulsify fats?", pilihan: ["Stomach", "Pancreas", "Liver", "Small intestine"], jawapanBetul: 2 },
+            { soalan: "Where does the absorption of digested food mainly take place?", pilihan: ["Stomach", "Large intestine", "Small intestine", "Oesophagus"], jawapanBetul: 2 }
+        ];
+
+        var soalanBab4 = [
+            { soalan: "What is an infectious disease?", pilihan: ["A disease that can be transmitted from one host to another", "A disease caused by genetic mutation", "A disease caused by poor lifestyle habits", "Heart attack"], jawapanBetul: 0 },
+            { soalan: "Pathogens are defined as...", pilihan: ["Beneficial bacteria in the gut", "Microorganisms that cause diseases", "Vitamins and minerals", "White blood cells"], jawapanBetul: 1 },
+            { soalan: "Which of the following diseases is classified as non-infectious?", pilihan: ["Dengue fever", "Hypertension and Diabetes", "Tuberculosis", "COVID-19"], jawapanBetul: 1 },
+            { soalan: "What is the function of white blood cells in the body's defense mechanism?", pilihan: ["Transport oxygen", "Destroy pathogens via phagocytosis and antibody production", "Clot blood", "Digest food"], jawapanBetul: 1 },
+            { soalan: "Active immunity is acquired when...", pilihan: ["A person receives antibodies directly from an injection", "The body's own immune system produces antibodies after infection or vaccination", "A person takes painkillers", "Eating healthy food"], jawapanBetul: 1 },
+            { soalan: "What is a vaccine?", pilihan: ["A cure for cancer", "A suspension containing weakened or dead pathogens", "An antibiotic medicine", "A vitamin supplement"], jawapanBetul: 1 },
+            { soalan: "Which vector transmits the dengue virus to humans?", pilihan: ["Housefly", "Aedes mosquito", "Anopheles mosquito", "Rat flea"], jawapanBetul: 1 },
+            { soalan: "What type of pathogen causes Ringpox and Athlete's foot?", pilihan: ["Bacteria", "Virus", "Fungi", "Protozoa"], jawapanBetul: 2 },
+            { soalan: "Antibiotics are effective against which type of pathogen?", pilihan: ["Bacteria", "Viruses", "Fungi", "All pathogens"], jawapanBetul: 0 },
+            { soalan: "What is personal hygiene?", pilihan: ["Practices that maintain cleanliness and promote health", "Exercising daily", "Sleeping 8 hours a day", "Taking vitamins"], jawapanBetul: 0 }
+        ];
+
+        var soalanBab5 = [
+            { soalan: "What are the two elements that make up a water molecule (H2O)?", pilihan: ["Hydrogen and Oxygen", "Hydrogen and Carbon", "Oxygen and Nitrogen", "Carbon and Helium"], jawapanBetul: 0 },
+            { soalan: "What is the physical process where liquid water turns into water vapour at any temperature?", pilihan: ["Boiling", "Evaporation", "Condensation", "Melting"], jawapanBetul: 1 },
+            { soalan: "Why does ice float on liquid water?", pilihan: ["Ice is denser than water", "Ice is less dense than liquid water due to its open crystalline structure", "Ice contains air bubbles", "Water pushes ice up"], jawapanBetul: 1 },
+            { soalan: "What is a dilute solution?", pilihan: ["A solution that contains a large amount of solute", "A solution that contains a small amount of solute dissolved in solvent", "A solution that cannot dissolve anymore solute", "Pure water"], jawapanBetul: 1 },
+            { soalan: "What is a saturated solution?", pilihan: ["A solution that has dissolved maximum amount of solute at a given temperature", "A very watery solution", "An acidic solution", "A solution with no solute"], jawapanBetul: 0 },
+            { soalan: "Which substance is a universal solvent in daily life?", pilihan: ["Ethanol", "Water", "Benzene", "Cooking oil"], jawapanBetul: 1 },
+            { soalan: "What factor increases the rate of dissolving of salt in water?", pilihan: ["Stirring and increasing water temperature", "Cooling the water", "Using large rock salt without crushing", "Leaving it still"], jawapanBetul: 0 },
+            { soalan: "What is water purification?", pilihan: ["The process of removing impurities, microorganisms, and suspended particles from water", "Adding sugar to water", "Freezing water", "Boiling milk"], jawapanBetul: 0 },
+            { soalan: "Which water treatment process kills harmful microorganisms?", pilihan: ["Filtration", "Chlorination and Boiling", "Sedimentation", "Coagulation"], jawapanBetul: 1 },
+            { soalan: "What is solute?", pilihan: ["The liquid that dissolves a substance", "The substance that dissolves in a solvent", "The resulting mixture", "An insoluble solid"], jawapanBetul: 1 }
+        ];
+
+        var soalanBab6 = [
+            { soalan: "What is the pH value range for acidic substances?", pilihan: ["pH 7", "pH more than 7 up to 14", "pH less than 7", "pH 14"], jawapanBetul: 2 },
+            { soalan: "Which substance turns moist blue litmus paper red?", pilihan: ["Acid", "Alkali", "Neutral salt solution", "Pure water"], jawapanBetul: 0 },
+            { soalan: "What is the taste characteristic of acids?", pilihan: ["Sweet", "Sour", "Bitter", "Salty"], jawapanBetul: 1 },
+            { soalan: "Alkalis are defined as bases that...", pilihan: ["Do not dissolve in water", "Dissolve in water to produce hydroxide ions (OH-)", "Turn red litmus paper red", "Have a pH of 2"], jawapanBetul: 1 },
+            { soalan: "What color does Universal Indicator show in a neutral solution (pH 7)?", pilihan: ["Red", "Yellow", "Green", "Purple"], jawapanBetul: 2 },
+            { soalan: "What is neutralization?", pilihan: ["Reaction between an acid and an alkali to form salt and water", "Reaction between metal and water", "Evaporation of acid", "Dissolving salt in water"], jawapanBetul: 0 },
+            { soalan: "What are the products of a neutralization reaction?", pilihan: ["Acid and Alkali", "Salt and Water", "Gas and Metal", "Sugar and Oxygen"], jawapanBetul: 1 },
+            { soalan: "Which of the following substances is an alkali?", pilihan: ["Lemon juice", "Vinegar", "Sodium hydroxide (Soap/Bleach)", "Pure water"], jawapanBetul: 2 },
+            { soalan: "What is the use of antacids in medical treatment?", pilihan: ["To increase stomach acid", "To neutralize excess stomach acid and relieve indigestion", "To kill bacteria in food", "To lower body temperature"], jawapanBetul: 1 },
+            { soalan: "Phenolphthalein indicator turns what color in an alkaline solution?", pilihan: ["Colorless", "Pink / Magenta", "Yellow", "Red"], jawapanBetul: 1 }
+        ];
+
+        var senaraiSoalanSemasa = [];
+        var indeksSoalanDipilih = 0;
+        var misiDiselesaikan = [];
+        var jumlahNyawa = 5; 
+        var bolehMenjawab = true;
+        
+        var pX = 1000, pY = 750;
+        var kelajuanSmooth = 7; 
+        var sedangJalan = false;
+        var menghadapKanan = true;
+        var frameSemasa = 0;
+        var babDipilihSementera = 0; 
+        var kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+        var lokasiBola = [];
+        var pemasaDetik;
+        var saatBerlalu = 0;
+
+        function toggleMuzik() {
+            var lagu = document.getElementById("laguGame");
+            var butang = document.getElementById("butangMuzik");
+            if (lagu.paused) {
+                lagu.play();
+                butang.innerHTML = "🔊 Music ON";
+                butang.style.backgroundColor = "#00c6ff";
+                butang.style.color = "#0d1b2a";
+            } else {
+                lagu.pause();
+                butang.innerHTML = "🔇 Music OFF";
+                butang.style.backgroundColor = "#6c757d";
+                butang.style.color = "white";
+            }
+        }
+
+        function tanyaNama(nomborBab) {
+            babDipilihSementera = nomborBab; 
+            if (window.namaPemainBerdaftar && window.namaPemainBerdaftar !== "") {
+                document.getElementById("inputNamaPelajar").value = window.namaPemainBerdaftar;
+                document.getElementById("namaDiAtasKepala").innerHTML = window.namaPemainBerdaftar;
+                mulaGame(babDipilihSementera);
+            } else {
+                document.getElementById("modalNama").style.display = "flex";
+                document.getElementById("inputNamaPelajar").focus();
+            }
+        }
+        
+        function batalIsiNama() {
+            document.getElementById("modalNama").style.display = "none";
+        }
+
+        function sahkanNamaDanMula() {
+            var namaDitaip = document.getElementById("inputNamaPelajar").value;
+            if (namaDitaip.trim() === "") namaDitaip = "Junior Scientist";
+            document.getElementById("namaDiAtasKepala").innerHTML = namaDitaip;
+            document.getElementById("modalNama").style.display = "none";
+            mulaGame(babDipilihSementera);
+        }
+
+        function mulaGame(nomborBab) {
+            if (nomborBab === 1) senaraiSoalanSemasa = soalanBab1; 
+            if (nomborBab === 2) senaraiSoalanSemasa = soalanBab2; 
+            if (nomborBab === 3) senaraiSoalanSemasa = soalanBab3; 
+            if (nomborBab === 4) senaraiSoalanSemasa = soalanBab4; 
+            if (nomborBab === 5) senaraiSoalanSemasa = soalanBab5; 
+            if (nomborBab === 6) senaraiSoalanSemasa = soalanBab6; 
+
+            var jumlahSoalan = senaraiSoalanSemasa.length;
+            misiDiselesaikan = [];
+            for (var i = 0; i < jumlahSoalan; i++) { misiDiselesaikan.push(false); }
+            
+            jumlahNyawa = 5;
+            pX = 1000; pY = 750;
+            menghadapKanan = true;
+            kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+
+            document.getElementById("jumlahMisiPaparan").innerHTML = jumlahSoalan;
+            kemaskiniUI();
+
+            document.getElementById("menuKuiz").style.display = "none";
+            document.getElementById("zonPeta").style.display = "block";
+            document.getElementById("papanMarkahKalah").style.display = "none";
+            
+            lokasiBola = [];
+            for (var j = 0; j < jumlahSoalan; j++) {
+                lokasiBola.push({
+                    x: Math.floor(Math.random() * 1800) + 100, 
+                    y: Math.floor(Math.random() * 1300) + 100  
+                });
+            }
+            janaBolaMisi();
+            kemaskiniKamera(); 
+
+            document.getElementById("laguGame").play();
+            document.getElementById("butangMuzik").innerHTML = "🔊 Music ON";
+            document.getElementById("butangMuzik").style.backgroundColor = "#00c6ff";
+            document.getElementById("butangMuzik").style.color = "#0d1b2a";
+
+            clearInterval(pemasaDetik); 
+            saatBerlalu = 0;
+            document.getElementById("paparanMasa").innerHTML = "00:00";
+            pemasaDetik = setInterval(kiraMasa, 1000); 
+        }
+
+        function kiraMasa() {
+            if (document.getElementById("modalSoalan").style.display === "flex" || 
+                document.getElementById("modalNama").style.display === "flex" ||
+                document.getElementById("modalMenang").style.display === "flex") return; 
+            
+            saatBerlalu++;
+            var minit = Math.floor(saatBerlalu / 60);
+            var saat = saatBerlalu % 60;
+            if (minit < 10) minit = "0" + minit;
+            if (saat < 10) saat = "0" + saat;
+            document.getElementById("paparanMasa").innerHTML = minit + ":" + saat;
+        }
+
+document.addEventListener('keydown', function(event) {
+    var kekunci = event.key.toLowerCase();
+    
+    // TAMBAH SYARAT INI: Jika fokus pada input/textarea, abaikan pergerakan game
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        return; 
+    }
+
+    if (document.getElementById("modalSoalan").style.display === "flex" || document.getElementById("modalMenang").style.display === "flex") return;
+        
+    if (document.getElementById("modalNama").style.display === "flex") {
+        if (kekunci === 'enter') sahkanNamaDanMula(); 
+        return;
+    }
+    if(['arrowup', 'w'].includes(kekunci)) { kekunciDitekan.atas = true; event.preventDefault(); }
+    if(['arrowdown', 's'].includes(kekunci)) { kekunciDitekan.bawah = true; event.preventDefault(); }
+    if(['arrowleft', 'a'].includes(kekunci)) { kekunciDitekan.kiri = true; event.preventDefault(); menghadapKanan = false; }
+    if(['arrowright', 'd'].includes(kekunci)) { kekunciDitekan.kanan = true; event.preventDefault(); menghadapKanan = true; }
+});
+
+document.addEventListener('keyup', function(event) {
+    var kekunci = event.key.toLowerCase();
+
+    // TAMBAH SYARAT INI JUGA:
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        return; 
+    }
+
+    if(['arrowup', 'w'].includes(kekunci)) kekunciDitekan.atas = false;
+    if(['arrowdown', 's'].includes(kekunci)) kekunciDitekan.bawah = false;
+    if(['arrowleft', 'a'].includes(kekunci)) kekunciDitekan.kiri = false;
+    if(['arrowright', 'd'].includes(kekunci)) kekunciDitekan.kanan = false;
+});
+        document.addEventListener('keyup', function(event) {
+            var kekunci = event.key.toLowerCase();
+            if(['arrowup', 'w'].includes(kekunci)) kekunciDitekan.atas = false;
+            if(['arrowdown', 's'].includes(kekunci)) kekunciDitekan.bawah = false;
+            if(['arrowleft', 'a'].includes(kekunci)) kekunciDitekan.kiri = false;
+            if(['arrowright', 'd'].includes(kekunci)) kekunciDitekan.kanan = false;
+        });
+
+        var zonJoystick = document.getElementById("zonJoystick");
+        var joystickKnob = document.getElementById("joystickKnob");
+        var joystickMulaX = 0, joystickMulaY = 0;
+        var sedangSentuh = false;
+
+        function mulaDrag(e) {
+            e.preventDefault(); 
+            sedangSentuh = true;
+            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            var kotak = zonJoystick.getBoundingClientRect();
+            joystickMulaX = kotak.left + kotak.width / 2;
+            joystickMulaY = kotak.top + kotak.height / 2;
+            kiraPergerakanJoystick(clientX, clientY);
+        }
+
+        function gerakDrag(e) {
+            if (!sedangSentuh) return;
+            e.preventDefault();
+            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            kiraPergerakanJoystick(clientX, clientY);
+        }
+
+        function lepasDrag(e) {
+            if (!sedangSentuh) return;
+            e.preventDefault();
+            sedangSentuh = false;
+            joystickKnob.style.transform = "translate(-50%, -50%)";
+            kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+            sedangJalan = false;
+        }
+
+        zonJoystick.addEventListener('touchstart', mulaDrag, { passive: false });
+        zonJoystick.addEventListener('touchmove', gerakDrag, { passive: false });
+        zonJoystick.addEventListener('touchend', lepasDrag);
+        zonJoystick.addEventListener('mousedown', mulaDrag);
+        window.addEventListener('mousemove', gerakDrag);
+        window.addEventListener('mouseup', lepasDrag);
+
+        function kiraPergerakanJoystick(x, y) {
+            var dX = x - joystickMulaX;
+            var dY = y - joystickMulaY;
+            var jarak = Math.sqrt(dX*dX + dY*dY);
+            var maxJarak = 40;
+
+            if (jarak > maxJarak) {
+                dX = (dX / jarak) * maxJarak;
+                dY = (dY / jarak) * maxJarak;
+            }
+
+            joystickKnob.style.transform = `translate(calc(-50% + ${dX}px), calc(-50% + ${dY}px))`;
+            kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+
+            if (jarak > 10) {
+                if (dY < -10) kekunciDitekan.atas = true;
+                if (dY > 10) kekunciDitekan.bawah = true;
+                if (dX < -10) { kekunciDitekan.kiri = true; menghadapKanan = false; }
+                if (dX > 10) { kekunciDitekan.kanan = true; menghadapKanan = true; }
+            }
+        }
+
+        function gameLoop() {
+            if (document.getElementById("zonPeta").style.display === "block" && 
+                document.getElementById("modalSoalan").style.display !== "flex" && 
+                document.getElementById("modalNama").style.display !== "flex" &&
+                document.getElementById("modalMenang").style.display !== "flex") {
+                
+                var adaGerak = false;
+                if (kekunciDitekan.atas) { pY -= kelajuanSmooth; adaGerak = true; }
+                if (kekunciDitekan.bawah) { pY += kelajuanSmooth; adaGerak = true; }
+                if (kekunciDitekan.kiri) { pX -= kelajuanSmooth; adaGerak = true; }
+                if (kekunciDitekan.kanan) { pX += kelajuanSmooth; adaGerak = true; }
+                sedangJalan = adaGerak;
+                
+                if (pX < 50) pX = 50; if (pX > 1950) pX = 1950;
+                if (pY < 50) pY = 50; if (pY > 1450) pY = 1450;
+                
+                kemaskiniKamera();
+                semakPelanggaran();
+            }
+            requestAnimationFrame(gameLoop); 
+        }
+        requestAnimationFrame(gameLoop);
+
+        function kemaskiniKamera() {
+            var dunia = document.getElementById("duniaPeta");
+            var kamera = document.getElementById("kameraSkrin");
+            var tolakDuniaX = (kamera.offsetWidth / 2) - pX;
+            var tolakDuniaY = (kamera.offsetHeight / 2) - pY;
+            dunia.style.left = tolakDuniaX + "px";
+            dunia.style.top = tolakDuniaY + "px";
+        }
+
+        setInterval(function() {
+            var sprite = document.getElementById("spritePemain");
+            if (menghadapKanan) sprite.style.transform = "scaleX(-1)"; 
+            else sprite.style.transform = "scaleX(1)";  
+
+            if (sedangJalan) {
+                frameSemasa = (frameSemasa + 1) % 2; 
+                if (frameSemasa === 0) sprite.innerHTML = "🚶‍♂️"; 
+                else sprite.innerHTML = "🏃‍♂️"; 
+            } else {
+                sprite.innerHTML = "🧍‍♂️"; 
+                frameSemasa = 0;
+            }
+        }, 150); 
+
+        var indeksBolaBerdekatan = -1;
+
+        function semakPelanggaran() {
+            indeksBolaBerdekatan = -1;
+            for(var i = 0; i < senaraiSoalanSemasa.length; i++) {
+                if (misiDiselesaikan[i]) continue; 
+                var jarakX = Math.abs(pX - lokasiBola[i].x);
+                var jarakY = Math.abs(pY - lokasiBola[i].y);
+                
+                if (jarakX < 60 && jarakY < 60) {
+                    indeksBolaBerdekatan = i; 
+                }
+            }
+        }
+
+        function tekanButangAksi() {
+            if (document.getElementById("modalSoalan").style.display === "flex") return; 
+
+            if (indeksBolaBerdekatan !== -1) {
+                kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+                sedangJalan = false;
+                bukaSoalan(indeksBolaBerdekatan);
+            } else {
+                var sprite = document.getElementById("spritePemain");
+                var arah = menghadapKanan ? "scaleX(-1) " : "scaleX(1) ";
+                sprite.style.transform = arah + "translateY(-30px)";
+                setTimeout(function() { sprite.style.transform = arah + "translateY(0px)"; }, 200);
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if(event.key === ' ') { 
+                event.preventDefault();
+                tekanButangAksi(); 
+            }
+        });
+
+        function janaBolaMisi() {
+            var peta = document.getElementById("duniaPeta");
+            document.querySelectorAll('.bola-misi').forEach(b => b.remove());
+            for(var i=0; i < senaraiSoalanSemasa.length; i++) {
+                var bola = document.createElement("div");
+                bola.className = "bola-misi";
+                bola.id = "bola_" + i;
+                bola.style.left = lokasiBola[i].x + "px";
+                bola.style.top = lokasiBola[i].y + "px";
+                bola.innerHTML = `<span class="bola-ikon">🧪</span>`;
+                peta.appendChild(bola);
+            }
+        }
+
+        function bukaSoalan(indeks) {
+            indeksSoalanDipilih = indeks;
+            var soalanSemasa = senaraiSoalanSemasa[indeks];
+            document.getElementById("soalan").innerHTML = soalanSemasa.soalan;
+            for(var i=0; i<4; i++) {
+                var butang = document.getElementById("pilihan" + i);
+                butang.innerHTML = ["A) ", "B) ", "C) ", "D) "][i] + soalanSemasa.pilihan[i];
+                butang.className = "butang-pilihan"; 
+            }
+            bolehMenjawab = true;
+            document.getElementById("modalSoalan").style.display = "flex"; 
+        }
+
+        function semakJawapan(pilihanPelajar, butangDitekan) {
+            if (!bolehMenjawab) return;
+            bolehMenjawab = false;
+            var jawapanBetul = senaraiSoalanSemasa[indeksSoalanDipilih].jawapanBetul;
+
+            if (pilihanPelajar === jawapanBetul) {
+                butangDitekan.className = "butang-pilihan jawapan-betul";
+                misiDiselesaikan[indeksSoalanDipilih] = true;
+                document.getElementById("bola_" + indeksSoalanDipilih).className = "bola-misi selesai";
+                pY += 30; 
+            } else {
+                jumlahNyawa--;
+                butangDitekan.className = "butang-pilihan jawapan-salah";
+                document.getElementById("pilihan" + jawapanBetul).className = "butang-pilihan jawapan-betul";
+                pY += 50; 
+            }
+            kemaskiniKamera();
+            kemaskiniUI();
+
+            setTimeout(function() {
+                document.getElementById("modalSoalan").style.display = "none";
+                
+                var jumlahBerjaya = misiDiselesaikan.filter(Boolean).length;
+                var totalSoalan = senaraiSoalanSemasa.length;
+                
+                if (jumlahNyawa <= 0) tamatKalah(); 
+                else if (jumlahBerjaya === totalSoalan) tamatMenang(); 
+            }, 1500); 
+        }
+
+        function kemaskiniUI() {
+            var paparan = "";
+            for(var i=0; i<jumlahNyawa; i++) { paparan += "❤️"; }
+            if(jumlahNyawa === 0) paparan = "💀";
+            document.getElementById("paparanNyawa").innerHTML = paparan;
+            document.getElementById("skorMisi").innerHTML = misiDiselesaikan.filter(Boolean).length;
+        }
+
+        function tamatMenang() {
+            clearInterval(pemasaDetik); 
+            var ranking = ""; var ikon = "";
+            if (saatBerlalu <= 60) { ranking = "LEGEND"; ikon = "👑"; }        
+            else if (saatBerlalu <= 120) { ranking = "PRO"; ikon = "🌟"; }    
+            else { ranking = "ROOKIE"; ikon = "👍"; }                          
+
+            var namaAsal = document.getElementById("inputNamaPelajar").value;
+            if (namaAsal.trim() === "") namaAsal = "Junior Scientist";
+            document.getElementById("namaDiAtasKepala").innerHTML = ikon + " [" + ranking + "] " + namaAsal;
+            
+            document.getElementById("ikonRanking").innerHTML = ikon;
+            document.getElementById("teksRanking").innerHTML = "Rank: " + ranking;
+            document.getElementById("masaAkhirMenang").innerHTML = document.getElementById("paparanMasa").innerHTML;
+            document.getElementById("modalMenang").style.display = "flex";
+
+            if (window.firebaseSedia) {
+                var rujukanMarkah = window.ref(window.db, "markah_science_zep/" + myPlayerId);
+                window.set(rujukanMarkah, {
+                    nama: namaAsal,
+                    masaTeks: document.getElementById("paparanMasa").innerHTML,
+                    jumlahSaat: saatBerlalu,
+                    pangkat: ranking,
+                    ikon: ikon,
+                    bab: babDipilihSementera
+                });
+            }
+        }
+
+        function tamatKalah() {
+            clearInterval(pemasaDetik); 
+            document.getElementById("zonPeta").style.display = "none";
+            document.getElementById("papanMarkahKalah").style.display = "block";
+        }
+
+        function terusMerayau() {
+            document.getElementById("modalMenang").style.display = "none";
+        }
+
+        function keluarKeMenu() {
+            clearInterval(pemasaDetik); 
+            var lagu = document.getElementById("laguGame");
+            lagu.pause();        
+            lagu.currentTime = 0;
+            
+            document.getElementById("inputNamaPelajar").value = "";
+            document.getElementById("modalMenang").style.display = "none";
+            document.getElementById("zonPeta").style.display = "none";
+            document.getElementById("papanMarkahKalah").style.display = "none";
+            document.getElementById("menuKuiz").style.display = "block";
+        }
+
+        // FUNGSI KOMEN LIVE & GUESTBOOK
+        function hantarKomen() {
+            var nama = document.getElementById("namaKomen").value;
+            var mesej = document.getElementById("teksKomen").value;
+
+            if (nama.trim() === "" || mesej.trim() === "") {
+                alert("Please fill in both your name and comment!");
+                return;
+            }
+
+            var masaKini = new Date().toLocaleString("en-MY");
+            var rujukanKomen = window.ref(window.db, "zep_komen_sains");
+            var komenBaru = window.push(rujukanKomen);
+
+            window.set(komenBaru, {
+                nama: nama,
+                mesej: mesej,
+                tarikh: masaKini
+            }).then(() => {
+                document.getElementById("teksKomen").value = "";
+                alert("Comment posted successfully!");
+            }).catch((error) => {
+                alert("Error posting comment: " + error);
+            });
+        }
+
+        var rujukanBacaKomen = window.ref(window.db, "zep_komen_sains");
+        window.onValue(rujukanBacaKomen, function(snapshot) {
+            var dataKomen = snapshot.val();
+            var htmlKomen = "";
+
+            if (dataKomen) {
+                var keys = Object.keys(dataKomen).reverse();
+                keys.forEach(function(key) {
+                    var k = dataKomen[key];
+                    htmlKomen += `
+                        <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 4px solid #0052D4; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; color: #777; margin-bottom: 4px;">
+                                <strong style="color: #0052D4; font-size: 15px;">${k.nama}</strong>
+                                <span>${k.tarikh}</span>
+                            </div>
+                            <div style="color: #333; font-size: 15px; word-break: break-word;">${k.mesej}</div>
+                        </div>
+                    `;
+                });
+                document.getElementById("senaraiKomenContainer").innerHTML = htmlKomen;
+            } else {
+                document.getElementById("senaraiKomenContainer").innerHTML = "<p style='color: #888; text-align: center; font-size: 14px;'>No comments yet. Be the first to leave a note!</p>";
+            }
+        });
+
+        var myPlayerId = "Scientist_" + Math.floor(Math.random() * 100000);
+        
+        var masaTungguFirebase = setInterval(function() {
+            if (window.firebaseSedia) {
+                clearInterval(masaTungguFirebase);
+                mulakanMultiplayer();
+            }
+        }, 500);
+
+        function mulakanMultiplayer() {
+            var rujukanPemain = window.ref(window.db, "science_pemain/" + myPlayerId);
+
+            window.set(rujukanPemain, { x: pX, y: pY, nama: "Junior Scientist", emoji: "🧍‍♂️", arah: true });
+            window.onDisconnect(rujukanPemain).remove(); 
+
+            setInterval(function() {
+                var namaS = document.getElementById("inputNamaPelajar") ? document.getElementById("inputNamaPelajar").value : "Scientist";
+                var spriteKita = document.getElementById("spritePemain");
+                var emojiSemasa = spriteKita ? spriteKita.innerText : "🧍‍♂️";
+                
+                window.update(rujukanPemain, { 
+                    x: pX, 
+                    y: pY,
+                    nama: namaS,
+                    emoji: emojiSemasa,
+                    arah: menghadapKanan
+                });
+            }, 100); 
+
+            var rujukanSemuaPemain = window.ref(window.db, "science_pemain");
+            window.onValue(rujukanSemuaPemain, function(snapshot) {
+                var senaraiPemain = snapshot.val();
+                
+                for (var idKawan in senaraiPemain) {
+                    if (idKawan !== myPlayerId) { 
+                        var dataKawan = senaraiPemain[idKawan];
+                        var watakKawan = document.getElementById(idKawan);
+                        
+                        if (!watakKawan) {
+                            var arahSkala = dataKawan.arah ? "scaleX(-1)" : "scaleX(1)";
+                            var emojiK = dataKawan.emoji || "🧍‍♂️";
+                            
+                            var kawanHTML = '<div id="' + idKawan + '" style="position: absolute; z-index: 50; transform: translate(-50%, -50%); transition: left 0.1s, top 0.1s;">' +
+                                '<span class="animasi-kawan" style="display: inline-block; font-size: 60px; filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.2)); transform: ' + arahSkala + ';">' + emojiK + '</span>' +
+                                '<span class="nama-kawan" style="font-size:13px; position:absolute; top:-25px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.95); border:2px solid #00c6ff; padding:4px 12px; border-radius:15px; font-weight:bold; color:#333; white-space:nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">' + (dataKawan.nama || 'Scientist') + '</span>' +
+                                '</div>';
+                            document.getElementById("duniaPeta").insertAdjacentHTML('beforeend', kawanHTML);
+                        } else {
+                            watakKawan.style.left = dataKawan.x + "px";
+                            watakKawan.style.top = dataKawan.y + "px";
+                            
+                            var namaTag = watakKawan.querySelector(".nama-kawan");
+                            if (namaTag) namaTag.innerText = dataKawan.nama || "Scientist";
+                            
+                            var animasiTag = watakKawan.querySelector(".animasi-kawan");
+                            if (animasiTag) {
+                                animasiTag.innerText = dataKawan.emoji || "🧍‍♂️";
+                                animasiTag.style.transform = dataKawan.arah ? "scaleX(-1)" : "scaleX(1)";
+                            }
+                        }
+                    }
+                }
+
+                var semuaWatakDiSkrin = document.getElementById("duniaPeta").children;
+                for (var i = 0; i < semuaWatakDiSkrin.length; i++) {
+                    var elemen = semuaWatakDiSkrin[i];
+                    if (elemen.id.startsWith("Scientist_")) { 
+                        if (!senaraiPemain || !senaraiPemain[elemen.id]) {
+                            elemen.remove(); 
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

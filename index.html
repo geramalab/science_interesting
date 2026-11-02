@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Form 2 Exploration</title>
+    
+    <style>
+        /* Base Settings */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff; /* Ice blue for science theme */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 1. HEADER STYLE (Science Theme: Blue & Cyan) */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); 
+            border-bottom: 4px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
+        }
+        .header-container img { transition: transform 0.3s; }
+        .header-container img:hover { transform: scale(1.05); }
+
+        /* 2. NAVIGATION MENU STYLE */
+        .navbar {
+            background-color: #1a2a6c; /* Deep space blue */
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0; 
+            z-index: 100;
+        }
+        .navbar a {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s, color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #00c6ff;
+            color: #fff;
+        }
+
+        /* 3. DROPDOWN MENU STYLE (Chapter 1-6) */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 320px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+            max-height: 400px;
+            overflow-y: auto; 
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            display: block;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+            font-weight: normal;
+        }
+        .dropdown-content a:hover {
+            background-color: #e3f2fd;
+            padding-left: 24px; 
+            color: #0052D4;
+            font-weight: bold;
+        }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* 4. MAIN CONTENT STYLE */
+        .main-content {
+            padding: 50px 20px;
+            text-align: center;
+            flex: 1; 
+            background-color: white;
+            margin: 30px 200px; 
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 900px) {
+            .main-content { margin: 30px 20px; }
+        }
+        .main-content h2 { color: #1a2a6c; }
+
+        /* 5. FOOTER STYLE */
+        .footer {
+            background-color: #0d1b2a;
+            color: #ccc;
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .footer span.highlight { color: #00c6ff; font-weight: bold; }
+        
+        .visitor-counter {
+            display: inline-block;
+            background-color: #00c6ff;
+            color: #0d1b2a;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+        }
+
+        /* RESPONSIVE MENU FOR MOBILE */
+        @media (max-width: 800px) {
+            .navbar { flex-wrap: wrap; justify-content: center; }
+            .navbar a { padding: 10px 12px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER: Logo & Title -->
+    <div class="header-container">
+        <!-- You can change this image to a science logo if available -->
+        <img src="logosains.png" style="height: 150px; width: auto; margin-right: 20px;" alt="Science Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2083/2083285.png'; this.style.height='100px';">
+        <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); font-size: 45px;">SCIENCE PORTAL</h1>
+    </div>
+
+    <!-- NAVIGATION MENU (Navbar) -->
+    <nav class="navbar">
+        <a href="index.html">Main Lab</a>
+        
+        <div class="dropdown">
+            <a href="#">Science Form 2 ▼</a>
+            <div class="dropdown-content">
+                <a href="science_chap1.html">Chapter 1: Biodiversity</a>
+                <a href="science_chap2.html">Chapter 2: Ecosystem</a>
+                <a href="science_chap3.html">Chapter 3: Nutrition</a>
+                <a href="science_chap4.html">Chapter 4: Human Health</a>
+                <a href="science_chap5.html">Chapter 5: Water and Solution</a>
+                <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+            </div>
+        </div>
+
+        <a href="interactive_lab.html">Interactive Lab</a>
+        <a href="performance.html">Scientist Analytics</a>
+        <a href="contact.html">Ask a Teacher</a>
+        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-content" style="text-align: center; padding: 40px 50px;">
+
+        <h1 style="color: #1a2a6c; font-size: 36px; margin-bottom: 10px; margin-top: 0;">
+            🔬 Welcome to the SCIENCE EXPLORATION Portal!
+        </h1>
+        <p style="font-size: 18px; color: #555; margin-bottom: 40px;">
+            Discover the wonders of biodiversity, human biology, and chemical reactions through interactive simulations and virtual ZEP zones.
+        </p>
+
+        <!-- Three Shortcut Boxes -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin-bottom: 50px;">
+            
+            <!-- Box 1: Notes -->
+            <a href="#" style="text-decoration: none; color: #333; width: 220px; background-color: #e3f2fd; padding: 25px; border-radius: 15px; border: 2px solid #90caf9; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
+                <h1 style="font-size: 45px; margin: 0;">🧬</h1>
+                <h3 style="margin: 15px 0 10px 0; color: #1565c0;">Scientific Notes</h3>
+                <p style="font-size: 14px; color: #555; line-height: 1.5;">Quick references from Biodiversity to Acids & Alkalis.</p>
+            </a>
+
+            <!-- Box 2: Interactive Zone (ZEP Game) -->
+            <a href="interactive_lab.html" style="text-decoration: none; color: #333; width: 220px; background-color: #f3e5f5; padding: 25px; border-radius: 15px; border: 2px solid #ce93d8; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
+                <h1 style="font-size: 45px; margin: 0;">🚀</h1>
+                <h3 style="margin: 15px 0 10px 0; color: #6a1b9a;">ZEP Mission</h3>
+                <p style="font-size: 14px; color: #555; line-height: 1.5;">Control your avatar to collect knowledge molecules in the open world!</p>
+            </a>
+
+            <!-- Box 3: Contact/Help -->
+            <a href="contact.html" style="text-decoration: none; color: #333; width: 220px; background-color: #e0f2f1; padding: 25px; border-radius: 15px; border: 2px solid #80cbc4; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
+                <h1 style="font-size: 45px; margin: 0;">💡</h1>
+                <h3 style="margin: 15px 0 10px 0; color: #00695c;">Ask a Scientist</h3>
+                <p style="font-size: 14px; color: #555; line-height: 1.5;">Stuck on an experiment? Drop your questions here.</p>
+            </a>
+
+        </div>
+
+        <!-- Science Motivation Quote -->
+        <div style="background-color: #e1f5fe; border-left: 8px solid #03a9f4; padding: 20px; border-radius: 8px; max-width: 650px; margin: 0 auto; text-align: left;">
+            <p style="margin: 0; font-size: 16px; font-style: italic; color: #01579b; line-height: 1.6;">
+                "Science is a way of thinking much more than it is a body of knowledge." <br> 
+                <span style="font-weight: bold; font-style: normal; margin-top: 10px; display: inline-block;">— Carl Sagan (Astronomer)</span>
+            </p>
+        </div>
+
+    </div>
+
+    <!-- FOOTER SECTION -->
+    <footer class="footer">
+        <div class="visitor-counter">
+            📡 Visitor Scan Data: <span id="angkaPelawat">Loading...</span>
+        </div>
+        <br>
+        All rights reserved &copy; <span class="highlight">Virtual Lab 2026</span>
+        <br>
+        <span style="font-size: 12px; color: #777;">Core System: gramalab</span>
+    </footer>
+
+    <!-- FIREBASE VISITOR COUNTER -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBAtbX6wmdNwmXkgUvewnfRRXRTfyq5IZ8",
+            authDomain: "jejak-sejarah-tingkatan-2.firebaseapp.com",
+            projectId: "jejak-sejarah-tingkatan-2",
+            storageBucket: "jejak-sejarah-tingkatan-2.firebasestorage.app",
+            messagingSenderId: "92872994798",
+            appId: "1:92872994798:web:9c205538a5eb8f388e68ff",
+            measurementId: "G-8RZ21D4FXY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app); 
+        
+        const rujukanPelawat = ref(db, "statistik_sains/jumlah_pelawat");
+
+        onValue(rujukanPelawat, (snapshot) => {
+            const jumlahTerkini = snapshot.val();
+            if (jumlahTerkini) document.getElementById("angkaPelawat").innerText = jumlahTerkini.toLocaleString();
+            else document.getElementById("angkaPelawat").innerText = "0";
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (!sessionStorage.getItem("sudahDikiraSains")) {
+                    runTransaction(rujukanPelawat, (jumlahSemasa) => {
+                        return (jumlahSemasa || 0) + 1;
+                    }).then(() => {
+                        sessionStorage.setItem("sudahDikiraSains", "benar");
+                    });
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

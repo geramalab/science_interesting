@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Lab - Science Portal</title>
+    
+    <style>
+        /* Base Settings & Navbar */
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; display: flex; flex-direction: column; min-height: 100vh; }
+        .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
+        .header-container img { transition: transform 0.3s; }
+        .header-container img:hover { transform: scale(1.05); }
+        
+        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
+        .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 24px; font-size: 16px; font-weight: bold; transition: background 0.3s, color 0.3s; }
+        .navbar a:hover { background-color: #00c6ff; color: #fff; }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 280px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 1; border-radius: 0 0 8px 8px; overflow: hidden; max-height: 400px; overflow-y: auto; }
+        .dropdown-content a { color: #333; padding: 12px 16px; display: block; font-size: 14px; border-bottom: 1px solid #eee; font-weight: normal; }
+        .dropdown-content a:hover { background-color: #e3f2fd; padding-left: 24px; color: #0052D4; font-weight: bold; }
+        .dropdown:hover .dropdown-content { display: block; }
+        
+        .main-content { padding: 50px 20px; text-align: center; flex: 1; background-color: white; margin: 30px 200px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        @media (max-width: 900px) { .main-content { margin: 30px 20px; } }
+        
+        .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; line-height: 1.6; }
+        .footer span.highlight { color: #00c6ff; font-weight: bold; }
+        .visitor-counter { display: inline-block; background-color: #00c6ff; color: #0d1b2a; padding: 8px 20px; border-radius: 30px; font-size: 18px; font-weight: bold; margin-bottom: 15px; box-shadow: 0 0 15px rgba(0, 198, 255, 0.5); }
+
+        /* Interactive Cards Hover Effect */
+        .kad-interaktif { transition: transform 0.3s, box-shadow 0.3s; }
+        .kad-interaktif:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header-container">
+        <img src="logosains.png" style="height: 150px; width: auto; margin-right: 20px;" alt="Science Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2083/2083285.png'; this.style.height='100px';">
+        <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); font-size: 45px;">SCIENCE PORTAL</h1>
+    </div>
+
+    <!-- Menu -->
+    <nav class="navbar">
+        <a href="index.html">Main Lab</a>
+        <div class="dropdown">
+            <a href="#">Science Form 2 ▼</a>
+            <div class="dropdown-content">
+                <a href="science_chap1.html">Chapter 1: Biodiversity</a>
+                <a href="science_chap2.html">Chapter 2: Ecosystem</a>
+                <a href="science_chap3.html">Chapter 3: Nutrition</a>
+                <a href="science_chap4.html">Chapter 4: Human Health</a>
+                <a href="science_chap5.html">Chapter 5: Water and Solution</a>
+                <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+            </div>
+        </div>
+        <a href="interactive_lab.html" style="background-color: #00c6ff; color: #0d1b2a;">Interactive Lab</a>
+        <a href="performance.html">Scientist Analytics</a>
+        <a href="contact.html">Ask a Teacher</a>
+        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+
+        <h2 style="color: #1a2a6c; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; display: inline-block;">
+            🚀 Interactive Lab Lobby
+        </h2>
+        <p style="color: #555; margin-bottom: 30px;">Explore Form 2 Science concepts through exciting virtual simulations and multiplayer ZEP missions!</p>
+
+        <!-- Section 1: Animated Shortcut Cards -->
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 50px;">
+            
+            <!-- Card 1: Notes & Map -->
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <div class="kad-interaktif" style="background: linear-gradient(135deg, #0052D4 0%, #4364F7 100%); width: 200px; padding: 30px 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); color: white;">
+                    <h1 style="margin: 0; font-size: 40px;">🧬</h1>
+                    <h3 style="margin: 10px 0 0 0;">Science Notes</h3>
+                </div>
+            </a>
+
+            <!-- Card 2: ZEP Mission Game -->
+            <a href="interactive_lab_game.html" style="text-decoration: none; color: inherit;">
+                <div class="kad-interaktif" style="background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); width: 200px; padding: 30px 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); color: white;">
+                    <h1 style="margin: 0; font-size: 40px;">🚀</h1>
+                    <h3 style="margin: 10px 0 0 0;">ZEP Lab Game</h3>
+                </div>
+            </a>
+
+            <!-- Card 3: Coming Soon -->
+            <a href="virtual_microscope.html" style="text-decoration: none; color: inherit;">
+                <div class="kad-interaktif" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); width: 200px; padding: 30px 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); color: white;">
+                    <h1 style="margin: 0; font-size: 40px;">🔬</h1>
+                    <h3 style="margin: 10px 0 0 0;">Microscope</h3>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Section 2: Science Fun Facts Generator -->
+        <div style="background-color: #e3f2fd; border: 2px dashed #0052D4; border-radius: 15px; padding: 30px; max-width: 600px; margin: 0 auto;">
+            <h3 style="color: #1a2a6c; margin-top: 0;">Did You Know? 🧪</h3>
+            <p id="scienceFact" style="font-size: 18px; font-weight: bold; color: #333; min-height: 60px; display: flex; align-items: center; justify-content: center; margin: 20px 0;">
+                Click the button below to discover amazing Form 2 Science facts!
+            </p>
+            <button onclick="generateFact()" style="background-color: #00c6ff; color: #0d1b2a; font-weight: bold; border: none; padding: 12px 25px; font-size: 16px; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                ✨ Generate Science Fact
+            </button>
+        </div>
+
+        <script>
+            function generateFact() {
+                var facts = [
+                    "BIODIVERSITY: Malaysia is recognized as one of the 12 mega-biodiverse countries in the world!",
+                    "DIGESTIVE SYSTEM: The small intestine in humans is about 6 meters (20 feet) long!",
+                    "WATER & SOLUTION: Ice floats on liquid water because ice is less dense due to its crystalline structure.",
+                    "ACIDS & ALKALIS: The universal indicator turns green in a neutral solution (pH 7, like pure water).",
+                    "HUMAN HEALTH: White blood cells act as your body's personal soldiers, using phagocytosis to destroy harmful bacteria.",
+                    "ECOSYSTEM: Mangrove swamps act as natural barriers against coastal erosion and serve as nurseries for marine life."
+                ];
+                var randomIndex = Math.floor(Math.random() * facts.length);
+                document.getElementById("scienceFact").innerHTML = facts[randomIndex];
+                
+                // Animation effect
+                document.getElementById("scienceFact").style.animation = "none";
+                setTimeout(function() { document.getElementById("scienceFact").style.animation = "bounceSmall 0.3s"; }, 10);
+            }
+        </script>
+        
+        <style>
+            @keyframes bounceSmall {
+                0% { transform: translateY(0); }
+                50% { transform: translateY(-5px); }
+                100% { transform: translateY(0); }
+            }
+
+            @media (max-width: 800px) {
+                .navbar { flex-wrap: wrap; justify-content: center; }
+                .navbar a { padding: 10px 12px; font-size: 13px; }
+            }
+        </style>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="visitor-counter">📡 Lab Visitor Count: Loading...</div>
+        <br>
+        All rights reserved &copy; <span class="highlight">Virtual Lab 2026</span>
+        <br>
+        <span style="font-size: 12px; color: #777;">Core System: gramalab</span>
+    </footer>
+
+</body>
+</html>

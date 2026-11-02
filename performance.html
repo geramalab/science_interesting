@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientist Analytics & Performance - Science Portal</title>
+    
+    <!-- PUSAT KAWALAN FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBAtbX6wmdNwmXkgUvewnfRRXRTfyq5IZ8",
+            authDomain: "jejak-sejarah-tingkatan-2.firebaseapp.com",
+            projectId: "jejak-sejarah-tingkatan-2",
+            storageBucket: "jejak-sejarah-tingkatan-2.firebasestorage.app",
+            messagingSenderId: "92872994798",
+            appId: "1:92872994798:web:9c205538a5eb8f388e68ff",
+            measurementId: "G-8RZ21D4FXY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        // 1. SEMAK SIAPA YANG SEDANG LOG MASUK
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const namaUser = user.displayName || user.email.split('@')[0];
+                document.getElementById("namaProfilLogin").innerText = namaUser;
+                tarikAnalisisPeribadi(namaUser);
+            } else {
+                document.getElementById("namaProfilLogin").innerText = "Guest Scientist (Not Logged In)";
+                document.getElementById("analisisPeribadiCard").innerHTML = "<p style='color: #666;'>Please login or play a ZEP mission to track your personal performance analytics! 🔬</p>";
+            }
+        });
+
+        // 2. TARIK DATA ANALISIS PERIBADI DARI FIREBASE
+        function tarikAnalisisPeribadi(namaPemain) {
+            const rujukanMarkah = ref(db, "markah_science_zep");
+            onValue(rujukanMarkah, (snapshot) => {
+                const data = snapshot.val();
+                let rekodPemain = [];
+
+                for (let id in data) {
+                    if (data[id].nama.toLowerCase() === namaPemain.toLowerCase()) {
+                        rekodPemain.push(data[id]);
+                    }
+                }
+
+                if (rekodPemain.length > 0) {
+                    // Cari masa terpantas
+                    rekodPemain.sort((a, b) => a.jumlahSaat - b.jumlahSaat);
+                    let terbaik = rekodPemain[0];
+
+                    let htmlPeribadi = `
+                        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                            <div style="background: #e3f2fd; padding: 15px 25px; border-radius: 10px; border: 2px solid #0052D4; flex: 1; min-width: 150px;">
+                                <div style="font-size: 14px; color: #555;">Total Missions Played</div>
+                                <div style="font-size: 24px; font-weight: bold; color: #0052D4;">${rekodPemain.length} Games</div>
+                            </div>
+                            <div style="background: #eef9f0; padding: 15px 25px; border-radius: 10px; border: 2px solid #28a745; flex: 1; min-width: 150px;">
+                                <div style="font-size: 14px; color: #555;">Best Record Time</div>
+                                <div style="font-size: 24px; font-weight: bold; color: #28a745;">⏱️ ${terbaik.masaTeks}</div>
+                            </div>
+                            <div style="background: #fff8e1; padding: 15px 25px; border-radius: 10px; border: 2px solid #f39c12; flex: 1; min-width: 150px;">
+                                <div style="font-size: 14px; color: #555;">Highest Rank Awarded</div>
+                                <div style="font-size: 24px; font-weight: bold; color: #f39c12;">${terbaik.ikon} ${terbaik.pangkat}</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; font-size: 14px; color: #666;">Last cleared: Chapter ${terbaik.bab} | Keep up the excellent work, Scientist!</p>
+                    `;
+                    document.getElementById("analisisPeribadiCard").innerHTML = htmlPeribadi;
+                } else {
+                    document.getElementById("analisisPeribadiCard").innerHTML = "<p style='color: #e67e22;'>No recorded missions found for your account yet. Jump into the ZEP Lab Game and set your record! 🚀</p>";
+                }
+            });
+        }
+
+        // 3. TARIK DATA GLOBAL UNTUK PAPAN JUARA (LEADERBOARD)
+        const rujukanGlobal = ref(db, "markah_science_zep");
+        onValue(rujukanGlobal, (snapshot) => {
+            const data = snapshot.val();
+            let htmlJadual = "";
+            let senaraiPemain = [];
+
+            for (let id in data) {
+                senaraiPemain.push(data[id]);
+            }
+
+            senaraiPemain.sort((a, b) => a.jumlahSaat - b.jumlahSaat);
+
+            senaraiPemain.forEach((pemain, index) => {
+                let pingat = "";
+                if (index === 0) pingat = "🥇";
+                else if (index === 1) pingat = "🥈";
+                else if (index === 2) pingat = "🥉";
+                else pingat = (index + 1) + ".";
+
+                htmlJadual += `
+                    <tr>
+                        <td style="font-size: 24px; text-align: center; font-weight: bold;">${pingat}</td>
+                        <td style="font-weight: bold; color: #0052D4; font-size:18px;">${pemain.nama}</td>
+                        <td style="text-align: center;"><span style="background:#e3f2fd; padding:5px 10px; border-radius:5px; border:1px solid #0052D4;">Chapter ${pemain.bab}</span></td>
+                        <td style="text-align: center; font-weight: bold; color: #e67e22;">⏱️ ${pemain.masaTeks}</td>
+                        <td style="text-align: center;">${pemain.ikon} ${pemain.pangkat}</td>
+                    </tr>
+                `;
+            });
+
+            if(senaraiPemain.length > 0) {
+                document.getElementById("badanJadual").innerHTML = htmlJadual;
+            } else {
+                document.getElementById("badanJadual").innerHTML = "<tr><td colspan='5' style='text-align:center; padding: 30px;'>No records yet. Be the first scientist to clear the lab! 🚀</td></tr>";
+            }
+        });
+    </script>
+
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; display: flex; flex-direction: column; min-height: 100vh; }
+        .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
+        .header-container img { transition: transform 0.3s; }
+        
+        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
+        .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 24px; font-size: 16px; font-weight: bold; transition: background 0.3s, color 0.3s; }
+        .navbar a:hover { background-color: #00c6ff; color: #fff; }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 280px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 1; border-radius: 0 0 8px 8px; overflow: hidden; max-height: 400px; overflow-y: auto; }
+        .dropdown-content a { color: #333; padding: 12px 16px; display: block; font-size: 14px; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #e3f2fd; padding-left: 24px; color: #0052D4; font-weight: bold; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        .main-content { padding: 40px 50px; flex: 1; background-color: white; margin: 30px 150px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        @media (max-width: 900px) { .main-content { margin: 30px 20px; padding: 20px; } }
+        
+        .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; line-height: 1.6; }
+        .footer span.highlight { color: #00c6ff; font-weight: bold; }
+
+        /* KOTAK ANALISIS PERIBADI */
+        .personal-analytics-box {
+            background: #ffffff;
+            border: 2px dashed #0052D4;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        /* GAYA JADUAL PRESTASI (LEADERBOARD) */
+        .jadual-kontena { overflow-x: auto; margin-top: 20px; }
+        .jadual-prestasi { width: 100%; border-collapse: collapse; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .jadual-prestasi th { background-color: #0052D4; color: white; padding: 15px; font-size: 18px; border-bottom: 3px solid #00c6ff; }
+        .jadual-prestasi td { padding: 15px; border-bottom: 1px solid #eee; font-size: 16px; color: #444; }
+        .jadual-prestasi tr:hover { background-color: #f8fbff; }
+
+        @media (max-width: 800px) {
+            .navbar { flex-wrap: wrap; justify-content: center; }
+            .navbar a { padding: 10px 12px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <img src="logosains.png" style="height: 150px; width: auto; margin-right: 20px;" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2083/2083285.png'; this.style.height='100px';">
+        <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); font-size: 40px;">SCIENTIST PERFORMANCE & ANALYTICS</h1>
+    </div>
+
+    <!-- Menu Navigasi -->
+    <nav class="navbar">
+        <a href="index.html">Main Lab</a>
+        <div class="dropdown">
+            <a href="#">Science Form 2 ▼</a>
+            <div class="dropdown-content">
+                <a href="science_chap1.html">Chapter 1: Biodiversity</a>
+                <a href="science_chap2.html">Chapter 2: Ecosystem</a>
+                <a href="science_chap3.html">Chapter 3: Nutrition</a>
+                <a href="science_chap4.html">Chapter 4: Human Health</a>
+                <a href="science_chap5.html">Chapter 5: Water and Solution</a>
+                <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+            </div>
+        </div>
+        <a href="interactive_lab.html">Interactive Lab</a>
+        <a href="performance.html" style="background-color: #00c6ff; color: #0d1b2a;">Scientist Analytics</a>
+        <a href="contact.html">Ask a Teacher</a>
+        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+    </nav>
+
+    <!-- Kandungan Analitik -->
+    <div class="main-content">
+        
+        <!-- BAHAGIAN 1: ANALISIS PRESTASI PERIBADI (MY ANALYTICS) -->
+        <h2 style="color: #1a2a6c; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; display: inline-block;">
+            📈 My Personal Analytics (<span id="namaProfilLogin" style="color: #0052D4;">Loading...</span>)
+        </h2>
+        <p style="color: #555; font-size: 16px; margin-bottom: 15px;">Review your personal statistics, best timing, and accumulated lab rankings.</p>
+        
+        <div class="personal-analytics-box" id="analisisPeribadiCard">
+            <p style="color: #666;">Synchronizing personal statistics from Firebase cloud...</p>
+        </div>
+
+        <!-- BAHAGIAN 2: PAPAN JUARA GLOBAL (LEADERBOARD) -->
+        <h2 style="color: #1a2a6c; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; display: inline-block; margin-top: 20px;">
+            🏆 Top Scientists Leaderboard
+        </h2>
+        <p style="color: #555; font-size: 16px;">Global ranking of fast-paced scientists who successfully completed the ZEP Science missions!</p>
+
+        <div class="jadual-kontena">
+            <table class="jadual-prestasi">
+                <thead>
+                    <tr>
+                        <th width="10%">Rank</th>
+                        <th width="35%">Scientist Name</th>
+                        <th width="15%">Chapter Level</th>
+                        <th width="20%">Record Time</th>
+                        <th width="20%">Badge Awarded</th>
+                    </tr>
+                </thead>
+                <tbody id="badanJadual">
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px;">
+                            ⏳ Downloading global scientist records from Firebase...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="visitor-counter">📡 Lab Visitor Count: Active</div>
+        <br>All rights reserved &copy; <span class="highlight">Virtual Lab 2026</span>
+    </footer>
+
+</body>
+</html>

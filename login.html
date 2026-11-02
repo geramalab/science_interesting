@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientist Login - Science Portal</title>
+    
+    <!-- 1. PUSAT KAWALAN FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBAtbX6wmdNwmXkgUvewnfRRXRTfyq5IZ8",
+            authDomain: "jejak-sejarah-tingkatan-2.firebaseapp.com",
+            projectId: "jejak-sejarah-tingkatan-2",
+            storageBucket: "jejak-sejarah-tingkatan-2.firebasestorage.app",
+            messagingSenderId: "92872994798",
+            appId: "1:92872994798:web:9c205538a5eb8f388e68ff",
+            measurementId: "G-8RZ21D4FXY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.auth = auth;
+        window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+        window.signOut = signOut;
+        window.updateProfile = updateProfile;
+
+        // Pantau Log Masuk
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById("paparanLogMasuk").style.display = "none";
+                document.getElementById("paparanBerjaya").style.display = "block";
+                document.getElementById("namaPengguna").innerHTML = user.displayName || user.email;
+            } else {
+                document.getElementById("paparanLogMasuk").style.display = "block";
+                document.getElementById("paparanBerjaya").style.display = "none";
+            }
+        });
+    </script>
+
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; display: flex; flex-direction: column; min-height: 100vh; }
+        .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
+        .header-container img { transition: transform 0.3s; }
+        
+        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
+        .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 24px; font-size: 16px; font-weight: bold; transition: 0.3s; }
+        .navbar a:hover { background-color: #00c6ff; color: #fff; }
+        
+        .main-content { padding: 50px 20px; text-align: center; flex: 1; background-color: white; margin: 30px auto; max-width: 500px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); width: 90%; }
+        .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; margin-top: auto; }
+        .footer span.highlight { color: #00c6ff; font-weight: bold; }
+        
+        .kotak-borang input { width: 90%; padding: 15px; margin-bottom: 15px; border: 2px solid #bce0fd; border-radius: 8px; font-size: 16px; transition: 0.3s; box-sizing: border-box; }
+        .kotak-borang input:focus { border-color: #0052D4; outline: none; }
+        
+        .btn-auth { width: 95%; padding: 15px; font-size: 18px; font-weight: bold; color: white; background-color: #0052D4; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,82,212,0.2); }
+        .btn-auth:hover { background-color: #003cc8; }
+        .btn-daftar { background-color: #11998e; }
+        .btn-daftar:hover { background-color: #0e7c72; }
+        .btn-keluar { background-color: #dc3545; width: auto; padding: 10px 30px; margin-top: 20px; }
+        
+        #mesejRalat { color: #dc3545; font-weight: bold; margin-bottom: 15px; min-height: 20px; }
+
+        @media (max-width: 800px) {
+            .navbar { flex-wrap: wrap; justify-content: center; }
+            .navbar a { padding: 10px 12px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <img src="logosains.png" style="height: 150px; width: auto; margin-right: 20px;" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2083/2083285.png'; this.style.height='100px';">
+        <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); font-size: 40px;">SCIENTIST ACCOUNT</h1>
+    </div>
+
+    <nav class="navbar">
+        <a href="index.html">⬅️ Return to Main Lab</a>
+    </nav>
+
+    <!-- KANDUNGAN UTAMA: BORANG LOG MASUK -->
+    <div class="main-content">
+        
+        <div id="paparanLogMasuk">
+            <h2 style="color: #1a2a6c; margin-top: 0;">🔐 Scientist Login / Register</h2>
+            <p style="color: #555; margin-bottom: 25px;">Please enter your credentials below to access the lab.</p>
+            
+            <div id="mesejRalat"></div>
+
+            <div class="kotak-borang">
+                <input type="text" id="namaDaftarInput" placeholder="Scientist Nickname (For New Registration)">
+                
+                <input type="email" id="emelInput" placeholder="Email address (e.g: fatimah@moe-dl.edu.my)" required>
+                <input type="password" id="katalaluanInput" placeholder="Password (Min 6 characters)" required>
+                
+                <button class="btn-auth" onclick="sistemLogMasuk()">Enter Lab</button>
+                <p style="color:#777; margin: 10px 0;">or</p>
+                <button class="btn-auth btn-daftar" onclick="sistemDaftar()">Register New Account</button>
+            </div>
+        </div>
+
+        <div id="paparanBerjaya" style="display: none;">
+            <h1 style="font-size: 60px; margin: 0;">👨‍🔬</h1>
+            <h2 style="color: #28a745;">Login Successful!</h2>
+            <p style="font-size: 18px;">Welcome back to the lab,</p>
+            
+            <h3 id="namaPengguna" style="color: #0052D4; background: #e3f2fd; padding: 10px 20px; border-radius: 8px; display: inline-block;">user</h3>
+            
+            <div style="background-color: #f8fbff; border: 2px dashed #bce0fd; padding: 20px; border-radius: 10px; margin: 20px auto; width: 80%;">
+                <p style="font-size: 15px; color: #1a2a6c; margin-top: 0; font-weight: bold;">Update Your Scientist Nickname:</p>
+                <input type="text" id="namaBaruInput" placeholder="E.g: Professor Ali" style="width: 90%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; font-size: 15px; box-sizing: border-box;">
+                <button onclick="kemaskiniNamaTerkini()" style="background-color: #0052D4; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s;">✏️ Update Profile</button>
+                <p id="mesejKemaskini" style="font-size: 14px; font-weight: bold; margin-bottom: 0; margin-top: 10px; display: none;"></p>
+            </div>
+
+            <a href="index.html" style="display: inline-block; background: #00c6ff; color: #0d1b2a; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; margin-top: 10px;">Continue Exploring 🚀</a>
+            <br>
+            <button class="btn-auth btn-keluar" onclick="sistemLogKeluar()">Logout</button>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        All rights reserved &copy; <span class="highlight">Virtual Lab 2026</span>
+    </footer>
+
+    <!-- SKRIP JAVASCRIPT UNTUK AUTH -->
+    <script>
+        function sistemDaftar() {
+            var namaPanggilan = document.getElementById("namaDaftarInput").value;
+            var emel = document.getElementById("emelInput").value;
+            var katalaluan = document.getElementById("katalaluanInput").value;
+            var ralatTeks = document.getElementById("mesejRalat");
+
+            if(namaPanggilan.trim() === "") { ralatTeks.style.color = "#dc3545"; ralatTeks.innerText = "⚠️ Please enter a Scientist Nickname to register!"; return; }
+            if(katalaluan.length < 6) { ralatTeks.style.color = "#dc3545"; ralatTeks.innerText = "⚠️ Password must be at least 6 characters long!"; return; }
+
+            window.createUserWithEmailAndPassword(window.auth, emel, katalaluan)
+                .then((userCredential) => {
+                    window.updateProfile(userCredential.user, {
+                        displayName: namaPanggilan
+                    }).then(() => {
+                        ralatTeks.style.color = "#28a745";
+                        ralatTeks.innerText = "✅ Account successfully registered!";
+                        window.location.reload();
+                    });
+                })
+                .catch((error) => {
+                    ralatTeks.style.color = "#dc3545";
+                    if(error.code === 'auth/email-already-in-use') ralatTeks.innerText = "⚠️ This email is already registered.";
+                    else ralatTeks.innerText = "⚠️ Error: " + error.message;
+                });
+        }
+
+        function sistemLogMasuk() {
+            var emel = document.getElementById("emelInput").value;
+            var katalaluan = document.getElementById("katalaluanInput").value;
+            var ralatTeks = document.getElementById("mesejRalat");
+
+            window.signInWithEmailAndPassword(window.auth, emel, katalaluan)
+                .then((userCredential) => {
+                    ralatTeks.innerText = "";
+                })
+                .catch((error) => {
+                    ralatTeks.style.color = "#dc3545";
+                    if(error.code === 'auth/invalid-credential') ralatTeks.innerText = "⚠️ Incorrect email or password!";
+                    else ralatTeks.innerText = "⚠️ Error: Please check your credentials.";
+                });
+        }
+
+        function sistemLogKeluar() {
+            window.signOut(window.auth).then(() => {
+                document.getElementById("emelInput").value = "";
+                document.getElementById("katalaluanInput").value = "";
+                document.getElementById("namaDaftarInput").value = "";
+            });
+        }
+
+        function kemaskiniNamaTerkini() {
+            var namaBaru = document.getElementById("namaBaruInput").value;
+            var mesejTeks = document.getElementById("mesejKemaskini");
+            var user = window.auth.currentUser;
+
+            if (namaBaru.trim() === "") { 
+                mesejTeks.style.color = "#dc3545"; 
+                mesejTeks.innerText = "⚠️ Please type a new nickname first."; 
+                mesejTeks.style.display = "block";
+                return; 
+            }
+
+            if (user) {
+                window.updateProfile(user, {
+                    displayName: namaBaru
+                }).then(() => {
+                    mesejTeks.style.color = "#28a745";
+                    mesejTeks.innerText = "✅ Nickname updated successfully!";
+                    mesejTeks.style.display = "block";
+                    document.getElementById("namaPengguna").innerHTML = namaBaru;
+                    document.getElementById("namaBaruInput").value = "";
+                }).catch((error) => {
+                    mesejTeks.style.color = "#dc3545";
+                    mesejTeks.innerText = "⚠️ Error: " + error.message;
+                    mesejTeks.style.display = "block";
+                });
+            }
+        }
+    </script>
+</body>
+</html>

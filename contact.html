@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask a Teacher - Science Portal</title>
+    
+    <!-- PUSAT KAWALAN FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBAtbX6wmdNwmXkgUvewnfRRXRTfyq5IZ8",
+            authDomain: "jejak-sejarah-tingkatan-2.firebaseapp.com",
+            projectId: "jejak-sejarah-tingkatan-2",
+            storageBucket: "jejak-sejarah-tingkatan-2.firebasestorage.app",
+            messagingSenderId: "92872994798",
+            appId: "1:92872994798:web:9c205538a5eb8f388e68ff",
+            measurementId: "G-8RZ21D4FXY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("borangHubungi").addEventListener("submit", function(event) {
+                event.preventDefault();
+                
+                var namaPelajar = document.getElementById("namaPengirim").value;
+                var emelPelajar = document.getElementById("emailPengirim").value;
+                var teksMesej = document.getElementById("mesejPengirim").value;
+                var masaKini = new Date().toLocaleString("en-MY");
+                
+                // Folder Firebase khusus untuk mesej Sains
+                var rujukanFolder = ref(db, "mesej_sains_hubungi");
+                var rekodBaru = push(rujukanFolder);
+                
+                set(rekodBaru, {
+                    nama: namaPelajar,
+                    emel: emelPelajar,
+                    mesej: teksMesej,
+                    tarikh: masaKini
+                }).then(() => {
+                    alert("Thank you " + namaPelajar + "! Your message has been successfully recorded in our science database. 🚀");
+                    document.getElementById("borangHubungi").reset();
+                }).catch((error) => {
+                    alert("Oops! An error occurred while sending your message: " + error);
+                });
+            });
+        });
+    </script>
+
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; display: flex; flex-direction: column; min-height: 100vh; }
+        .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
+        .header-container img { transition: transform 0.3s; }
+        
+        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
+        .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 24px; font-size: 16px; font-weight: bold; transition: background 0.3s, color 0.3s; }
+        .navbar a:hover { background-color: #00c6ff; color: #fff; }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 280px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 1; border-radius: 0 0 8px 8px; overflow: hidden; max-height: 400px; overflow-y: auto; }
+        .dropdown-content a { color: #333; padding: 12px 16px; display: block; font-size: 14px; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #e3f2fd; padding-left: 24px; color: #0052D4; font-weight: bold; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        .main-content { padding: 40px 50px; flex: 1; background-color: white; margin: 30px 150px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); text-align: center; }
+        @media (max-width: 900px) { .main-content { margin: 30px 20px; padding: 20px; } }
+        
+        .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; line-height: 1.6; }
+        .footer span.highlight { color: #00c6ff; font-weight: bold; }
+
+        .susunan-hubungi { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 30px; text-align: left; justify-content: center; }
+
+        .kotak-info { flex: 1; min-width: 300px; background-color: #e3f2fd; padding: 30px; border-radius: 12px; border-left: 6px solid #0052D4; }
+        .kotak-info h3 { margin-top: 0; color: #1a2a6c; font-size: 22px; }
+        .kotak-info p { font-size: 16px; color: #444; line-height: 1.8; margin-bottom: 15px; }
+        .butang-whatsapp { display: inline-block; background-color: #25D366; color: white; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 30px; font-size: 16px; box-shadow: 0 4px 6px rgba(37,211,102,0.3); transition: 0.3s; margin-top: 10px; }
+        .butang-whatsapp:hover { background-color: #128C7E; transform: translateY(-3px); }
+
+        .kotak-borang { flex: 1; min-width: 300px; background-color: #f8fbff; padding: 30px; border-radius: 12px; border: 2px solid #bce0fd; }
+        .kotak-borang label { font-weight: bold; color: #1a2a6c; display: block; margin-bottom: 5px; }
+        .kotak-borang input, .kotak-borang textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #bbb; border-radius: 8px; font-family: inherit; font-size: 15px; box-sizing: border-box; }
+        .kotak-borang input:focus, .kotak-borang textarea:focus { border-color: #0052D4; outline: none; box-shadow: 0 0 5px rgba(0,82,212,0.3); }
+        
+        .butang-hantar { background-color: #0052D4; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,82,212,0.2); }
+        .butang-hantar:hover { background-color: #003cc8; transform: translateY(-2px); }
+
+        @media (max-width: 800px) {
+            .navbar { flex-wrap: wrap; justify-content: center; }
+            .navbar a { padding: 10px 12px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <img src="logosains.png" style="height: 150px; width: auto; margin-right: 20px;" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2083/2083285.png'; this.style.height='100px';">
+        <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); font-size: 40px;">SCIENCE PORTAL SUPPORT</h1>
+    </div>
+
+    <!-- Menu Navigasi -->
+    <nav class="navbar">
+        <a href="index.html">Main Lab</a>
+        <div class="dropdown">
+            <a href="#">Science Form 2 ▼</a>
+            <div class="dropdown-content">
+                <a href="science_chap1.html">Chapter 1: Biodiversity</a>
+                <a href="science_chap2.html">Chapter 2: Ecosystem</a>
+                <a href="science_chap3.html">Chapter 3: Nutrition</a>
+                <a href="science_chap4.html">Chapter 4: Human Health</a>
+                <a href="science_chap5.html">Chapter 5: Water and Solution</a>
+                <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+            </div>
+        </div>
+        <a href="interactive_lab.html">Interactive Lab</a>
+        <a href="performance.html">Scientist Analytics</a>
+        <a href="contact.html" style="background-color: #00c6ff; color: #0d1b2a;">Ask a Teacher</a>
+        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+    </nav>
+
+    <!-- KANDUNGAN UTAMA: ASK A TEACHER / CONTACT -->
+    <div class="main-content">
+        <h2 style="color: #1a2a6c; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; display: inline-block;">
+            📞 Ask a Teacher & Science Team
+        </h2>
+        <p style="color: #555; font-size: 18px;">Got questions about Form 2 Science experiments, concepts, or stuck in the ZEP Lab Game? Don't hesitate to ask!</p>
+
+        <div class="susunan-hubungi">
+            
+            <!-- Bahagian Kiri: Maklumat Hubungan -->
+            <div class="kotak-info">
+                <h3>Science Development Team</h3>
+                <p>
+                    🏫 <strong>School:</strong> SMK Science Department (Sarawak)<br>
+                    📧 <strong>Email:</strong> support.science@contoh.edu.my<br>
+                    🕒 <strong>Operation Hours:</strong> Monday - Friday (8:00 AM - 5:00 PM)
+                </p>
+                <p style="margin-top: 20px; font-weight: bold; color: #333;">
+                    Need a quick response? Chat with us directly on WhatsApp!
+                </p>
+                <a href="https://wa.me/60123456789?text=Hello%20Teacher,%20I%20have%20a%20question%20regarding%20the%20Science%20Portal" target="_blank" class="butang-whatsapp">
+                    💬 Chat on WhatsApp
+                </a>
+            </div>
+
+            <!-- Bahagian Kanan: Borang Pertanyaan Firebase -->
+            <div class="kotak-borang">
+                <form id="borangHubungi">
+                    <label for="namaPengirim">Your Name:</label>
+                    <input type="text" id="namaPengirim" placeholder="E.g: Fatimah Az-Zahra" required>
+                    
+                    <label for="emailPengirim">Email (Optional):</label>
+                    <input type="email" id="emailPengirim" placeholder="E.g: fatimah@moe-dl.edu.my">
+                    
+                    <label for="mesejPengirim">Your Question / Message:</label>
+                    <textarea id="mesejPengirim" rows="4" placeholder="Type your science question or feedback here..." required></textarea>
+                    
+                    <button type="submit" class="butang-hantar">✈️ Send Message</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        All rights reserved &copy; <span class="highlight">Virtual Lab 2026</span>
+    </footer>
+
+</body>
+</html>
