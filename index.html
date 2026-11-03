@@ -278,73 +278,67 @@
             }
         });
 
+// ==========================================
+        // SISTEM KAWAN (ADD FRIEND) - VERSI STABIL
         // ==========================================
-        // SISTEM KAWAN (ADD FRIEND) - GLOBAL FUNCTIONS
-        // ==========================================
-        let myPlayerId = "";
-        let namaPemainSaya = "Junior Scientist";
+        let namaPemainSaya = "";
 
+        // Dapatkan nama pengguna secara automatik apabila auth atau input siap
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                myPlayerId = user.uid;
-                namaPemainSaya = user.displayName || user.email.split('@')[0];
-                
-                // Mulakan fungsi mendengar jemputan kawan masuk
-                dengarJemputanKawan(myPlayerId);
-                muatSenaraiKawan(myPlayerId);
+                user.reload().then(() => {
+                    namaPemainSaya = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+                    mulakanSistemKawan(namaPemainSaya);
+                });
             } else {
-                // Jika belum login, guna ID sementara
-                if (!myPlayerId) {
-                    myPlayerId = "Pelawat_" + Math.floor(Math.random() * 1000000);
-                }
+                // Jika pelawat biasa, minta atau guna nama sementara
+                namaPemainSaya = prompt("Sila masukkan nama Saintis (Nickname) kitak:") || "Junior Scientist";
+                mulakanSistemKawan(namaPemainSaya);
             }
         });
 
-        // Fungsi Hantar Jemputan Kawan
+        function mulakanSistemKawan(namaSahih) {
+            // Bersihkan nama untuk jadikan kunci database yang sah
+            var safeKeyNama = namaSahih.trim().replace(/[.#$\[\]\/]/g, "_");
+            
+            // Dengar jemputan masuk berdasarkan nama
+            dengarJemputanKawan(safeKeyNama);
+            muatSenaraiKawan(safeKeyNama);
+        }
+
+        // 1. Fungsi Hantar Jemputan Kawan Terus ke Nama Sasaran
         window.hantarJemputanKawan = function() {
-            var namaDicari = document.getElementById("cariNamaKawan").value.trim();
-            if (namaDicari === "") {
+            var namaPenerima = document.getElementById("cariNamaKawan").value.trim();
+            if (namaPenerima === "") {
                 alert("Sila masukkan nama rakan yang ingin dicari!");
                 return;
             }
 
-            var rujukanSemuaPemain = ref(db, "science_pemain");
-            get(rujukanSemuaPemain).then((snapshot) => {
-                var dataPemain = snapshot.val();
-                var jumpaId = "";
+            if (namaPenerima.toLowerCase() === namaPemainSaya.toLowerCase()) {
+                alert("Kitak tidak boleh menghantar jemputan kepada diri sendiri!");
+                return;
+            }
 
-                if (dataPemain) {
-                    for (var id in dataPemain) {
-                        if (dataPemain[id].nama && dataPemain[id].nama.toLowerCase() === namaDicari.toLowerCase()) {
-                            jumpaId = id;
-                            break;
-                        }
-                    }
-                }
+            var safeKeyPenerima = namaPenerima.replace(/[.#$\[\]\/]/g, "_");
+            var safeKeyPengirim = namaPemainSaya.replace(/[.#$\[\]\/]/g, "_");
 
-                if (jumpaId) {
-                    if (jumpaId === myPlayerId) {
-                        alert("Kitak tidak boleh menghantar jemputan kepada diri sendiri!");
-                        return;
-                    }
-
-                    var rujukanJemputan = ref(db, "kawan_sistem/" + jumpaId + "/jemputan_masuk/" + myPlayerId);
-                    set(rujukanJemputan, {
-                        namaPengirim: namaPemainSaya,
-                        status: "Pending"
-                    }).then(() => {
-                        alert("Jemputan kawan berjaya dihantar kepada " + namaDicari + "!");
-                        document.getElementById("cariNamaKawan").value = "";
-                    });
-                } else {
-                    alert("Maaf, nama rakan '" + namaDicari + "' tidak dijumpai dalam sistem yang sedang aktif.");
-                }
+            // Simpan terus ke nod pangkalan data penerima
+            var rujukanJemputan = ref(db, "kawan_sistem_v2/" + safeKeyPenerima + "/jemputan_masuk/" + safeKeyPengirim);
+            
+            set(rujukanJemputan, {
+                namaPengirim: namaPemainSaya,
+                tarikh: new Date().toLocaleTimeString()
+            }).then(() => {
+                alert("Jemputan kawan berjaya dihantar kepada " + namaPenerima + "!");
+                document.getElementById("cariNamaKawan").value = "";
+            }).catch((err) => {
+                alert("Ralat menghantar jemputan: " + err);
             });
         };
 
-        // Fungsi Dengar Jemputan Masuk
-        function dengarJemputanKawan(myId) {
-            var rujukanJemputanSaya = ref(db, "kawan_sistem/" + myId + "/jemputan_masuk");
+        // 2. Fungsi Dengar Jemputan Masuk Secara Live
+        function dengarJemputanKawan(safeKeyNamaSaya) {
+            var rujukanJemputanSaya = ref(db, "kawan_sistem_v2/" + safeKeyNamaSaya + "/jemputan_masuk");
             
             onValue(rujukanJemputanSaya, function(snapshot) {
                 var dataJemputan = snapshot.val();
@@ -352,11 +346,11 @@
 
                 if (dataJemputan) {
                     var html = "";
-                    for (var pengirimId in dataJemputan) {
-                        var info = dataJemputan[pengirimId];
+                    for (var pengirimKey in dataJemputan) {
+                        var info = dataJemputan[pengirimKey];
                         html += `<div style="background: #f0f8ff; padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #bce0fd;">
                             <span style="font-weight: bold; color: #1a2a6c;">${info.namaPengirim}</span>
-                            <button onclick="terimaKawan('${pengirimId}', '${info.namaPengirim}')" style="background: #28a745; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">Accept</button>
+                            <button onclick="terimaKawan('${safeKeyNamaSaya}', '${pengirimKey}', '${info.namaPengirim}')" style="background: #28a745; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">Accept</button>
                         </div>`;
                     }
                     containerJemputan.innerHTML = html;
@@ -366,44 +360,36 @@
             });
         }
 
-        // Fungsi Terima Kawan
-        window.terimaKawan = function(pengirimId, namaPengirim) {
-            var rujukanKawanSaya = ref(db, "kawan_sistem/" + myPlayerId + "/senarai_kawan/" + pengirimId);
-            var rujukanKawanDia = ref(db, "kawan_sistem/" + pengirimId + "/senarai_kawan/" + myPlayerId);
-            var rujukanHapusJemputan = ref(db, "kawan_sistem/" + myPlayerId + "/jemputan_masuk/" + pengirimId);
+        // 3. Fungsi Terima Kawan
+        window.terimaKawan = function(myKey, pengirimKey, namaPengirim) {
+            var rujukanKawanSaya = ref(db, "kawan_sistem_v2/" + myKey + "/senarai_kawan/" + pengirimKey);
+            var rujukanKawanDia = ref(db, "kawan_sistem_v2/" + pengirimKey + "/senarai_kawan/" + myKey);
+            var rujukanHapusJemputan = ref(db, "kawan_sistem_v2/" + myKey + "/jemputan_masuk/" + pengirimKey);
 
-            set(rujukanKawanSaya, true);
-            set(rujukanKawanDia, true);
+            set(rujukanKawanSaya, { nama: namaPengirim });
+            set(rujukanKawanDia, { nama: namaPemainSaya });
             remove(rujukanHapusJemputan).then(() => {
                 alert("Tahniah! Anda kini berkawan dengan " + namaPengirim);
             });
         };
 
-        // Fungsi Muat Senarai Kawan
-        function muatSenaraiKawan(myId) {
-            var rujukanKawan = ref(db, "kawan_sistem/" + myId + "/senarai_kawan");
+        // 4. Fungsi Muat Senarai Kawan Aktif
+        function muatSenaraiKawan(safeKeyNamaSaya) {
+            var rujukanKawan = ref(db, "kawan_sistem_v2/" + safeKeyNamaSaya + "/senarai_kawan");
             onValue(rujukanKawan, function(snapshot) {
                 var dataKawan = snapshot.val();
                 var containerKawan = document.getElementById("senaraiKawanContainer");
 
                 if (dataKawan) {
                     var html = "";
-                    var idKawanList = Object.keys(dataKawan);
-                    
-                    // Ambil maklumat profil kawan
-                    var rujukanSemuaPemain = ref(db, "science_pemain");
-                    get(rujukanSemuaPemain).then((snapPemain) => {
-                        var infoPemain = snapPemain.val() || {};
-                        
-                        idKawanList.forEach(function(kid) {
-                            var namaKawan = infoPemain[kid] ? infoPemain[kid].nama : "Scientist Friend";
-                            html += `<div style="background: #e8f5e9; padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #a5d6a7;">
-                                <span style="font-weight: bold; color: #2e7d32;">🟢 ${namaKawan}</span>
-                                <span style="font-size: 11px; color: #555;">Connected</span>
-                            </div>`;
-                        });
-                        containerKawan.innerHTML = html;
-                    });
+                    for (var kawanKey in dataKawan) {
+                        var kInfo = dataKawan[kawanKey];
+                        html += `<div style="background: #e8f5e9; padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #a5d6a7;">
+                            <span style="font-weight: bold; color: #2e7d32;">🟢 ${kInfo.nama}</span>
+                            <span style="font-size: 11px; color: #555;">Connected</span>
+                        </div>`;
+                    }
+                    containerKawan.innerHTML = html;
                 } else {
                     containerKawan.innerHTML = "No friends added yet.";
                 }
