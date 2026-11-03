@@ -10,13 +10,12 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f8ff; /* Ice blue for science theme */
+            background-color: #f0f8ff;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* 1. HEADER STYLE (Science Theme: Blue & Cyan) */
         .header-container {
             display: flex;
             align-items: center;
@@ -29,9 +28,8 @@
         .header-container img { transition: transform 0.3s; }
         .header-container img:hover { transform: scale(1.05); }
 
-        /* 2. NAVIGATION MENU STYLE */
         .navbar {
-            background-color: #1a2a6c; /* Deep space blue */
+            background-color: #1a2a6c;
             display: flex;
             justify-content: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
@@ -52,7 +50,6 @@
             color: #fff;
         }
 
-        /* 3. DROPDOWN MENU STYLE (Chapter 1-6) */
         .dropdown { position: relative; display: inline-block; }
         .dropdown-content {
             display: none;
@@ -82,7 +79,6 @@
         }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* 4. MAIN CONTENT STYLE */
         .main-content {
             padding: 50px 20px;
             text-align: center;
@@ -98,7 +94,6 @@
         }
         .main-content h2 { color: #1a2a6c; }
 
-        /* 5. FOOTER STYLE */
         .footer {
             background-color: #0d1b2a;
             color: #ccc;
@@ -121,7 +116,6 @@
             box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
         }
 
-        /* RESPONSIVE MENU FOR MOBILE */
         @media (max-width: 800px) {
             .navbar { flex-wrap: wrap; justify-content: center; }
             .navbar a { padding: 10px 12px; font-size: 13px; }
@@ -130,14 +124,11 @@
 </head>
 <body>
 
-    <!-- HEADER: Logo & Title -->
     <div class="header-container">
-        <!-- You can change this image to a science logo if available -->
         <img src="logosains.png" style="height: 150px; width: auto; margin-right: 20px;" alt="Science Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2083/2083285.png'; this.style.height='100px';">
         <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); font-size: 45px;">SCIENCE PORTAL</h1>
     </div>
 
-    <!-- NAVIGATION MENU (Navbar) -->
     <nav class="navbar">
         <a href="index.html">Main Lab</a>
         
@@ -159,7 +150,6 @@
         <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
     </nav>
 
-    <!-- MAIN CONTENT AREA -->
     <div class="main-content" style="text-align: center; padding: 40px 50px;">
 
         <h1 style="color: #1a2a6c; font-size: 36px; margin-bottom: 10px; margin-top: 0;">
@@ -172,21 +162,18 @@
         <!-- Three Shortcut Boxes -->
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin-bottom: 50px;">
             
-            <!-- Box 1: Notes -->
             <a href="#" style="text-decoration: none; color: #333; width: 220px; background-color: #e3f2fd; padding: 25px; border-radius: 15px; border: 2px solid #90caf9; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
                 <h1 style="font-size: 45px; margin: 0;">🧬</h1>
                 <h3 style="margin: 15px 0 10px 0; color: #1565c0;">Scientific Notes</h3>
                 <p style="font-size: 14px; color: #555; line-height: 1.5;">Quick references from Biodiversity to Acids & Alkalis.</p>
             </a>
 
-            <!-- Box 2: Interactive Zone (ZEP Game) -->
             <a href="interactive_lab.html" style="text-decoration: none; color: #333; width: 220px; background-color: #f3e5f5; padding: 25px; border-radius: 15px; border: 2px solid #ce93d8; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
                 <h1 style="font-size: 45px; margin: 0;">🚀</h1>
                 <h3 style="margin: 15px 0 10px 0; color: #6a1b9a;">ZEP Mission</h3>
                 <p style="font-size: 14px; color: #555; line-height: 1.5;">Control your avatar to collect knowledge molecules in the open world!</p>
             </a>
 
-            <!-- Box 3: Contact/Help -->
             <a href="contact.html" style="text-decoration: none; color: #333; width: 220px; background-color: #e0f2f1; padding: 25px; border-radius: 15px; border: 2px solid #80cbc4; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
                 <h1 style="font-size: 45px; margin: 0;">💡</h1>
                 <h3 style="margin: 15px 0 10px 0; color: #00695c;">Ask a Scientist</h3>
@@ -196,11 +183,39 @@
         </div>
 
         <!-- Science Motivation Quote -->
-        <div style="background-color: #e1f5fe; border-left: 8px solid #03a9f4; padding: 20px; border-radius: 8px; max-width: 650px; margin: 0 auto; text-align: left;">
+        <div style="background-color: #e1f5fe; border-left: 8px solid #03a9f4; padding: 20px; border-radius: 8px; max-width: 650px; margin: 0 auto 40px auto; text-align: left;">
             <p style="margin: 0; font-size: 16px; font-style: italic; color: #01579b; line-height: 1.6;">
                 "Science is a way of thinking much more than it is a body of knowledge." <br> 
                 <span style="font-weight: bold; font-style: normal; margin-top: 10px; display: inline-block;">— Carl Sagan (Astronomer)</span>
             </p>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PANEL KAWAN (ADD FRIEND SYSTEM UI)       -->
+        <!-- ========================================== -->
+        <div style="max-width: 500px; margin: 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; border: 2px solid #bce0fd; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <h3 style="color: #1a2a6c; margin-top: 0; border-bottom: 2px solid #00c6ff; padding-bottom: 8px;">👥 Scientist Friend System</h3>
+            
+            <!-- Bahagian Cari Kawan -->
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 13px; font-weight: bold; color: #333; display: block; margin-bottom: 5px;">Add Friend by Name:</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="cariNamaKawan" placeholder="E.g: Fatimah" style="flex: 1; padding: 10px; border: 1px solid #bce0fd; border-radius: 6px; font-size: 14px;">
+                    <button onclick="hantarJemputanKawan()" style="background-color: #0052D4; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px;">Add +</button>
+                </div>
+            </div>
+
+            <!-- Senarai Jemputan Masuk (Pending Requests) -->
+            <div style="margin-bottom: 15px;">
+                <h4 style="color: #1a2a6c; font-size: 14px; margin-bottom: 5px;">📥 Friend Requests:</h4>
+                <div id="senaraiJemputan" style="font-size: 13px; color: #555; background: white; padding: 10px; border-radius: 6px; border: 1px solid #eee; min-height: 35px;">No pending requests</div>
+            </div>
+
+            <!-- Senarai Kawan Aktif -->
+            <div>
+                <h4 style="color: #1a2a6c; font-size: 14px; margin-bottom: 5px;">🌟 My Friends List:</h4>
+                <div id="senaraiKawanContainer" style="font-size: 13px; color: #555; background: white; padding: 10px; border-radius: 6px; border: 1px solid #eee; min-height: 35px;">No friends added yet.</div>
+            </div>
         </div>
 
     </div>
@@ -216,10 +231,10 @@
         <span style="font-size: 12px; color: #777;">Core System: gramalab</span>
     </footer>
 
-    <!-- FIREBASE VISITOR COUNTER -->
+    <!-- FIREBASE SYSTEM & ADD FRIEND LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-        import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+        import { getDatabase, ref, runTransaction, onValue, get, set, remove, push } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -238,23 +253,162 @@
         
         const rujukanPelawat = ref(db, "statistik_sains/jumlah_pelawat");
 
+        // 1. Pelawat Live Counter
         onValue(rujukanPelawat, (snapshot) => {
             const jumlahTerkini = snapshot.val();
             if (jumlahTerkini) document.getElementById("angkaPelawat").innerText = jumlahTerkini.toLocaleString();
             else document.getElementById("angkaPelawat").innerText = "0";
         });
 
+        // 2. Logik Pelawat Unik
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                if (!sessionStorage.getItem("sudahDikiraSains")) {
-                    runTransaction(rujukanPelawat, (jumlahSemasa) => {
-                        return (jumlahSemasa || 0) + 1;
-                    }).then(() => {
-                        sessionStorage.setItem("sudahDikiraSains", "benar");
-                    });
+                const rujukanSemak = ref(db, "statistik_sains/senarai_pelawat/" + user.uid);
+                get(rujukanSemak).then((snapshot) => {
+                    if (!snapshot.exists()) {
+                        runTransaction(rujukanPelawat, (jumlahSemasa) => {
+                            return (jumlahSemasa || 0) + 1;
+                        }).then(() => {
+                            set(rujukanSemak, true);
+                        }).catch((error) => {
+                            console.error("Ralat menambah pelawat:", error);
+                        });
+                    }
+                });
+            }
+        });
+
+        // ==========================================
+        // SISTEM KAWAN (ADD FRIEND) - GLOBAL FUNCTIONS
+        // ==========================================
+        let myPlayerId = "";
+        let namaPemainSaya = "Junior Scientist";
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                myPlayerId = user.uid;
+                namaPemainSaya = user.displayName || user.email.split('@')[0];
+                
+                // Mulakan fungsi mendengar jemputan kawan masuk
+                dengarJemputanKawan(myPlayerId);
+                muatSenaraiKawan(myPlayerId);
+            } else {
+                // Jika belum login, guna ID sementara
+                if (!myPlayerId) {
+                    myPlayerId = "Pelawat_" + Math.floor(Math.random() * 1000000);
                 }
             }
         });
+
+        // Fungsi Hantar Jemputan Kawan
+        window.hantarJemputanKawan = function() {
+            var namaDicari = document.getElementById("cariNamaKawan").value.trim();
+            if (namaDicari === "") {
+                alert("Sila masukkan nama rakan yang ingin dicari!");
+                return;
+            }
+
+            var rujukanSemuaPemain = ref(db, "science_pemain");
+            get(rujukanSemuaPemain).then((snapshot) => {
+                var dataPemain = snapshot.val();
+                var jumpaId = "";
+
+                if (dataPemain) {
+                    for (var id in dataPemain) {
+                        if (dataPemain[id].nama && dataPemain[id].nama.toLowerCase() === namaDicari.toLowerCase()) {
+                            jumpaId = id;
+                            break;
+                        }
+                    }
+                }
+
+                if (jumpaId) {
+                    if (jumpaId === myPlayerId) {
+                        alert("Kitak tidak boleh menghantar jemputan kepada diri sendiri!");
+                        return;
+                    }
+
+                    var rujukanJemputan = ref(db, "kawan_sistem/" + jumpaId + "/jemputan_masuk/" + myPlayerId);
+                    set(rujukanJemputan, {
+                        namaPengirim: namaPemainSaya,
+                        status: "Pending"
+                    }).then(() => {
+                        alert("Jemputan kawan berjaya dihantar kepada " + namaDicari + "!");
+                        document.getElementById("cariNamaKawan").value = "";
+                    });
+                } else {
+                    alert("Maaf, nama rakan '" + namaDicari + "' tidak dijumpai dalam sistem yang sedang aktif.");
+                }
+            });
+        };
+
+        // Fungsi Dengar Jemputan Masuk
+        function dengarJemputanKawan(myId) {
+            var rujukanJemputanSaya = ref(db, "kawan_sistem/" + myId + "/jemputan_masuk");
+            
+            onValue(rujukanJemputanSaya, function(snapshot) {
+                var dataJemputan = snapshot.val();
+                var containerJemputan = document.getElementById("senaraiJemputan");
+
+                if (dataJemputan) {
+                    var html = "";
+                    for (var pengirimId in dataJemputan) {
+                        var info = dataJemputan[pengirimId];
+                        html += `<div style="background: #f0f8ff; padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #bce0fd;">
+                            <span style="font-weight: bold; color: #1a2a6c;">${info.namaPengirim}</span>
+                            <button onclick="terimaKawan('${pengirimId}', '${info.namaPengirim}')" style="background: #28a745; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">Accept</button>
+                        </div>`;
+                    }
+                    containerJemputan.innerHTML = html;
+                } else {
+                    containerJemputan.innerHTML = "No pending requests";
+                }
+            });
+        }
+
+        // Fungsi Terima Kawan
+        window.terimaKawan = function(pengirimId, namaPengirim) {
+            var rujukanKawanSaya = ref(db, "kawan_sistem/" + myPlayerId + "/senarai_kawan/" + pengirimId);
+            var rujukanKawanDia = ref(db, "kawan_sistem/" + pengirimId + "/senarai_kawan/" + myPlayerId);
+            var rujukanHapusJemputan = ref(db, "kawan_sistem/" + myPlayerId + "/jemputan_masuk/" + pengirimId);
+
+            set(rujukanKawanSaya, true);
+            set(rujukanKawanDia, true);
+            remove(rujukanHapusJemputan).then(() => {
+                alert("Tahniah! Anda kini berkawan dengan " + namaPengirim);
+            });
+        };
+
+        // Fungsi Muat Senarai Kawan
+        function muatSenaraiKawan(myId) {
+            var rujukanKawan = ref(db, "kawan_sistem/" + myId + "/senarai_kawan");
+            onValue(rujukanKawan, function(snapshot) {
+                var dataKawan = snapshot.val();
+                var containerKawan = document.getElementById("senaraiKawanContainer");
+
+                if (dataKawan) {
+                    var html = "";
+                    var idKawanList = Object.keys(dataKawan);
+                    
+                    // Ambil maklumat profil kawan
+                    var rujukanSemuaPemain = ref(db, "science_pemain");
+                    get(rujukanSemuaPemain).then((snapPemain) => {
+                        var infoPemain = snapPemain.val() || {};
+                        
+                        idKawanList.forEach(function(kid) {
+                            var namaKawan = infoPemain[kid] ? infoPemain[kid].nama : "Scientist Friend";
+                            html += `<div style="background: #e8f5e9; padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #a5d6a7;">
+                                <span style="font-weight: bold; color: #2e7d32;">🟢 ${namaKawan}</span>
+                                <span style="font-size: 11px; color: #555;">Connected</span>
+                            </div>`;
+                        });
+                        containerKawan.innerHTML = html;
+                    });
+                } else {
+                    containerKawan.innerHTML = "No friends added yet.";
+                }
+            });
+        }
     </script>
 
 </body>

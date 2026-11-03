@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Science ZEP Challenge - Science Portal</title>
 
-    <!-- 1. PUSAT KAWALAN FIREBASE (Termasuk push untuk Komen) -->
+    <!-- 1. PUSAT KAWALAN FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, update, onDisconnect, remove, push } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
@@ -32,7 +32,7 @@
         window.update = update;
         window.onDisconnect = onDisconnect;
         window.remove = remove;
-        window.push = push; // Kongsi fungsi push untuk komen
+        window.push = push; 
         window.firebaseSedia = true;
 
         window.namaPemainBerdaftar = ""; 
@@ -72,9 +72,7 @@
         .b1 { background-color: #0052D4; } .b2 { background-color: #11998e; } .b3 { background-color: #f2994a; }
         .b4 { background-color: #eb5757; } .b5 { background-color: #8e44ad; } .b6 { background-color: #2980b9; }
 
-        /* SISTEM KAMERA & DUNIA */
         #zonPeta { display: none; margin-top: 20px; }
-        
         .bar-kawalan { display: flex; justify-content: space-between; max-width: 800px; margin: 0 auto 10px auto; }
         .butang-aksi { padding: 8px 16px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s; color: white; }
         .btn-keluar { background-color: #dc3545; } .btn-keluar:hover { background-color: #c82333; transform: scale(1.05); }
@@ -82,18 +80,22 @@
 
         .bar-nyawa { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto 15px auto; padding: 10px 20px; background-color: #f8f9fa; border-radius: 10px; border: 2px solid #ddd; }
         .kamera-skrin { position: relative; width: 100%; max-width: 800px; height: 500px; background-color: #e3f2fd; border: 15px solid #0052D4; border-radius: 15px; margin: 0 auto; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.3); }
-        .dunia-peta { position: absolute; width: 2000px; height: 1500px; background-color: #f4f9ff; background-image: radial-gradient(#bce0fd 15%, transparent 16%), radial-gradient(#bce0fd 15%, transparent 16%); background-size: 60px 60px; background-position: 0 0, 30px 30px; border: 10px dashed #0052D4; box-sizing: border-box; }
-        .avatar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 100; }
+        .dunia-peta { position: absolute; width: 2000px; height: 1500px; background-color: #eaf4fc; background-image: radial-gradient(#bce0fd 15%, transparent 16%), radial-gradient(#bce0fd 15%, transparent 16%); background-size: 60px 60px; background-position: 0 0, 30px 30px; border: 10px dashed #0052D4; box-sizing: border-box; }
+        
+        /* HIASAN LANDSKAP: POKOK & SUNGAI */
+        .elemen-sungai { position: absolute; background: linear-gradient(90deg, #74b9ff, #0984e3, #74b9ff); height: 120px; width: 2000px; top: 700px; left: 0; opacity: 0.75; z-index: 1; border-top: 4px dashed #fff; border-bottom: 4px dashed #fff; }
+        .elemen-pokok { position: absolute; font-size: 45px; z-index: 2; user-select: none; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2)); }
+
+        .avatar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 100; transition: transform 0.2s ease; }
         .avatar .nama { background: rgba(255,255,255,0.95); padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 2px solid #00c6ff; margin-bottom: 5px; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap; }
         #spritePemain { display: inline-block; font-size: 60px; width: 60px; height: 60px; line-height: 60px; filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.2)); }
 
-        .bola-misi { position: absolute; text-align: center; transform: translate(-50%, -50%); animation: lompatKecil 2s infinite alternate; }
+        .bola-misi { position: absolute; text-align: center; transform: translate(-50%, -50%); animation: lompatKecil 2s infinite alternate; z-index: 10; }
         .bola-ikon { font-size: 45px; display: block; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3)); }
         .bola-misi.selesai .bola-ikon { filter: grayscale(100%); opacity: 0.4; }
         .bola-misi.selesai { animation: none; }
         @keyframes lompatKecil { from { transform: translateY(0px); } to { transform: translateY(-8px); } }
 
-        /* KOTAK POPUP */
         .modal-latar { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
         .modal-kandungan { background-color: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .teks-soalan { font-size: 20px; color: #1a2a6c; font-weight: bold; margin-bottom: 25px; }
@@ -106,37 +108,11 @@
         .papan-markah { font-size: 24px; color: #2c3e50; font-weight: bold; display: none; padding: 30px; background-color: #f8f9fa; border-radius: 15px; border: 3px solid #00c6ff; max-width: 500px; margin: 0 auto; }
         @media (max-width: 900px) { .main-content { margin: 30px 20px; } }
 
-        /* KOD RESPONSIF & JOYSTICK TELEFON */
-        #zonJoystick {
-            display: none; position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%);
-            width: 35vw; height: 35vw; max-width: 140px; max-height: 140px;
-            background-color: rgba(0, 0, 0, 0.2); border-radius: 50%; z-index: 1000;
-            touch-action: none; border: 2px solid rgba(255,255,255,0.5); user-select: none;
-        }
-        #joystickKnob {
-            position: absolute; top: 50%; left: 50%; width: 14vw; height: 14vw;
-            max-width: 55px; max-height: 55px; background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            pointer-events: none; user-select: none;
-        }
-        #butangAksiBulat {
-            display: none; position: absolute; bottom: 5%; right: 5%;
-            width: 22vw; height: 22vw; max-width: 90px; max-height: 90px;
-            background-color: rgba(0, 82, 212, 0.85); border-radius: 50%; z-index: 1000;
-            border: 4px solid rgba(255,255,255,0.7); color: white; font-size: 4vw;
-            font-weight: bold; justify-content: center; align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); user-select: none; touch-action: manipulation; cursor: pointer;
-        }
+        #zonJoystick { display: none; position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); width: 35vw; height: 35vw; max-width: 140px; max-height: 140px; background-color: rgba(0, 0, 0, 0.2); border-radius: 50%; z-index: 1000; touch-action: none; border: 2px solid rgba(255,255,255,0.5); user-select: none; }
+        #joystickKnob { position: absolute; top: 50%; left: 50%; width: 14vw; height: 14vw; max-width: 55px; max-height: 55px; background-color: rgba(255, 255, 255, 0.9); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; user-select: none; }
+        #butangAksiBulat { display: none; position: absolute; bottom: 5%; right: 5%; width: 22vw; height: 22vw; max-width: 90px; max-height: 90px; background-color: rgba(0, 82, 212, 0.85); border-radius: 50%; z-index: 1000; border: 4px solid rgba(255,255,255,0.7); color: white; font-size: 4vw; font-weight: bold; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); user-select: none; touch-action: manipulation; cursor: pointer; }
         #butangAksiBulat:active { transform: scale(0.9); background-color: rgba(0, 60, 160, 1); }
-
-        @media (max-width: 800px) {
-            .main-content { margin: 10px; padding: 15px; }
-            .kamera-skrin { height: 50vh; border-width: 5px; border-radius: 10px; }
-            .navbar { flex-wrap: wrap; justify-content: center; }
-            .navbar a { padding: 10px 12px; font-size: 13px; }
-            #zonJoystick { display: block !important; }
-            #butangAksiBulat { display: flex !important; }
-        }
+        @media (max-width: 800px) { .main-content { margin: 10px; padding: 15px; } .kamera-skrin { height: 50vh; border-width: 5px; border-radius: 10px; } .navbar { flex-wrap: wrap; justify-content: center; } .navbar a { padding: 10px 12px; font-size: 13px; } #zonJoystick { display: block !important; } #butangAksiBulat { display: flex !important; } }
     </style>
 </head>
 <body>
@@ -166,11 +142,9 @@
     </nav>
 
     <div class="main-content">
-        
         <h2 style="color: #1a2a6c; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; display: inline-block;">
             🔬 Form 2 Science Open World ZEP
         </h2>
-
         <p id="tajukKuiz" style="color: #555; margin-bottom: 30px;">Collect all science beacons under 1 minute to achieve 👑 LEGEND rank!</p>
 
         <div id="menuKuiz" style="display: block; margin-bottom: 40px;">
@@ -195,32 +169,33 @@
             </div>
             
             <div class="kamera-skrin" id="kameraSkrin">
-                <div class="dunia-peta" id="duniaPeta"></div>
-                
+                <div class="dunia-peta" id="duniaPeta">
+                    <!-- Sungai & Hiasan Pokok -->
+                    <div class="elemen-sungai"></div>
+                    <div class="elemen-pokok" style="top: 200px; left: 300px;">🌲</div>
+                    <div class="elemen-pokok" style="top: 250px; left: 1500px;">🌳</div>
+                    <div class="elemen-pokok" style="top: 550px; left: 800px;">🌲</div>
+                    <div class="elemen-pokok" style="top: 900px; left: 400px;">🌳</div>
+                    <div class="elemen-pokok" style="top: 1000px; left: 1600px;">🌲</div>
+                    <div class="elemen-pokok" style="top: 400px; left: 1200px;">🌳</div>
+                </div>
                 <div class="avatar" id="pemain">
                     <div class="nama" id="namaDiAtasKepala">Scientist</div>
                     <span id="spritePemain">👨‍🔬</span>
                 </div>
-
-                <div id="zonJoystick">
-                    <div id="joystickKnob"></div>
-                </div>
-                
+                <div id="zonJoystick"><div id="joystickKnob"></div></div>
                 <div id="butangAksiBulat" onpointerdown="tekanButangAksi()">ACTION</div>
             </div>
         </div>
 
-        <!-- KOTAK PAPAN KOMEN & GUESTBOOK LIVE -->
-        <div style="max-width: 800px; margin: 40px auto 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left; border: 2px solid #bce0fd;">
-            <h3 style="color: #1a2a6c; margin-top: 0; border-bottom: 2px solid #00c6ff; padding-bottom: 8px;">💬 Scientist Live Guestbook & Comments</h3>
-            <p style="color: #555; font-size: 14px;">Leave your thoughts, feedback, or words of encouragement for fellow scientists!</p>
-
+        <!-- KOTAK PAPAN KOMEN LIVE -->
+        <div id="kotakKomenLive" style="display: none; max-width: 800px; margin: 40px auto 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left; border: 2px solid #bce0fd;">
+            <h3 style="color: #1a2a6c; margin-top: 0; border-bottom: 2px solid #00c6ff; padding-bottom: 8px;">💬 Scientist Live Guestbook</h3>
             <div style="margin-bottom: 20px;">
                 <input type="text" id="namaKomen" placeholder="Your Name / Nickname" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #bce0fd; border-radius: 6px; box-sizing: border-box; font-size: 14px;">
-                <textarea id="teksKomen" rows="3" placeholder="Write your comment or question here..." style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #bce0fd; border-radius: 6px; box-sizing: border-box; font-family: inherit; font-size: 14px;"></textarea>
-                <button onclick="hantarKomen()" style="background-color: #0052D4; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px; box-shadow: 0 2px 5px rgba(0,82,212,0.2);">Post Comment 🚀</button>
+                <textarea id="teksKomen" rows="3" placeholder="Write your comment here..." style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #bce0fd; border-radius: 6px; box-sizing: border-box; font-family: inherit; font-size: 14px;"></textarea>
+                <button onclick="hantarKomen()" style="background-color: #0052D4; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px;">Post Comment 🚀</button>
             </div>
-
             <div id="senaraiKomenContainer" style="max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
                 <p style="color: #888; text-align: center; font-size: 14px;">Loading comments...</p>
             </div>
@@ -228,11 +203,10 @@
 
         <audio id="laguGame" src="videoplayback.mp4.mp3" loop></audio>
 
-        <!-- POPUP ISI NAMA -->
+        <!-- POPUP NAMA -->
         <div class="modal-latar" id="modalNama">
             <div class="modal-kandungan">
                 <h2 style="color: #0052D4; margin-top: 0;">Enter Scientist Name</h2>
-                <p style="color: #555;">Please enter your name for the ZEP avatar badge.</p>
                 <input type="text" id="inputNamaPelajar" placeholder="E.g: Fatimah" style="width: 90%; padding: 12px; margin-bottom: 20px; border: 2px solid #ccc; border-radius: 8px; font-size: 18px; text-align: center; font-weight: bold;">
                 <button onclick="sahkanNamaDanMula()" style="background-color: #0052D4; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%;">Enter Lab 🚀</button>
                 <button onclick="batalIsiNama()" style="background-color: #dc3545; color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; margin-top: 10px;">Cancel</button>
@@ -257,17 +231,11 @@
             <div class="modal-kandungan" style="border: 4px solid #00c6ff;">
                 <h1 style="font-size: 60px; margin: 0;" id="ikonRanking">👑</h1>
                 <h2 style="color: #28a745; font-size: 28px; margin-top: 10px;">Congratulations! Lab Mission Cleared!</h2>
-                
-                <a href="index.html" style="background: linear-gradient(135deg, #0052D4, #00c6ff); color: white; padding: 12px 30px; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 18px; display: inline-block; margin-top: 15px; box-shadow: 0 4px 6px rgba(0,82,212,0.3); transition: 0.3s;">
-                    🗺️ Back to Main Lab
-                </a>
-
-                <p style="font-size: 18px; margin-top: 20px;">Rank Awarded: <strong id="teksRanking" style="color:#e67e22; font-size: 22px;">Rank: LEGEND</strong></p>
+                <p style="font-size: 18px; margin-top: 10px;">Rank Awarded: <strong id="teksRanking" style="color:#e67e22; font-size: 22px;">Rank: LEGEND</strong></p>
                 <p style="font-size: 16px; color: #555;">Record Time: <span id="masaAkhirMenang" style="font-weight: bold;">00:00</span></p>
-                
                 <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button onclick="terusMerayau()" style="flex: 1; background-color: #0052D4; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Explore More 🚶‍♂️</button>
-                    <button onclick="keluarKeMenu()" style="flex: 1; background-color: #333; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Choose Other Chapter 🔄</button>
+                    <button onclick="terusMerayau()" style="flex: 1; background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;">Explore Free World 🌳</button>
+                    <button onclick="keluarKeMenu()" style="flex: 1; background-color: #333; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;">Choose Chapter 🔄</button>
                 </div>
             </div>
         </div>
@@ -279,10 +247,9 @@
             <p style="font-size: 18px; color: #555;">You have run out of lives.</p>
             <button onclick="keluarKeMenu()" style="background-color: #333; color: white; padding: 12px 25px; border: none; border-radius: 30px; cursor: pointer; font-size: 16px; margin-top: 15px;">Try Again</button>
         </div>
-
     </div>
 
-    <!-- SKRIP JAVASCRIPT: 60 SOALAN SAINS KSSM DLP + KOMEN LIVE -->
+    <!-- SKRIP UTAMA GAME -->
     <script>
         var soalanBab1 = [
             { soalan: "What is the definition of Biodiversity?", pilihan: ["The variety of living organisms on Earth", "The study of rocks and minerals", "The measurement of weather conditions", "The recycling of plastic waste"], jawapanBetul: 0 },
@@ -372,12 +339,21 @@
         var kelajuanSmooth = 7; 
         var sedangJalan = false;
         var menghadapKanan = true;
+        var sedangLompatKita = false; 
         var frameSemasa = 0;
         var babDipilihSementera = 0; 
         var kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
         var lokasiBola = [];
         var pemasaDetik;
         var saatBerlalu = 0;
+
+        // Pembolehubah Musuh & Power-up Sanitizer
+        var musuhX = 500, musuhY = 500;
+        var arahMusuhX = 2;
+        var statusHostPemain = false; 
+        var adaPowerUpAktif = false;
+        var powerUpX = 1200, powerUpY = 800;
+        var adaKuasaSuper = false;
 
         function toggleMuzik() {
             var lagu = document.getElementById("laguGame");
@@ -400,6 +376,8 @@
             if (window.namaPemainBerdaftar && window.namaPemainBerdaftar !== "") {
                 document.getElementById("inputNamaPelajar").value = window.namaPemainBerdaftar;
                 document.getElementById("namaDiAtasKepala").innerHTML = window.namaPemainBerdaftar;
+                
+                mulakanMultiplayer(window.namaPemainBerdaftar);
                 mulaGame(babDipilihSementera);
             } else {
                 document.getElementById("modalNama").style.display = "flex";
@@ -416,6 +394,8 @@
             if (namaDitaip.trim() === "") namaDitaip = "Junior Scientist";
             document.getElementById("namaDiAtasKepala").innerHTML = namaDitaip;
             document.getElementById("modalNama").style.display = "none";
+            
+            mulakanMultiplayer(namaDitaip);
             mulaGame(babDipilihSementera);
         }
 
@@ -435,12 +415,14 @@
             pX = 1000; pY = 750;
             menghadapKanan = true;
             kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+            adaKuasaSuper = false;
 
             document.getElementById("jumlahMisiPaparan").innerHTML = jumlahSoalan;
             kemaskiniUI();
 
             document.getElementById("menuKuiz").style.display = "none";
             document.getElementById("zonPeta").style.display = "block";
+            document.getElementById("kotakKomenLive").style.display = "block"; 
             document.getElementById("papanMarkahKalah").style.display = "none";
             
             lokasiBola = [];
@@ -477,41 +459,39 @@
             document.getElementById("paparanMasa").innerHTML = minit + ":" + saat;
         }
 
-document.addEventListener('keydown', function(event) {
-    var kekunci = event.key.toLowerCase();
-    
-    // TAMBAH SYARAT INI: Jika fokus pada input/textarea, abaikan pergerakan game
-    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-        return; 
-    }
+        document.addEventListener('keydown', function(event) {
+            var kekunci = event.key.toLowerCase();
+            
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                return; 
+            }
 
-    if (document.getElementById("modalSoalan").style.display === "flex" || document.getElementById("modalMenang").style.display === "flex") return;
-        
-    if (document.getElementById("modalNama").style.display === "flex") {
-        if (kekunci === 'enter') sahkanNamaDanMula(); 
-        return;
-    }
-    if(['arrowup', 'w'].includes(kekunci)) { kekunciDitekan.atas = true; event.preventDefault(); }
-    if(['arrowdown', 's'].includes(kekunci)) { kekunciDitekan.bawah = true; event.preventDefault(); }
-    if(['arrowleft', 'a'].includes(kekunci)) { kekunciDitekan.kiri = true; event.preventDefault(); menghadapKanan = false; }
-    if(['arrowright', 'd'].includes(kekunci)) { kekunciDitekan.kanan = true; event.preventDefault(); menghadapKanan = true; }
-});
+            if (document.getElementById("modalSoalan").style.display === "flex" || document.getElementById("modalMenang").style.display === "flex") return;
+                
+            if (document.getElementById("modalNama").style.display === "flex") {
+                if (kekunci === 'enter') sahkanNamaDanMula(); 
+                return;
+            }
 
-document.addEventListener('keyup', function(event) {
-    var kekunci = event.key.toLowerCase();
+            if(event.key === ' ') { 
+                event.preventDefault();
+                tekanButangAksi(); 
+                return;
+            }
 
-    // TAMBAH SYARAT INI JUGA:
-    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-        return; 
-    }
+            if(['arrowup', 'w'].includes(kekunci)) { kekunciDitekan.atas = true; event.preventDefault(); }
+            if(['arrowdown', 's'].includes(kekunci)) { kekunciDitekan.bawah = true; event.preventDefault(); }
+            if(['arrowleft', 'a'].includes(kekunci)) { kekunciDitekan.kiri = true; event.preventDefault(); menghadapKanan = false; }
+            if(['arrowright', 'd'].includes(kekunci)) { kekunciDitekan.kanan = true; event.preventDefault(); menghadapKanan = true; }
+        });
 
-    if(['arrowup', 'w'].includes(kekunci)) kekunciDitekan.atas = false;
-    if(['arrowdown', 's'].includes(kekunci)) kekunciDitekan.bawah = false;
-    if(['arrowleft', 'a'].includes(kekunci)) kekunciDitekan.kiri = false;
-    if(['arrowright', 'd'].includes(kekunci)) kekunciDitekan.kanan = false;
-});
         document.addEventListener('keyup', function(event) {
             var kekunci = event.key.toLowerCase();
+
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                return; 
+            }
+
             if(['arrowup', 'w'].includes(kekunci)) kekunciDitekan.atas = false;
             if(['arrowdown', 's'].includes(kekunci)) kekunciDitekan.bawah = false;
             if(['arrowleft', 'a'].includes(kekunci)) kekunciDitekan.kiri = false;
@@ -599,6 +579,8 @@ document.addEventListener('keyup', function(event) {
                 
                 kemaskiniKamera();
                 semakPelanggaran();
+                semakSentuhanMusuh(); 
+                semakAmbilPowerUp();
             }
             requestAnimationFrame(gameLoop); 
         }
@@ -614,18 +596,26 @@ document.addEventListener('keyup', function(event) {
         }
 
         setInterval(function() {
+            var avatarKita = document.getElementById("pemain");
             var sprite = document.getElementById("spritePemain");
-            if (menghadapKanan) sprite.style.transform = "scaleX(-1)"; 
-            else sprite.style.transform = "scaleX(1)";  
-
-            if (sedangJalan) {
+            var arahTransform = menghadapKanan ? "scaleX(-1)" : "scaleX(1)";
+            
+            if (adaKuasaSuper) {
+                sprite.innerHTML = "🦸‍♂️";
+            } else if (sedangLompatKita) {
+                avatarKita.style.transform = "translate(-50%, -50%) translateY(-35px)";
+                sprite.style.transform = arahTransform;
+                return;
+            } else if (sedangJalan) {
                 frameSemasa = (frameSemasa + 1) % 2; 
-                if (frameSemasa === 0) sprite.innerHTML = "🚶‍♂️"; 
-                else sprite.innerHTML = "🏃‍♂️"; 
+                if (frameSemasa === 0) { sprite.innerHTML = "🚶‍♂️"; } 
+                else { sprite.innerHTML = "🏃‍♂️"; } 
             } else {
                 sprite.innerHTML = "🧍‍♂️"; 
                 frameSemasa = 0;
             }
+            avatarKita.style.transform = "translate(-50%, -50%) translateY(0px)";
+            sprite.style.transform = arahTransform;
         }, 150); 
 
         var indeksBolaBerdekatan = -1;
@@ -643,6 +633,54 @@ document.addEventListener('keyup', function(event) {
             }
         }
 
+        var cooldownKenaLanggar = false;
+        function semakSentuhanMusuh() {
+            var jarakX = Math.abs(pX - musuhX);
+            var jarakY = Math.abs(pY - musuhY);
+            if (jarakX < 50 && jarakY < 50 && !cooldownKenaLanggar) {
+                if (adaKuasaSuper) {
+                    // Apabila berkuasa super, hantar posisi rawak baru virus ke pangkalan data Firebase
+                    if (window.firebaseSedia) {
+                        var rujukanDataMusuh = window.ref(window.db, "zep_musuh_pusat/data_posisi");
+                        var randMusuhX = Math.floor(Math.random() * 1500) + 200;
+                        var randMusuhY = Math.floor(Math.random() * 1000) + 200;
+                        window.set(rujukanDataMusuh, { x: randMusuhX, y: randMusuhY });
+                    }
+                    cooldownKenaLanggar = true;
+                    setTimeout(function() { cooldownKenaLanggar = false; }, 1500);
+                } else {
+                    jumlahNyawa--;
+                    cooldownKenaLanggar = true;
+                    kemaskiniUI();
+                    
+                    if (jumlahNyawa <= 0) {
+                        tamatKalah();
+                    } else {
+                        setTimeout(function() { cooldownKenaLanggar = false; }, 2000); 
+                    }
+                }
+            }
+        }
+
+        function semakAmbilPowerUp() {
+            if (!adaPowerUpAktif) return;
+            var jarakX = Math.abs(pX - powerUpX);
+            var jarakY = Math.abs(pY - powerUpY);
+            if (jarakX < 50 && jarakY < 50) {
+                adaPowerUpAktif = false;
+                adaKuasaSuper = true;
+                
+                if (window.firebaseSedia) {
+                    var rujukanItem = window.ref(window.db, "zep_powerup/sanitizer");
+                    window.set(rujukanItem, { aktif: false, x: powerUpX, y: powerUpY });
+                }
+
+                setTimeout(function() {
+                    adaKuasaSuper = false;
+                }, 10000);
+            }
+        }
+
         function tekanButangAksi() {
             if (document.getElementById("modalSoalan").style.display === "flex") return; 
 
@@ -651,19 +689,12 @@ document.addEventListener('keyup', function(event) {
                 sedangJalan = false;
                 bukaSoalan(indeksBolaBerdekatan);
             } else {
-                var sprite = document.getElementById("spritePemain");
-                var arah = menghadapKanan ? "scaleX(-1) " : "scaleX(1) ";
-                sprite.style.transform = arah + "translateY(-30px)";
-                setTimeout(function() { sprite.style.transform = arah + "translateY(0px)"; }, 200);
+                sedangLompatKita = true;
+                setTimeout(function() {
+                    sedangLompatKita = false;
+                }, 350);
             }
         }
-
-        document.addEventListener('keydown', function(event) {
-            if(event.key === ' ') { 
-                event.preventDefault();
-                tekanButangAksi(); 
-            }
-        });
 
         function janaBolaMisi() {
             var peta = document.getElementById("duniaPeta");
@@ -732,10 +763,9 @@ document.addEventListener('keyup', function(event) {
 
         function tamatMenang() {
             clearInterval(pemasaDetik); 
-            var ranking = ""; var ikon = "";
-            if (saatBerlalu <= 60) { ranking = "LEGEND"; ikon = "👑"; }        
-            else if (saatBerlalu <= 120) { ranking = "PRO"; ikon = "🌟"; }    
-            else { ranking = "ROOKIE"; ikon = "👍"; }                          
+            var ranking = "LEGEND"; var ikon = "👑";
+            if (saatBerlalu > 60 && saatBerlalu <= 120) { ranking = "PRO"; ikon = "🌟"; }    
+            else if (saatBerlalu > 120) { ranking = "ROOKIE"; ikon = "👍"; }                          
 
             var namaAsal = document.getElementById("inputNamaPelajar").value;
             if (namaAsal.trim() === "") namaAsal = "Junior Scientist";
@@ -746,7 +776,7 @@ document.addEventListener('keyup', function(event) {
             document.getElementById("masaAkhirMenang").innerHTML = document.getElementById("paparanMasa").innerHTML;
             document.getElementById("modalMenang").style.display = "flex";
 
-            if (window.firebaseSedia) {
+            if (window.firebaseSedia && myPlayerId !== "") {
                 var rujukanMarkah = window.ref(window.db, "markah_science_zep/" + myPlayerId);
                 window.set(rujukanMarkah, {
                     nama: namaAsal,
@@ -767,6 +797,8 @@ document.addEventListener('keyup', function(event) {
 
         function terusMerayau() {
             document.getElementById("modalMenang").style.display = "none";
+            document.querySelectorAll('.bola-misi').forEach(b => b.remove());
+            lokasiBola = [];
         }
 
         function keluarKeMenu() {
@@ -775,14 +807,24 @@ document.addEventListener('keyup', function(event) {
             lagu.pause();        
             lagu.currentTime = 0;
             
+            if (window.firebaseSedia && myPlayerId !== "") {
+                var rujukanPemain = window.ref(window.db, "science_pemain/" + myPlayerId);
+                window.remove(rujukanPemain);
+                if (loopMultiplayerSistem) clearInterval(loopMultiplayerSistem);
+                myPlayerId = ""; 
+            }
+            
             document.getElementById("inputNamaPelajar").value = "";
             document.getElementById("modalMenang").style.display = "none";
             document.getElementById("zonPeta").style.display = "none";
+            document.getElementById("kotakKomenLive").style.display = "none"; 
             document.getElementById("papanMarkahKalah").style.display = "none";
             document.getElementById("menuKuiz").style.display = "block";
         }
 
-        // FUNGSI KOMEN LIVE & GUESTBOOK
+        // ==========================================
+        // KOMEN LIVE & GUESTBOOK
+        // ==========================================
         function hantarKomen() {
             var nama = document.getElementById("namaKomen").value;
             var mesej = document.getElementById("teksKomen").value;
@@ -802,110 +844,226 @@ document.addEventListener('keyup', function(event) {
                 tarikh: masaKini
             }).then(() => {
                 document.getElementById("teksKomen").value = "";
-                alert("Comment posted successfully!");
             }).catch((error) => {
                 alert("Error posting comment: " + error);
             });
         }
 
-        var rujukanBacaKomen = window.ref(window.db, "zep_komen_sains");
-        window.onValue(rujukanBacaKomen, function(snapshot) {
-            var dataKomen = snapshot.val();
-            var htmlKomen = "";
-
-            if (dataKomen) {
-                var keys = Object.keys(dataKomen).reverse();
-                keys.forEach(function(key) {
-                    var k = dataKomen[key];
-                    htmlKomen += `
-                        <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 4px solid #0052D4; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                            <div style="display: flex; justify-content: space-between; font-size: 13px; color: #777; margin-bottom: 4px;">
-                                <strong style="color: #0052D4; font-size: 15px;">${k.nama}</strong>
-                                <span>${k.tarikh}</span>
-                            </div>
-                            <div style="color: #333; font-size: 15px; word-break: break-word;">${k.mesej}</div>
-                        </div>
-                    `;
-                });
-                document.getElementById("senaraiKomenContainer").innerHTML = htmlKomen;
-            } else {
-                document.getElementById("senaraiKomenContainer").innerHTML = "<p style='color: #888; text-align: center; font-size: 14px;'>No comments yet. Be the first to leave a note!</p>";
-            }
-        });
-
-        var myPlayerId = "Scientist_" + Math.floor(Math.random() * 100000);
-        
-        var masaTungguFirebase = setInterval(function() {
+        var sistemKomenDimuatkan = false;
+        var pemasaKomen = setInterval(function() {
             if (window.firebaseSedia) {
-                clearInterval(masaTungguFirebase);
-                mulakanMultiplayer();
-            }
-        }, 500);
+                if (!sistemKomenDimuatkan) {
+                    sistemKomenDimuatkan = true;
+                    var rujukanBacaKomen = window.ref(window.db, "zep_komen_sains");
+                    window.onValue(rujukanBacaKomen, function(snapshot) {
+                        var dataKomen = snapshot.val();
+                        var htmlKomen = "";
 
-        function mulakanMultiplayer() {
-            var rujukanPemain = window.ref(window.db, "science_pemain/" + myPlayerId);
-
-            window.set(rujukanPemain, { x: pX, y: pY, nama: "Junior Scientist", emoji: "🧍‍♂️", arah: true });
-            window.onDisconnect(rujukanPemain).remove(); 
-
-            setInterval(function() {
-                var namaS = document.getElementById("inputNamaPelajar") ? document.getElementById("inputNamaPelajar").value : "Scientist";
-                var spriteKita = document.getElementById("spritePemain");
-                var emojiSemasa = spriteKita ? spriteKita.innerText : "🧍‍♂️";
-                
-                window.update(rujukanPemain, { 
-                    x: pX, 
-                    y: pY,
-                    nama: namaS,
-                    emoji: emojiSemasa,
-                    arah: menghadapKanan
-                });
-            }, 100); 
-
-            var rujukanSemuaPemain = window.ref(window.db, "science_pemain");
-            window.onValue(rujukanSemuaPemain, function(snapshot) {
-                var senaraiPemain = snapshot.val();
-                
-                for (var idKawan in senaraiPemain) {
-                    if (idKawan !== myPlayerId) { 
-                        var dataKawan = senaraiPemain[idKawan];
-                        var watakKawan = document.getElementById(idKawan);
-                        
-                        if (!watakKawan) {
-                            var arahSkala = dataKawan.arah ? "scaleX(-1)" : "scaleX(1)";
-                            var emojiK = dataKawan.emoji || "🧍‍♂️";
-                            
-                            var kawanHTML = '<div id="' + idKawan + '" style="position: absolute; z-index: 50; transform: translate(-50%, -50%); transition: left 0.1s, top 0.1s;">' +
-                                '<span class="animasi-kawan" style="display: inline-block; font-size: 60px; filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.2)); transform: ' + arahSkala + ';">' + emojiK + '</span>' +
-                                '<span class="nama-kawan" style="font-size:13px; position:absolute; top:-25px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.95); border:2px solid #00c6ff; padding:4px 12px; border-radius:15px; font-weight:bold; color:#333; white-space:nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">' + (dataKawan.nama || 'Scientist') + '</span>' +
-                                '</div>';
-                            document.getElementById("duniaPeta").insertAdjacentHTML('beforeend', kawanHTML);
+                        if (dataKomen) {
+                            var keys = Object.keys(dataKomen).reverse();
+                            keys.forEach(function(key) {
+                                var k = dataKomen[key];
+                                htmlKomen += `
+                                    <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 4px solid #0052D4; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #777; margin-bottom: 4px;">
+                                            <strong style="color: #0052D4; font-size: 15px;">${k.nama}</strong>
+                                            <span>${k.tarikh}</span>
+                                        </div>
+                                        <div style="color: #333; font-size: 15px; word-break: break-word;">${k.mesej}</div>
+                                    </div>
+                                `;
+                            });
+                            document.getElementById("senaraiKomenContainer").innerHTML = htmlKomen;
                         } else {
-                            watakKawan.style.left = dataKawan.x + "px";
-                            watakKawan.style.top = dataKawan.y + "px";
-                            
-                            var namaTag = watakKawan.querySelector(".nama-kawan");
-                            if (namaTag) namaTag.innerText = dataKawan.nama || "Scientist";
-                            
-                            var animasiTag = watakKawan.querySelector(".animasi-kawan");
-                            if (animasiTag) {
-                                animasiTag.innerText = dataKawan.emoji || "🧍‍♂️";
-                                animasiTag.style.transform = dataKawan.arah ? "scaleX(-1)" : "scaleX(1)";
+                            document.getElementById("senaraiKomenContainer").innerHTML = "<p style='color: #888; text-align: center; font-size: 14px;'>No comments yet. Be the first to leave a note!</p>";
+                        }
+                    });
+                }
+                // TYPO DIBETULKAN DI SINI (Kamek mohon ampun sebab letak clearInterval pemasa game tadi 😭)
+                clearInterval(pemasaKomen);
+            }
+        }, 300);
+
+        // ==========================================
+        // SISTEM MULTIPLAYER & POWER-UP & MUSUH LANTUN
+        // ==========================================
+        var myPlayerId = ""; 
+        var loopMultiplayerSistem = null;
+        var sambunganPemainSediaAda = false;
+
+        function mulakanMultiplayer(namaPemain) {
+            var daftarMultiplayer = setInterval(function() {
+                if (window.firebaseSedia) {
+                    clearInterval(daftarMultiplayer);
+                    
+                    myPlayerId = "Pemain_" + Math.floor(Math.random() * 1000000000) + "_" + Date.now(); 
+
+                    var rujukanPemain = window.ref(window.db, "science_pemain/" + myPlayerId);
+                    window.set(rujukanPemain, { x: pX, y: pY, nama: namaPemain, emoji: "🧍‍♂️", arah: true, lompat: false, super: false });
+                    window.onDisconnect(rujukanPemain).remove(); 
+
+                    var rujukanMusuhPusat = window.ref(window.db, "zep_musuh_pusat/host_aktif");
+
+                    window.set(rujukanMusuhPusat, myPlayerId).then(() => {
+                        window.onValue(rujukanMusuhPusat, function(snapHost) {
+                            if (snapHost.val() === myPlayerId) {
+                                statusHostPemain = true;
+                            } else {
+                                statusHostPemain = false;
+                            }
+                        });
+                    });
+
+                    var rujukanDataMusuh = window.ref(window.db, "zep_musuh_pusat/data_posisi");
+                    var rujukanItemSync = window.ref(window.db, "zep_powerup/sanitizer");
+
+                    window.set(rujukanItemSync, { x: 1200, y: 800, aktif: true });
+
+                    if (loopMultiplayerSistem) clearInterval(loopMultiplayerSistem);
+                    loopMultiplayerSistem = setInterval(function() {
+                        var spriteKita = document.getElementById("spritePemain");
+                        var emojiSemasa = spriteKita ? spriteKita.innerText : "🧍‍♂️";
+                        
+                        window.update(rujukanPemain, { 
+                            x: pX, 
+                            y: pY,
+                            nama: namaPemain,
+                            emoji: emojiSemasa,
+                            arah: menghadapKanan,
+                            lompat: sedangLompatKita,
+                            super: adaKuasaSuper
+                        });
+
+                        // HANYA gerakkan virus maju jika hos aktif DAN tiada gangguan sentuhan super
+                        if (statusHostPemain) {
+                            if (!window.sedangLantunVirus) {
+                                musuhX += arahMusuhX;
+                                if (musuhX > 1800 || musuhX < 200) {
+                                    arahMusuhX *= -1; 
+                                }
+                                window.set(rujukanDataMusuh, { x: musuhX, y: musuhY });
                             }
                         }
-                    }
-                }
 
-                var semuaWatakDiSkrin = document.getElementById("duniaPeta").children;
-                for (var i = 0; i < semuaWatakDiSkrin.length; i++) {
-                    var elemen = semuaWatakDiSkrin[i];
-                    if (elemen.id.startsWith("Scientist_")) { 
-                        if (!senaraiPemain || !senaraiPemain[elemen.id]) {
-                            elemen.remove(); 
-                        }
+                    }, 80); 
+
+                    if (!sambunganPemainSediaAda) {
+                        sambunganPemainSediaAda = true;
+                        
+                        var rujukanSemuaPemain = window.ref(window.db, "science_pemain");
+                        window.onValue(rujukanSemuaPemain, function(snapshot) {
+                            var senaraiPemain = snapshot.val();
+                            
+                            for (var idKawan in senaraiPemain) {
+                                if (idKawan !== myPlayerId) { 
+                                    var dataKawan = senaraiPemain[idKawan];
+                                    var watakKawan = document.getElementById(idKawan);
+                                    
+                                    if (!watakKawan) {
+                                        var arahSkala = dataKawan.arah ? "scaleX(-1)" : "scaleX(1)";
+                                        var emojiK = dataKawan.super ? "🦸‍♂️" : (dataKawan.emoji || "🧍‍♂️");
+                                        var namaK = dataKawan.nama || "Scientist";
+                                        var offsetLompat = dataKawan.lompat ? "translate(-50%, -50%) translateY(-35px)" : "translate(-50%, -50%) translateY(0px)";
+                                        
+                                        var kawanHTML = '<div id="' + idKawan + '" class="watak-multiplayer" style="position: absolute; z-index: 50; transform: ' + offsetLompat + '; transition: left 0.1s linear, top 0.1s linear, transform 0.15s ease;">' +
+                                            '<span class="animasi-kawan" style="display: inline-block; font-size: 60px; filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.2)); transform: ' + arahSkala + ';">' + emojiK + '</span>' +
+                                            '<span class="nama-kawan" style="font-size:13px; position:absolute; top:-25px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.95); border:2px solid #00c6ff; padding:4px 12px; border-radius:15px; font-weight:bold; color:#333; white-space:nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">' + namaK + '</span>' +
+                                            '</div>';
+                                        document.getElementById("duniaPeta").insertAdjacentHTML('beforeend', kawanHTML);
+                                    } else {
+                                        watakKawan.style.left = dataKawan.x + "px";
+                                        watakKawan.style.top = dataKawan.y + "px";
+                                        
+                                        if (dataKawan.lompat) {
+                                            watakKawan.style.transform = "translate(-50%, -50%) translateY(-35px)";
+                                        } else {
+                                            watakKawan.style.transform = "translate(-50%, -50%) translateY(0px)";
+                                        }
+                                        
+                                        var namaTag = watakKawan.querySelector(".nama-kawan");
+                                        if (namaTag) namaTag.innerText = dataKawan.nama || "Scientist";
+                                        
+                                        var animasiTag = watakKawan.querySelector(".animasi-kawan");
+                                        if (animasiTag) {
+                                            animasiTag.innerText = dataKawan.super ? "🦸‍♂️" : (dataKawan.emoji || "🧍‍♂️");
+                                            animasiTag.style.transform = dataKawan.arah ? "scaleX(-1)" : "scaleX(1)";
+                                        }
+                                    }
+                                }
+                            }
+
+                            var semuaKawanDOM = document.querySelectorAll('.watak-multiplayer');
+                            semuaKawanDOM.forEach(function(elemen) {
+                                if (!senaraiPemain || !senaraiPemain[elemen.id]) {
+                                    elemen.remove(); 
+                                }
+                            });
+                        });
+
+                        window.onValue(rujukanDataMusuh, function(snapshot) {
+                            var posMusuh = snapshot.val();
+                            var elemenMusuh = document.getElementById("spriteMusuhUtama");
+
+                            if (posMusuh) {
+                                musuhX = posMusuh.x;
+                                musuhY = posMusuh.y;
+
+                                if (!elemenMusuh) {
+                                    var htmlMusuh = '<div id="spriteMusuhUtama" style="position: absolute; left: ' + musuhX + 'px; top: ' + musuhY + 'px; transform: translate(-50%, -50%); z-index: 75; text-align: center; transition: left 0.1s linear, top 0.1s linear;">' +
+                                        '<span style="font-size: 55px; filter: drop-shadow(0px 8px 4px rgba(0,0,0,0.3)); display: inline-block; animation: putarMusuh 1.5s infinite alternate;">🦠</span>' +
+                                        '<span style="font-size: 11px; background: rgba(220,53,69,0.9); color: white; padding: 2px 8px; border-radius: 10px; font-weight: bold; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); white-space: nowrap;">Virus Enemy</span>' +
+                                        '</div>';
+                                    document.getElementById("duniaPeta").insertAdjacentHTML('beforeend', htmlMusuh);
+                                } else {
+                                    elemenMusuh.style.left = musuhX + "px";
+                                    elemenMusuh.style.top = musuhY + "px";
+                                }
+                            }
+                        });
+
+                        window.onValue(rujukanItemSync, function(snapshot) {
+                            var dataItem = snapshot.val();
+                            var elemenItem = document.getElementById("itemSanitizerPeta");
+
+                            if (dataItem) {
+                                powerUpX = dataItem.x;
+                                powerUpY = dataItem.y;
+                                adaPowerUpAktif = dataItem.aktif;
+
+                                if (dataItem.aktif) {
+                                    if (!elemenItem) {
+                                        var htmlItem = '<div id="itemSanitizerPeta" style="position: absolute; left: ' + powerUpX + 'px; top: ' + powerUpY + 'px; transform: translate(-50%, -50%); z-index: 60; text-align: center; animation: lompatKecil 1.5s infinite alternate;">' +
+                                            '<span style="font-size: 45px; filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.3)); display: block;">🧴</span>' +
+                                            '<span style="font-size: 11px; background: rgba(40,167,69,0.9); color: white; padding: 2px 8px; border-radius: 10px; font-weight: bold; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); white-space: nowrap;">Sanitizer Power</span>' +
+                                            '</div>';
+                                        document.getElementById("duniaPeta").insertAdjacentHTML('beforeend', htmlItem);
+                                    } else {
+                                        elemenItem.style.left = powerUpX + "px";
+                                        elemenItem.style.top = powerUpY + "px";
+                                        elemenItem.style.display = "block";
+                                    }
+                                } else {
+                                    if (elemenItem) {
+                                        elemenItem.style.display = "none";
+                                    }
+                                    
+                                    if (statusHostPemain) {
+                                        if (!window.sedangRespawnItem) {
+                                            window.sedangRespawnItem = true;
+                                            setTimeout(function() {
+                                                var randX = Math.floor(Math.random() * 1600) + 200;
+                                                var randY = Math.floor(Math.random() * 1200) + 200;
+                                                window.set(rujukanItemSync, { x: randX, y: randY, aktif: true });
+                                                window.sedangRespawnItem = false;
+                                            }, 8000); 
+                                        }
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
-            });
+            }, 300);
         }
     </script>
 </body>
