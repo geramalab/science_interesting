@@ -24,6 +24,13 @@
         const db = getDatabase(app);
 
         document.addEventListener("DOMContentLoaded", () => {
+            // Semak tema Mod Gelap semasa dimuatkan
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-mode");
+                const btn = document.getElementById("btnDarkMode");
+                if (btn) btn.innerText = "☀️ Mod Terang";
+            }
+
             document.getElementById("borangHubungi").addEventListener("submit", function(event) {
                 event.preventDefault();
                 
@@ -32,7 +39,6 @@
                 var teksMesej = document.getElementById("mesejPengirim").value;
                 var masaKini = new Date().toLocaleString("en-MY");
                 
-                // Folder Firebase khusus untuk mesej Sains
                 var rujukanFolder = ref(db, "mesej_sains_hubungi");
                 var rekodBaru = push(rujukanFolder);
                 
@@ -52,12 +58,46 @@
     </script>
 
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; display: flex; flex-direction: column; min-height: 100vh; }
-        .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f0f8ff; 
+            color: #333333;
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 30px; 
+            background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); 
+            border-bottom: 4px solid rgba(255, 255, 255, 0.5); 
+            box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); 
+        }
         .header-container img { transition: transform 0.3s; }
         
-        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
-        .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 24px; font-size: 16px; font-weight: bold; transition: background 0.3s, color 0.3s; }
+        .navbar { 
+            background-color: #1a2a6c; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+        .navbar a { 
+            color: #e0e0e0; 
+            text-decoration: none; 
+            padding: 16px 24px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            transition: background 0.3s, color 0.3s; 
+        }
         .navbar a:hover { background-color: #00c6ff; color: #fff; }
         
         .dropdown { position: relative; display: inline-block; }
@@ -66,7 +106,16 @@
         .dropdown-content a:hover { background-color: #e3f2fd; padding-left: 24px; color: #0052D4; font-weight: bold; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        .main-content { padding: 40px 50px; flex: 1; background-color: white; margin: 30px 150px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); text-align: center; }
+        .main-content { 
+            padding: 40px 50px; 
+            flex: 1; 
+            background-color: white; 
+            margin: 30px 150px; 
+            border-radius: 15px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); 
+            text-align: center; 
+            transition: background-color 0.3s, color 0.3s;
+        }
         @media (max-width: 900px) { .main-content { margin: 30px 20px; padding: 20px; } }
         
         .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; line-height: 1.6; }
@@ -74,25 +123,103 @@
 
         .susunan-hubungi { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 30px; text-align: left; justify-content: center; }
 
-        .kotak-info { flex: 1; min-width: 300px; background-color: #e3f2fd; padding: 30px; border-radius: 12px; border-left: 6px solid #0052D4; }
+        .kotak-info { 
+            flex: 1; 
+            min-width: 300px; 
+            background-color: #e3f2fd; 
+            padding: 30px; 
+            border-radius: 12px; 
+            border-left: 6px solid #0052D4; 
+            transition: background 0.3s;
+        }
         .kotak-info h3 { margin-top: 0; color: #1a2a6c; font-size: 22px; }
         .kotak-info p { font-size: 16px; color: #444; line-height: 1.8; margin-bottom: 15px; }
         .butang-whatsapp { display: inline-block; background-color: #25D366; color: white; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 30px; font-size: 16px; box-shadow: 0 4px 6px rgba(37,211,102,0.3); transition: 0.3s; margin-top: 10px; }
         .butang-whatsapp:hover { background-color: #128C7E; transform: translateY(-3px); }
 
-        .kotak-borang { flex: 1; min-width: 300px; background-color: #f8fbff; padding: 30px; border-radius: 12px; border: 2px solid #bce0fd; }
+        .kotak-borang { 
+            flex: 1; 
+            min-width: 300px; 
+            background-color: #f8fbff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            border: 2px solid #bce0fd; 
+            transition: background 0.3s, border-color 0.3s;
+        }
         .kotak-borang label { font-weight: bold; color: #1a2a6c; display: block; margin-bottom: 5px; }
-        .kotak-borang input, .kotak-borang textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #bbb; border-radius: 8px; font-family: inherit; font-size: 15px; box-sizing: border-box; }
+        .kotak-borang input, .kotak-borang textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #bbb; border-radius: 8px; font-family: inherit; font-size: 15px; box-sizing: border-box; transition: background 0.3s, color 0.3s, border-color 0.3s; }
         .kotak-borang input:focus, .kotak-borang textarea:focus { border-color: #0052D4; outline: none; box-shadow: 0 0 5px rgba(0,82,212,0.3); }
         
         .butang-hantar { background-color: #0052D4; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,82,212,0.2); }
         .butang-hantar:hover { background-color: #003cc8; transform: translateY(-2px); }
+
+        /* MOD GELAP (DARK MODE) STYLES */
+        body.dark-mode {
+            background-color: #0f172a !important;
+            color: #f1f5f9 !important;
+        }
+        body.dark-mode .main-content {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+        body.dark-mode .main-content h2,
+        body.dark-mode .kotak-info h3,
+        body.dark-mode .kotak-borang label {
+            color: #38bdf8 !important;
+        }
+        body.dark-mode .main-content p,
+        body.dark-mode .kotak-info p {
+            color: #cbd5e1 !important;
+        }
+        body.dark-mode .kotak-info {
+            background-color: #0f172a !important;
+            border-left-color: #38bdf8 !important;
+        }
+        body.dark-mode .kotak-borang {
+            background-color: #0f172a !important;
+            border-color: #334155 !important;
+        }
+        body.dark-mode input[type="text"],
+        body.dark-mode input[type="email"],
+        body.dark-mode textarea {
+            background: #1e293b !important;
+            color: #ffffff !important;
+            border-color: #334155 !important;
+        }
+
+        .btn-dark-toggle {
+            background-color: #334155;
+            color: #ffffff;
+            border: 2px solid #00c6ff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 8px;
+        }
+        .btn-dark-toggle:hover {
+            background-color: #00c6ff;
+            color: #0d1b2a;
+        }
 
         @media (max-width: 800px) {
             .navbar { flex-wrap: wrap; justify-content: center; }
             .navbar a { padding: 10px 12px; font-size: 13px; }
         }
     </style>
+
+    <script>
+        // Fungsi Toggle Mod Gelap untuk Halaman Ini
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            const btn = document.getElementById("btnDarkMode");
+            if (btn) btn.innerText = isDark ? "☀️ Mod Terang" : "🌙 Mod Gelap";
+        }
+    </script>
 </head>
 <body>
 
@@ -118,7 +245,10 @@
         <a href="interactive_lab.html">Interactive Lab</a>
         <a href="performance.html">Scientist Analytics</a>
         <a href="contact.html" style="background-color: #00c6ff; color: #0d1b2a;">Ask a Teacher</a>
-        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a;">Login 👨‍🔬</a>
+
+        <!-- Butang Mod Gelap -->
+        <button onclick="toggleDarkMode()" class="btn-dark-toggle" id="btnDarkMode">🌙 Mod Gelap</button>
     </nav>
 
     <!-- KANDUNGAN UTAMA: ASK A TEACHER / CONTACT -->
@@ -134,11 +264,11 @@
             <div class="kotak-info">
                 <h3>Science Development Team</h3>
                 <p>
-                    🏫 <strong>School:</strong> SMK Science Department (Sarawak)<br>
+                    🏫 <strong>School:</strong> SMK MATANG JAYA (Sarawak)<br>
                     📧 <strong>Email:</strong> support.science@contoh.edu.my<br>
                     🕒 <strong>Operation Hours:</strong> Monday - Friday (8:00 AM - 5:00 PM)
                 </p>
-                <p style="margin-top: 20px; font-weight: bold; color: #333;">
+                <p style="margin-top: 20px; font-weight: bold;">
                     Need a quick response? Chat with us directly on WhatsApp!
                 </p>
                 <a href="https://wa.me/60123456789?text=Hello%20Teacher,%20I%20have%20a%20question%20regarding%20the%20Science%20Portal" target="_blank" class="butang-whatsapp">

@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scientist Analytics & Performance - Science Portal</title>
     
+    <!-- PUSAT KAWALAN MOD GELAP SEAWALNYA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-mode");
+                const btn = document.getElementById("btnDarkMode");
+                if (btn) btn.innerText = "☀️ Mod Terang";
+            }
+        });
+
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            const btn = document.getElementById("btnDarkMode");
+            if (btn) btn.innerText = isDark ? "☀️ Mod Terang" : "🌙 Mod Gelap";
+        }
+    </script>
+
     <!-- PUSAT KAWALAN FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
@@ -33,7 +52,7 @@
                 tarikAnalisisPeribadi(namaUser);
             } else {
                 document.getElementById("namaProfilLogin").innerText = "Guest Scientist (Not Logged In)";
-                document.getElementById("analisisPeribadiCard").innerHTML = "<p style='color: #666;'>Please login or play a ZEP mission to track your personal performance analytics! 🔬</p>";
+                document.getElementById("analisisPeribadiCard").innerHTML = "<p style='color: #888;'>Please login or play a ZEP mission to track your personal performance analytics! 🔬</p>";
             }
         });
 
@@ -51,26 +70,25 @@
                 }
 
                 if (rekodPemain.length > 0) {
-                    // Cari masa terpantas
                     rekodPemain.sort((a, b) => a.jumlahSaat - b.jumlahSaat);
                     let terbaik = rekodPemain[0];
 
                     let htmlPeribadi = `
                         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
-                            <div style="background: #e3f2fd; padding: 15px 25px; border-radius: 10px; border: 2px solid #0052D4; flex: 1; min-width: 150px;">
-                                <div style="font-size: 14px; color: #555;">Total Missions Played</div>
-                                <div style="font-size: 24px; font-weight: bold; color: #0052D4;">${rekodPemain.length} Games</div>
+                            <div class="stat-card stat-blue">
+                                <div style="font-size: 14px; opacity: 0.8;">Total Missions Played</div>
+                                <div style="font-size: 24px; font-weight: bold;">${rekodPemain.length} Games</div>
                             </div>
-                            <div style="background: #eef9f0; padding: 15px 25px; border-radius: 10px; border: 2px solid #28a745; flex: 1; min-width: 150px;">
-                                <div style="font-size: 14px; color: #555;">Best Record Time</div>
-                                <div style="font-size: 24px; font-weight: bold; color: #28a745;">⏱️ ${terbaik.masaTeks}</div>
+                            <div class="stat-card stat-green">
+                                <div style="font-size: 14px; opacity: 0.8;">Best Record Time</div>
+                                <div style="font-size: 24px; font-weight: bold;">⏱️ ${terbaik.masaTeks}</div>
                             </div>
-                            <div style="background: #fff8e1; padding: 15px 25px; border-radius: 10px; border: 2px solid #f39c12; flex: 1; min-width: 150px;">
-                                <div style="font-size: 14px; color: #555;">Highest Rank Awarded</div>
-                                <div style="font-size: 24px; font-weight: bold; color: #f39c12;">${terbaik.ikon} ${terbaik.pangkat}</div>
+                            <div class="stat-card stat-yellow">
+                                <div style="font-size: 14px; opacity: 0.8;">Highest Rank Awarded</div>
+                                <div style="font-size: 24px; font-weight: bold;">${terbaik.ikon} ${terbaik.pangkat}</div>
                             </div>
                         </div>
-                        <p style="margin-top: 15px; font-size: 14px; color: #666;">Last cleared: Chapter ${terbaik.bab} | Keep up the excellent work, Scientist!</p>
+                        <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">Last cleared: Chapter ${terbaik.bab} | Keep up the excellent work, Scientist!</p>
                     `;
                     document.getElementById("analisisPeribadiCard").innerHTML = htmlPeribadi;
                 } else {
@@ -102,8 +120,8 @@
                 htmlJadual += `
                     <tr>
                         <td style="font-size: 24px; text-align: center; font-weight: bold;">${pingat}</td>
-                        <td style="font-weight: bold; color: #0052D4; font-size:18px;">${pemain.nama}</td>
-                        <td style="text-align: center;"><span style="background:#e3f2fd; padding:5px 10px; border-radius:5px; border:1px solid #0052D4;">Chapter ${pemain.bab}</span></td>
+                        <td style="font-weight: bold; font-size:18px;" class="player-name">${pemain.nama}</td>
+                        <td style="text-align: center;"><span class="badge-chapter">Chapter ${pemain.bab}</span></td>
                         <td style="text-align: center; font-weight: bold; color: #e67e22;">⏱️ ${pemain.masaTeks}</td>
                         <td style="text-align: center;">${pemain.ikon} ${pemain.pangkat}</td>
                     </tr>
@@ -119,12 +137,13 @@
     </script>
 
     <style>
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; display: flex; flex-direction: column; min-height: 100vh; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; color: #333; display: flex; flex-direction: column; min-height: 100vh; transition: background 0.3s, color 0.3s; }
         .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
         .header-container img { transition: transform 0.3s; }
         
-        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
-        .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 24px; font-size: 16px; font-weight: bold; transition: background 0.3s, color 0.3s; }
+        .navbar { background-color: #1a2a6c; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
+        .navbar-links { display: flex; align-items: center; }
+        .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 20px; font-size: 16px; font-weight: bold; transition: background 0.3s, color 0.3s; }
         .navbar a:hover { background-color: #00c6ff; color: #fff; }
         
         .dropdown { position: relative; display: inline-block; }
@@ -133,7 +152,7 @@
         .dropdown-content a:hover { background-color: #e3f2fd; padding-left: 24px; color: #0052D4; font-weight: bold; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        .main-content { padding: 40px 50px; flex: 1; background-color: white; margin: 30px 150px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .main-content { padding: 40px 50px; flex: 1; background-color: white; margin: 30px 150px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: background 0.3s, color 0.3s; }
         @media (max-width: 900px) { .main-content { margin: 30px 20px; padding: 20px; } }
         
         .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; line-height: 1.6; }
@@ -148,14 +167,98 @@
             margin-bottom: 40px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: background 0.3s, border-color 0.3s;
         }
+
+        .stat-card { padding: 15px 25px; border-radius: 10px; flex: 1; min-width: 150px; }
+        .stat-blue { background: #e3f2fd; border: 2px solid #0052D4; color: #0052D4; }
+        .stat-green { background: #eef9f0; border: 2px solid #28a745; color: #28a745; }
+        .stat-yellow { background: #fff8e1; border: 2px solid #f39c12; color: #f39c12; }
 
         /* GAYA JADUAL PRESTASI (LEADERBOARD) */
         .jadual-kontena { overflow-x: auto; margin-top: 20px; }
-        .jadual-prestasi { width: 100%; border-collapse: collapse; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .jadual-prestasi { width: 100%; border-collapse: collapse; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: background 0.3s; }
         .jadual-prestasi th { background-color: #0052D4; color: white; padding: 15px; font-size: 18px; border-bottom: 3px solid #00c6ff; }
         .jadual-prestasi td { padding: 15px; border-bottom: 1px solid #eee; font-size: 16px; color: #444; }
         .jadual-prestasi tr:hover { background-color: #f8fbff; }
+        .player-name { color: #0052D4; }
+        .badge-chapter { background:#e3f2fd; padding:5px 10px; border-radius:5px; border:1px solid #0052D4; color: #0052D4; }
+
+        /* MOD GELAP (DARK MODE) STYLES */
+        body.dark-mode {
+            background-color: #0f172a !important;
+            color: #f1f5f9 !important;
+        }
+        body.dark-mode .main-content {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+        body.dark-mode .main-content h2 {
+            color: #38bdf8 !important;
+            border-bottom-color: #38bdf8 !important;
+        }
+        body.dark-mode .main-content p {
+            color: #cbd5e1 !important;
+        }
+        body.dark-mode .personal-analytics-box {
+            background: #0f172a !important;
+            border-color: #38bdf8 !important;
+        }
+        body.dark-mode .stat-blue { background: #1e293b !important; border-color: #38bdf8; color: #38bdf8; }
+        body.dark-mode .stat-green { background: #1e293b !important; border-color: #2ecc71; color: #2ecc71; }
+        body.dark-mode .stat-yellow { background: #1e293b !important; border-color: #f1c40f; color: #f1c40f; }
+        
+        body.dark-mode .jadual-prestasi {
+            background-color: #0f172a !important;
+        }
+        body.dark-mode .jadual-prestasi th {
+            background-color: #1e293b !important;
+            border-bottom-color: #38bdf8 !important;
+            color: #38bdf8 !important;
+        }
+        body.dark-mode .jadual-prestasi td {
+            border-bottom-color: #334155 !important;
+            color: #e2e8f0 !important;
+        }
+        body.dark-mode .jadual-prestasi tr:hover {
+            background-color: #1e293b !important;
+        }
+        body.dark-mode .player-name {
+            color: #38bdf8 !important;
+        }
+        body.dark-mode .badge-chapter {
+            background: #1e293b !important;
+            border-color: #38bdf8 !important;
+            color: #38bdf8 !important;
+        }
+        body.dark-mode .dropdown-content {
+            background-color: #1e293b !important;
+        }
+        body.dark-mode .dropdown-content a {
+            color: #f1f5f9 !important;
+            border-bottom: 1px solid #334155;
+        }
+        body.dark-mode .dropdown-content a:hover {
+            background-color: #334155 !important;
+            color: #38bdf8 !important;
+        }
+
+        .btn-dark-toggle {
+            background-color: #334155;
+            color: #ffffff;
+            border: 2px solid #00c6ff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 8px;
+        }
+        .btn-dark-toggle:hover {
+            background-color: #00c6ff;
+            color: #0d1b2a;
+        }
 
         @media (max-width: 800px) {
             .navbar { flex-wrap: wrap; justify-content: center; }
@@ -172,22 +275,26 @@
 
     <!-- Menu Navigasi -->
     <nav class="navbar">
-        <a href="index.html">Main Lab</a>
-        <div class="dropdown">
-            <a href="#">Science Form 2 ▼</a>
-            <div class="dropdown-content">
-                <a href="science_chap1.html">Chapter 1: Biodiversity</a>
-                <a href="science_chap2.html">Chapter 2: Ecosystem</a>
-                <a href="science_chap3.html">Chapter 3: Nutrition</a>
-                <a href="science_chap4.html">Chapter 4: Human Health</a>
-                <a href="science_chap5.html">Chapter 5: Water and Solution</a>
-                <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+        <div class="navbar-links">
+            <a href="index.html">Main Lab</a>
+            <div class="dropdown">
+                <a href="#">Science Form 2 ▼</a>
+                <div class="dropdown-content">
+                    <a href="science_chap1.html">Chapter 1: Biodiversity</a>
+                    <a href="science_chap2.html">Chapter 2: Ecosystem</a>
+                    <a href="science_chap3.html">Chapter 3: Nutrition</a>
+                    <a href="science_chap4.html">Chapter 4: Human Health</a>
+                    <a href="science_chap5.html">Chapter 5: Water and Solution</a>
+                    <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+                </div>
             </div>
+            <a href="interactive_lab.html">Interactive Lab</a>
+            <a href="performance.html" style="background-color: #00c6ff; color: #0d1b2a;">Scientist Analytics</a>
+            <a href="contact.html">Ask a Teacher</a>
+            <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a;">Login 👨‍🔬</a>
         </div>
-        <a href="interactive_lab.html">Interactive Lab</a>
-        <a href="performance.html" style="background-color: #00c6ff; color: #0d1b2a;">Scientist Analytics</a>
-        <a href="contact.html">Ask a Teacher</a>
-        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+        <!-- Butang Mod Gelap -->
+        <button onclick="toggleDarkMode()" class="btn-dark-toggle" id="btnDarkMode">🌙 Mod Gelap</button>
     </nav>
 
     <!-- Kandungan Analitik -->

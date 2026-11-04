@@ -3,40 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Science Form 2 Exploration</title>
+    <title>Science Form 2 Exploration Portal</title>
     
     <style>
-        /* Base Settings */
+        /* Base & Layout Settings */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f8ff;
+            color: #333333;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
+        /* Header Styling */
         .header-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 30px;
+            padding: 30px 20px;
             background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); 
             border-bottom: 4px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
+            text-align: center;
         }
-        .header-container img { transition: transform 0.3s; }
-        .header-container img:hover { transform: scale(1.05); }
 
+        .header-container img {
+            transition: transform 0.3s ease;
+        }
+
+        .header-container img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Navigation Bar */
         .navbar {
             background-color: #1a2a6c;
             display: flex;
             justify-content: center;
+            align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             position: sticky;
             top: 0; 
             z-index: 100;
         }
+
         .navbar a {
             color: #e0e0e0;
             text-decoration: none;
@@ -45,64 +63,116 @@
             font-weight: bold;
             transition: background 0.3s, color 0.3s;
         }
+
         .navbar a:hover {
             background-color: #00c6ff;
-            color: #fff;
+            color: #ffffff;
         }
 
-        .dropdown { position: relative; display: inline-block; }
+        /* Dropdown Menu */
+        .dropdown { 
+            position: relative; 
+            display: inline-block; 
+        }
+
         .dropdown-content {
             display: none;
             position: absolute;
             background-color: #ffffff;
             min-width: 320px;
             box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
-            z-index: 1;
+            z-index: 101;
             border-radius: 0 0 8px 8px;
             overflow: hidden;
             max-height: 400px;
             overflow-y: auto; 
         }
+
         .dropdown-content a {
-            color: #333;
+            color: #333333;
             padding: 12px 16px;
             display: block;
             font-size: 14px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eeeeee;
             font-weight: normal;
+            text-align: left;
         }
+
         .dropdown-content a:hover {
             background-color: #e3f2fd;
             padding-left: 24px; 
             color: #0052D4;
             font-weight: bold;
         }
-        .dropdown:hover .dropdown-content { display: block; }
 
+        .dropdown:hover .dropdown-content { 
+            display: block; 
+        }
+
+        /* Main Content Container */
         .main-content {
             padding: 50px 20px;
             text-align: center;
             flex: 1; 
-            background-color: white;
+            background-color: #ffffff;
             margin: 30px 200px; 
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        @media (max-width: 900px) {
-            .main-content { margin: 30px 20px; }
+        @media (max-width: 1100px) {
+            .main-content { margin: 30px 50px; }
         }
-        .main-content h2 { color: #1a2a6c; }
 
+        @media (max-width: 800px) {
+            .main-content { margin: 20px 15px; padding: 25px 15px; }
+            .navbar { flex-wrap: wrap; justify-content: center; }
+            .navbar a { padding: 10px 12px; font-size: 13px; }
+        }
+
+        /* Shortcut Cards */
+        .card-shortcut {
+            text-decoration: none; 
+            color: inherit; 
+            width: 220px; 
+            padding: 25px; 
+            border-radius: 15px; 
+            display: block; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card-shortcut:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Quote Section */
+        .quote-container {
+            background-color: #e1f5fe; 
+            border-left: 8px solid #03a9f4; 
+            padding: 20px; 
+            border-radius: 8px; 
+            max-width: 650px; 
+            margin: 0 auto 40px auto; 
+            text-align: left;
+        }
+
+        /* Footer & Visitor Counter */
         .footer {
             background-color: #0d1b2a;
-            color: #ccc;
+            color: #cccccc;
             text-align: center;
             padding: 25px 20px;
             font-size: 14px;
             line-height: 1.6;
         }
-        .footer span.highlight { color: #00c6ff; font-weight: bold; }
+
+        .footer span.highlight { 
+            color: #00c6ff; 
+            font-weight: bold; 
+        }
         
         .visitor-counter {
             display: inline-block;
@@ -116,19 +186,454 @@
             box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
         }
 
-        @media (max-width: 800px) {
-            .navbar { flex-wrap: wrap; justify-content: center; }
-            .navbar a { padding: 10px 12px; font-size: 13px; }
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast-msg {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            min-width: 280px;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideIn 0.3s forwards;
+            border-left: 5px solid #00c6ff;
+        }
+
+        .toast-msg.success { border-left-color: #28a745; }
+        .toast-msg.error { border-left-color: #dc3545; }
+        .toast-msg.info { border-left-color: #0052D4; }
+
+        .toast-msg span.icon {
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateX(100%); }
+        }
+
+        /* Mod Gelap Styles */
+        body.dark-mode {
+            background-color: #0f172a !important;
+            color: #f1f5f9 !important;
+        }
+
+        body.dark-mode .main-content {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+
+        body.dark-mode .main-content h1, 
+        body.dark-mode .main-content h2, 
+        body.dark-mode .main-content h3,
+        body.dark-mode .main-content h4,
+        body.dark-mode .panel-kawan h3,
+        body.dark-mode .panel-kawan h4,
+        body.dark-mode .panel-kawan label,
+        body.dark-mode .quiz-panel h3,
+        body.dark-mode .quiz-panel h4,
+        body.dark-mode .leaderboard-panel h3,
+        body.dark-mode .quest-panel h3,
+        body.dark-mode .flashcard-panel h3,
+        body.dark-mode .shop-panel h3 {
+            color: #38bdf8 !important;
+        }
+
+        body.dark-mode .main-content p,
+        body.dark-mode .quote-text {
+            color: #cbd5e1 !important;
+        }
+
+        body.dark-mode .panel-kawan,
+        body.dark-mode .leaderboard-panel,
+        body.dark-mode .quest-panel,
+        body.dark-mode .flashcard-panel,
+        body.dark-mode .shop-panel {
+            background: #0f172a !important;
+            border-color: #334155 !important;
+        }
+
+        body.dark-mode .senarai-box,
+        body.dark-mode .leaderboard-item,
+        body.dark-mode .shop-item,
+        body.dark-mode .quest-item {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+            color: #f1f5f9 !important;
+        }
+
+        body.dark-mode .nama-kawan-text {
+            color: #38bdf8 !important;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode select {
+            background: #0f172a !important;
+            color: #ffffff !important;
+            border-color: #334155 !important;
+        }
+
+        body.dark-mode .card-shortcut {
+            background-color: #0f172a !important;
+            border-color: #334155 !important;
+        }
+
+        body.dark-mode .quote-container {
+            background-color: #0f172a !important;
+            border-left-color: #00c6ff !important;
+        }
+
+        .btn-dark-toggle {
+            background-color: #334155;
+            color: #ffffff;
+            border: 2px solid #00c6ff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 8px;
+        }
+
+        .btn-dark-toggle:hover {
+            background-color: #00c6ff;
+            color: #0d1b2a;
+        }
+
+        /* Panel Standard Box (Modular) */
+        .panel-box {
+            max-width: 500px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        /* Quiz Panel & XP */
+        .quiz-panel {
+            max-width: 500px;
+            margin: 30px auto;
+            background: #fff8e1;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #ffe082;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        body.dark-mode .quiz-panel {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            background: #e0f2f1;
+            color: #004d40;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        body.dark-mode .badge-pill {
+            background: #334155 !important;
+            color: #38bdf8 !important;
+        }
+
+        .quiz-opt-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: #ffffff;
+            border: 1px solid #ffe082;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .quiz-opt-btn:hover {
+            background: #fff3e0;
+            border-color: #ffb300;
+        }
+
+        body.dark-mode .quiz-opt-btn {
+            background: #0f172a !important;
+            color: #f1f5f9 !important;
+            border-color: #334155 !important;
+        }
+
+        body.dark-mode .quiz-opt-btn:hover {
+            background: #334155 !important;
+            border-color: #38bdf8 !important;
+        }
+
+        /* XP Progress Bar */
+        .xp-bar-bg {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 6px;
+            margin-bottom: 12px;
+        }
+
+        .xp-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffb300, #ff8f00);
+            transition: width 0.4s ease-in-out;
+        }
+
+        /* Avatar Selector */
+        .avatar-badge {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        .avatar-opt-btn {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .avatar-opt-btn:hover {
+            transform: scale(1.2);
+            background: #00c6ff;
+        }
+
+        /* Bingkai Avatar Profile */
+        .frame-none { border: none; }
+        .frame-gold { border: 3px solid #ffd700 !important; box-shadow: 0 0 10px #ffd700; border-radius: 50%; padding: 2px; }
+        .frame-neon { border: 3px solid #00e5ff !important; box-shadow: 0 0 10px #00e5ff; border-radius: 50%; padding: 2px; }
+
+        /* FLASHCARD 3D FLIP STYLING */
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 160px;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 12px;
+            background: #e3f2fd;
+            border: 2px solid #90caf9;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .flashcard-container.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .flashcard-back {
+            background: #e8f5e9;
+            border-radius: 12px;
+            transform: rotateY(180deg);
+            color: #1b5e20;
+        }
+
+        body.dark-mode .flashcard-inner {
+            background: #0f172a !important;
+            border-color: #334155 !important;
+            color: #f1f5f9 !important;
+        }
+
+        body.dark-mode .flashcard-back {
+            background: #1e293b !important;
+            color: #4ade80 !important;
+        }
+
+        /* Mini Chat Popup */
+        #kotakSembangPopup {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 320px;
+            height: 420px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid #00c6ff;
+            transition: background 0.3s;
+        }
+
+        body.dark-mode #kotakSembangPopup {
+            background-color: #1e293b !important;
+            border-color: #38bdf8 !important;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #1a2a6c, #0052D4);
+            color: #ffffff;
+            padding: 12px 15px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #f8fbff;
+        }
+
+        body.dark-mode .chat-messages {
+            background: #0f172a !important;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .chat-bubble.me {
+            align-self: flex-end;
+            background-color: #0052D4;
+            color: #ffffff;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-bubble.them {
+            align-self: flex-start;
+            background-color: #e2e8f0;
+            color: #1e293b;
+            border-bottom-left-radius: 2px;
+        }
+
+        body.dark-mode .chat-bubble.them {
+            background-color: #334155 !important;
+            color: #f1f5f9 !important;
+        }
+
+        .chat-time {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 3px;
+            text-align: right;
+        }
+
+        .chat-input-box {
+            display: flex;
+            padding: 8px;
+            background: #ffffff;
+            border-top: 1px solid #dddddd;
+            gap: 6px;
+        }
+
+        body.dark-mode .chat-input-box {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+        }
+
+        /* Leaderboard Panel */
+        .leaderboard-panel {
+            max-width: 500px;
+            margin: 30px auto;
+            background: #f3e5f5;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #ce93d8;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .leaderboard-item {
+            background: #ffffff;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e1bee7;
+            font-weight: bold;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
+    <!-- Header Section -->
     <div class="header-container">
         <img src="logosains.png" style="height: 150px; width: auto; margin-right: 20px;" alt="Science Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2083/2083285.png'; this.style.height='100px';">
         <h1 style="color: white; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); font-size: 45px;">SCIENCE PORTAL</h1>
     </div>
 
+    <!-- Navigation Bar -->
     <nav class="navbar">
         <a href="index.html">Main Lab</a>
         
@@ -147,80 +652,258 @@
         <a href="interactive_lab.html">Interactive Lab</a>
         <a href="performance.html">Scientist Analytics</a>
         <a href="contact.html">Ask a Teacher</a>
-        <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+        <a href="login.html" id="btnLogMasuk" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+
+        <button onclick="toggleDarkMode()" class="btn-dark-toggle" id="btnDarkMode">🌙 Mod Gelap</button>
     </nav>
 
-    <div class="main-content" style="text-align: center; padding: 40px 50px;">
+    <!-- Main Content Area -->
+    <div class="main-content">
 
-        <h1 style="color: #1a2a6c; font-size: 36px; margin-bottom: 10px; margin-top: 0;">
+        <h1 style="font-size: 36px; margin-bottom: 10px; margin-top: 0;">
             🔬 Welcome to the SCIENCE EXPLORATION Portal!
         </h1>
-        <p style="font-size: 18px; color: #555; margin-bottom: 40px;">
+        <p style="font-size: 18px; margin-bottom: 40px;">
             Discover the wonders of biodiversity, human biology, and chemical reactions through interactive simulations and virtual ZEP zones.
         </p>
 
         <!-- Three Shortcut Boxes -->
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin-bottom: 50px;">
-            
-            <a href="#" style="text-decoration: none; color: #333; width: 220px; background-color: #e3f2fd; padding: 25px; border-radius: 15px; border: 2px solid #90caf9; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
+            <a href="science_chap1.html" class="card-shortcut" style="background-color: #e3f2fd; border: 2px solid #90caf9;">
                 <h1 style="font-size: 45px; margin: 0;">🧬</h1>
-                <h3 style="margin: 15px 0 10px 0; color: #1565c0;">Scientific Notes</h3>
-                <p style="font-size: 14px; color: #555; line-height: 1.5;">Quick references from Biodiversity to Acids & Alkalis.</p>
+                <h3 style="margin: 15px 0 10px 0;">Scientific Notes</h3>
+                <p style="font-size: 14px; line-height: 1.5;">Quick references from Biodiversity to Acids & Alkalis.</p>
             </a>
 
-            <a href="interactive_lab.html" style="text-decoration: none; color: #333; width: 220px; background-color: #f3e5f5; padding: 25px; border-radius: 15px; border: 2px solid #ce93d8; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
+            <a href="interactive_lab.html" class="card-shortcut" style="background-color: #f3e5f5; border: 2px solid #ce93d8;">
                 <h1 style="font-size: 45px; margin: 0;">🚀</h1>
-                <h3 style="margin: 15px 0 10px 0; color: #6a1b9a;">ZEP Mission</h3>
-                <p style="font-size: 14px; color: #555; line-height: 1.5;">Control your avatar to collect knowledge molecules in the open world!</p>
+                <h3 style="margin: 15px 0 10px 0;">ZEP Mission</h3>
+                <p style="font-size: 14px; line-height: 1.5;">Control your avatar to collect knowledge molecules in the open world!</p>
             </a>
 
-            <a href="contact.html" style="text-decoration: none; color: #333; width: 220px; background-color: #e0f2f1; padding: 25px; border-radius: 15px; border: 2px solid #80cbc4; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
+            <a href="contact.html" class="card-shortcut" style="background-color: #e0f2f1; border: 2px solid #80cbc4;">
                 <h1 style="font-size: 45px; margin: 0;">💡</h1>
-                <h3 style="margin: 15px 0 10px 0; color: #00695c;">Ask a Scientist</h3>
-                <p style="font-size: 14px; color: #555; line-height: 1.5;">Stuck on an experiment? Drop your questions here.</p>
+                <h3 style="margin: 15px 0 10px 0;">Ask a Scientist</h3>
+                <p style="font-size: 14px; line-height: 1.5;">Stuck on an experiment? Drop your questions here.</p>
             </a>
-
         </div>
 
         <!-- Science Motivation Quote -->
-        <div style="background-color: #e1f5fe; border-left: 8px solid #03a9f4; padding: 20px; border-radius: 8px; max-width: 650px; margin: 0 auto 40px auto; text-align: left;">
-            <p style="margin: 0; font-size: 16px; font-style: italic; color: #01579b; line-height: 1.6;">
+        <div class="quote-container">
+            <p class="quote-text" style="margin: 0; font-size: 16px; font-style: italic; line-height: 1.6;">
                 "Science is a way of thinking much more than it is a body of knowledge." <br> 
                 <span style="font-weight: bold; font-style: normal; margin-top: 10px; display: inline-block;">— Carl Sagan (Astronomer)</span>
             </p>
         </div>
 
-        <!-- ========================================== -->
-        <!-- PANEL KAWAN (ADD FRIEND SYSTEM UI)       -->
-        <!-- ========================================== -->
-        <div style="max-width: 500px; margin: 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; border: 2px solid #bce0fd; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-            <h3 style="color: #1a2a6c; margin-top: 0; border-bottom: 2px solid #00c6ff; padding-bottom: 8px;">👥 Scientist Friend System</h3>
+        <!-- MISI HARIAN & DAILY STREAK PANEL -->
+        <div class="panel-box quest-panel" style="background: #fff8e1; border-color: #ffe082;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ffb300; padding-bottom: 8px;">
+                <h3 style="margin: 0; color: #b78103;">🔥 Daily Streak & Quests</h3>
+                <span id="paparanStreak" style="background: #ffecb3; color: #e65100; font-weight: bold; padding: 4px 12px; border-radius: 20px; font-size: 13px;">🔥 1 Day Streak</span>
+            </div>
+            <div style="margin-top: 12px; font-size: 13px;">
+                <div class="quest-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: white; padding: 8px; border-radius: 6px; border: 1px solid #ffe082;">
+                    <span>1. Jawab 1 Kuiz Sains (+20 XP)</span>
+                    <button id="btnQuest1" onclick="tuntutQuest(1)" style="background: #28a745; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">Claim</button>
+                </div>
+                <div class="quest-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; background: white; padding: 8px; border-radius: 6px; border: 1px solid #ffe082;">
+                    <span>2. Semak 1 Kad Imbasan DLP (+15 XP)</span>
+                    <button id="btnQuest2" onclick="tuntutQuest(2)" style="background: #28a745; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">Claim</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KAD IMBASAN DLP INTERAKTIF (3D FLASHCARDS) -->
+        <div class="panel-box flashcard-panel" style="background: #e8f5e9; border-color: #a5d6a7;">
+            <h3 style="margin-top: 0; color: #2e7d32; border-bottom: 2px solid #81c784; padding-bottom: 6px;">🃏 Kad Imbasan DLP (Flashcards)</h3>
+            <p style="font-size: 12px; color: #555; margin-bottom: 5px;">Klik kad untuk melihat definisi/istilah Bahasa Melayu!</p>
             
-            <!-- Bahagian Cari Kawan -->
+            <div class="flashcard-container" id="cardDLPContainer" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <h2 id="fcTajukEn" style="margin: 0; color: #0d47a1;">Poikilothermic</h2>
+                        <span style="font-size: 11px; color: #777; margin-top: 8px;">(Click to flip 🔄)</span>
+                    </div>
+                    <div class="flashcard-back">
+                        <h3 id="fcMaksudBm" style="margin: 0;">Poikiloterma</h3>
+                        <p id="fcPenerangan" style="font-size: 12px; margin-top: 6px; line-height: 1.4;">Organisma yang mempunyai suhu badan yang berubah-ubah mengikut suhu persekitaran.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <button onclick="kadSeterusnya(-1)" style="background: #2e7d32; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">⬅️ Sebelum</button>
+                <span id="fcNombor" style="font-size: 12px; font-weight: bold; color: #1b5e20;">1 / 4</span>
+                <button onclick="kadSeterusnya(1)" style="background: #2e7d32; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;">Seterusnya ➡️</button>
+            </div>
+        </div>
+
+        <!-- Leaderboard Panel -->
+        <div class="leaderboard-panel">
+            <h3 style="margin-top: 0; color: #6a1b9a; border-bottom: 2px solid #ab47bc; padding-bottom: 8px;">🏆 Top 5 Scientists Leaderboard</h3>
+            
+            <div style="background: #ffffff; padding: 10px; border-radius: 8px; border: 1px solid #e1bee7; margin-bottom: 12px; text-align: center;">
+                <span style="font-size: 11px; font-weight: bold; color: #8e24aa;">👑 SAINTIS TERUNGGUL MINGGU INI</span>
+                <div id="hallOfFameSpotlight" style="font-weight: bold; font-size: 14px; color: #4a148c; margin-top: 4px;">🏆 Loading Top Scientist...</div>
+            </div>
+
+            <div id="senaraiLeaderboard" style="min-height: 50px; font-size: 13px;">
+                <div style="text-align: center; color: #888888; padding: 10px;">Memuatkan carta kedudukan...</div>
+            </div>
+        </div>
+
+        <!-- Quiz & XP Panel -->
+        <div class="quiz-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ffb300; padding-bottom: 8px; margin-bottom: 12px;">
+                <h3 style="margin: 0; color: #b78103;">🧪 Kuiz Mini & Status XP</h3>
+                <span id="paparanXP" style="background: #ffecb3; color: #b78103; font-weight: bold; padding: 4px 12px; border-radius: 20px; font-size: 14px;">⭐ 0 XP</span>
+            </div>
+
+            <!-- Chapter Selection Dropdown -->
+            <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <label style="font-size: 12px; font-weight: bold; color: #b78103;">Pilih Bab:</label>
+                <select id="pilihBabKuiz" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #ffb300; font-size: 12px; flex: 1;">
+                    <option value="semua">Semua Bab (Mix)</option>
+                    <option value="1">Bab 1: Biodiversity</option>
+                    <option value="2">Bab 2: Ecosystem</option>
+                    <option value="3">Bab 3: Nutrition</option>
+                    <option value="4">Bab 4: Human Health</option>
+                    <option value="5">Bab 5: Water & Solution</option>
+                    <option value="6">Bab 6: Acid & Alkali</option>
+                </select>
+            </div>
+
+            <!-- XP Progress Bar -->
+            <div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; color: #888888;">
+                    <span>Kemajuan Lencana</span>
+                    <span id="teksPeratusXP">0%</span>
+                </div>
+                <div class="xp-bar-bg">
+                    <div id="xpBarFill" class="xp-bar-fill"></div>
+                </div>
+            </div>
+
+            <!-- Badges Container -->
             <div style="margin-bottom: 15px;">
-                <label style="font-size: 13px; font-weight: bold; color: #333; display: block; margin-bottom: 5px;">Add Friend by Name:</label>
+                <span style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">🎖️ Lencana Pencapaian:</span>
+                <div id="bekasLencana">
+                    <span style="font-size: 12px; color: #888888;">Selesaikan kuiz untuk membuka lencana!</span>
+                </div>
+            </div>
+
+            <!-- Quiz Question Box -->
+            <div id="kotakSoalanKuiz">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                    <h4 id="teksSoalan" style="margin: 10px 0; font-size: 15px; flex: 1;">Memuatkan soalan harian...</h4>
+                    <button onclick="sebutSoalan()" title="Dengar sebutan DLP" style="background: #e0f2f1; border: 1px solid #80cbc4; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 14px; margin-top: 6px;">🔊</button>
+                </div>
+                <div id="bekasPilihan"></div>
+            </div>
+        </div>
+
+        <!-- KEDAI XP (GELARAN & BINGKAI PROFIL) -->
+        <div class="panel-box shop-panel" style="background: #e0f7fa; border-color: #80deea;">
+            <h3 style="margin-top: 0; color: #00838f; border-bottom: 2px solid #4dd0e1; padding-bottom: 6px;">🛍️ Kedai XP (Gelaran & Bingkai)</h3>
+            <p style="font-size: 12px; color: #555; margin-bottom: 10px;">Gunakan XP untuk membuka gelaran khas & bingkai avatar!</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+                <div class="shop-item" style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 8px; border-radius: 6px; border: 1px solid #b2ebf2;">
+                    <span>🏷️ Gelaran: <b>Pakar Ekosistem</b> (100 XP)</span>
+                    <button onclick="beliGelaran('Pakar Ekosistem', 100)" style="background: #00838f; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold;">Tebus</button>
+                </div>
+                <div class="shop-item" style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 8px; border-radius: 6px; border: 1px solid #b2ebf2;">
+                    <span>✨ Bingkai: <b>Gold Glow Frame</b> (150 XP)</span>
+                    <button onclick="beliBingkai('frame-gold', 150)" style="background: #00838f; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold;">Tebus</button>
+                </div>
+                <div class="shop-item" style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 8px; border-radius: 6px; border: 1px solid #b2ebf2;">
+                    <span>⚡ Bingkai: <b>Neon Cyber Border</b> (200 XP)</span>
+                    <button onclick="beliBingkai('frame-neon', 200)" style="background: #00838f; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold;">Tebus</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friend System Panel -->
+        <div class="panel-kawan" style="max-width: 500px; margin: 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; border: 2px solid #bce0fd; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <h3 style="margin-top: 0; border-bottom: 2px solid #00c6ff; padding-bottom: 8px;">👥 Scientist Friend System</h3>
+            
+            <!-- User Status Profile Box -->
+            <div id="statusProfilSaya" style="font-size: 13px; font-weight: bold; margin-bottom: 10px; padding: 10px 14px; background: #e3f2fd; border-radius: 8px; border: 1px solid #90caf9; color: #0052D4;">
+                👤 Profil Saya: <b>Memuatkan...</b>
+            </div>
+
+            <!-- Avatar Selector -->
+            <div style="margin-bottom: 15px; padding: 8px; background: #ffffff; border-radius: 8px; border: 1px dashed #bce0fd;">
+                <span style="font-size: 11px; font-weight: bold; color: #555555; display: block; margin-bottom: 5px;">Pilih Avatar Saintis Kitak:</span>
+                <div style="display: flex; gap: 6px; justify-content: center;">
+                    <button class="avatar-opt-btn" onclick="tukarAvatarPemain('🔬')">🔬</button>
+                    <button class="avatar-opt-btn" onclick="tukarAvatarPemain('🚀')">🚀</button>
+                    <button class="avatar-opt-btn" onclick="tukarAvatarPemain('🧬')">🧬</button>
+                    <button class="avatar-opt-btn" onclick="tukarAvatarPemain('🧪')">🧪</button>
+                    <button class="avatar-opt-btn" onclick="tukarAvatarPemain('⚛️')">⚛️</button>
+                    <button class="avatar-opt-btn" onclick="tukarAvatarPemain('🧫')">🧫</button>
+                </div>
+            </div>
+
+            <!-- Add Friend -->
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 5px;">Add Friend by Name:</label>
                 <div style="display: flex; gap: 8px;">
                     <input type="text" id="cariNamaKawan" placeholder="E.g: Fatimah" style="flex: 1; padding: 10px; border: 1px solid #bce0fd; border-radius: 6px; font-size: 14px;">
                     <button onclick="hantarJemputanKawan()" style="background-color: #0052D4; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px;">Add +</button>
                 </div>
             </div>
 
-            <!-- Senarai Jemputan Masuk (Pending Requests) -->
+            <!-- Pending Requests -->
             <div style="margin-bottom: 15px;">
-                <h4 style="color: #1a2a6c; font-size: 14px; margin-bottom: 5px;">📥 Friend Requests:</h4>
-                <div id="senaraiJemputan" style="font-size: 13px; color: #555; background: white; padding: 10px; border-radius: 6px; border: 1px solid #eee; min-height: 35px;">No pending requests</div>
+                <h4 style="font-size: 14px; margin-bottom: 5px;">📥 Friend Requests:</h4>
+                <div id="senaraiJemputan" class="senarai-box" style="font-size: 13px; background: white; padding: 10px; border-radius: 6px; border: 1px solid #eeeeee; min-height: 35px;">No pending requests</div>
             </div>
 
-            <!-- Senarai Kawan Aktif -->
+            <!-- Friends List -->
             <div>
-                <h4 style="color: #1a2a6c; font-size: 14px; margin-bottom: 5px;">🌟 My Friends List:</h4>
-                <div id="senaraiKawanContainer" style="font-size: 13px; color: #555; background: white; padding: 10px; border-radius: 6px; border: 1px solid #eee; min-height: 35px;">No friends added yet.</div>
+                <h4 style="font-size: 14px; margin-bottom: 5px;">🌟 My Friends List:</h4>
+                <div id="senaraiKawanContainer" style="font-size: 13px; min-height: 35px;">No friends added yet.</div>
             </div>
         </div>
 
     </div>
 
-    <!-- FOOTER SECTION -->
+    <!-- MODAL ARENA QUIZ BATTLE 1-LAWAN-1 -->
+    <div id="modalQuizBattle" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:30px; border-radius:15px; max-width:500px; width:90%; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5); border: 4px solid #ff9800;">
+            <h2 style="color:#e65100; margin-top:0; font-size: 26px;">⚔️ QUIZ BATTLE ARENA ⚔️</h2>
+            
+            <div style="display:flex; justify-content:space-around; background:#fff3e0; padding:12px; border-radius:10px; margin-bottom:15px; font-weight:bold; border: 1px solid #ffe082;">
+                <div id="skorSayaBattle" style="color: #0052D4; font-size: 15px;">Kitak: 0 pts</div>
+                <div style="color:#d32f2f; font-size: 18px;">VS</div>
+                <div id="skorLawanBattle" style="color: #c62828; font-size: 15px;">Lawan: 0 pts</div>
+            </div>
+
+            <h4 id="soalanBattleTeks" style="font-size: 16px; margin: 20px 0; min-height: 50px; text-align: left;">Memuatkan soalan...</h4>
+            <div id="pilihanBattleContainer"></div>
+
+            <button onclick="keluarBattle()" style="margin-top:20px; background:#757575; color:white; border:none; padding:10px 20px; border-radius:6px; font-weight:bold; cursor:pointer;">Keluar Battle 🚪</button>
+        </div>
+    </div>
+
+    <!-- Mini Popup Chat Box -->
+    <div id="kotakSembangPopup">
+        <div class="chat-header">
+            <span id="tajukRakanChat">💬 Sembang</span>
+            <button onclick="tutupKotakChat()" style="background:none; border:none; color:white; font-size:16px; cursor:pointer; font-weight:bold;">✖</button>
+        </div>
+        <div class="chat-messages" id="bekasMesejChat">
+            <div style="text-align: center; color: #888888; font-size: 12px; margin-top: 20px;">Sedia untuk bersembang!</div>
+        </div>
+        <div class="chat-input-box">
+            <input type="text" id="inputMesejChat" placeholder="Tulis mesej..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px;" onkeypress="jikaTekanEnter(event)">
+            <button onclick="hantarMesejChat()" style="background: #0052D4; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">Hantar</button>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
     <footer class="footer">
         <div class="visitor-counter">
             📡 Visitor Scan Data: <span id="angkaPelawat">Loading...</span>
@@ -228,14 +911,16 @@
         <br>
         All rights reserved &copy; <span class="highlight">Virtual Lab 2026</span>
         <br>
-        <span style="font-size: 12px; color: #777;">Core System: gramalab</span>
+        <span style="font-size: 12px; color: #777777;">Core System: gramalab</span>
+
+        <div id="toast-container"></div>
     </footer>
 
-    <!-- FIREBASE SYSTEM & ADD FRIEND LOGIC -->
+    <!-- Firebase Realtime Database & System Scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-        import { getDatabase, ref, runTransaction, onValue, get, set, remove, push } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+        import { getDatabase, ref, onValue, get, set, remove, push, onDisconnect, update, off } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBAtbX6wmdNwmXkgUvewnfRRXRTfyq5IZ8",
@@ -250,97 +935,650 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app); 
-        
-        const rujukanPelawat = ref(db, "statistik_sains/jumlah_pelawat");
 
-        // 1. Pelawat Live Counter
+        // Penormalan Kunci Firebase
+        function getSafeKey(nama) {
+            if (!nama) return "guest";
+            return nama.trim().toLowerCase().replace(/[.#$\[\]\/ ]/g, "_");
+        }
+
+        // Pembersihan Teks untuk HTML Onclick
+        function escapeHtmlAttr(str) {
+            if (!str) return "";
+            return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+        }
+
+        // Kesan Bunyi Interaktif (SFX Web Audio)
+        window.playSFX = function(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
+                    osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.4);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, ctx.currentTime);
+                    osc.frequency.setValueAtTime(160, ctx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.35);
+                } else if (type === 'chat') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.1);
+                }
+            } catch(e) {}
+        };
+
+        // 1. Mod Gelap Toggle
+        window.toggleDarkMode = function() {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            const btn = document.getElementById("btnDarkMode");
+            if (btn) btn.innerText = isDark ? "☀️ Mod Terang" : "🌙 Mod Gelap";
+        };
+
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            const btn = document.getElementById("btnDarkMode");
+            if (btn) btn.innerText = "☀️ Mod Terang";
+        }
+
+        // 2. Toast System
+        window.showToast = function(message, type = 'info') {
+            const container = document.getElementById("toast-container");
+            if (!container) return;
+            const toast = document.createElement("div");
+            toast.className = `toast-msg ${type}`;
+            
+            let icon = "ℹ️";
+            if (type === "success") icon = "✅";
+            if (type === "error") icon = "❌";
+            
+            toast.innerHTML = `<span class="icon">${icon}</span> <span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = "fadeOut 0.4s forwards";
+                setTimeout(() => { toast.remove(); }, 400);
+            }, 3000);
+        };
+
+        // 3. Counter Pelawat Realtime
+        const rujukanPelawat = ref(db, "statistik_sains/jumlah_pelawat");
         onValue(rujukanPelawat, (snapshot) => {
             const jumlahTerkini = snapshot.val();
-            if (jumlahTerkini) document.getElementById("angkaPelawat").innerText = jumlahTerkini.toLocaleString();
-            else document.getElementById("angkaPelawat").innerText = "0";
-        });
-
-        // 2. Logik Pelawat Unik
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const rujukanSemak = ref(db, "statistik_sains/senarai_pelawat/" + user.uid);
-                get(rujukanSemak).then((snapshot) => {
-                    if (!snapshot.exists()) {
-                        runTransaction(rujukanPelawat, (jumlahSemasa) => {
-                            return (jumlahSemasa || 0) + 1;
-                        }).then(() => {
-                            set(rujukanSemak, true);
-                        }).catch((error) => {
-                            console.error("Ralat menambah pelawat:", error);
-                        });
-                    }
-                });
+            const elem = document.getElementById("angkaPelawat");
+            if (elem) {
+                elem.innerText = jumlahTerkini ? jumlahTerkini.toLocaleString() : "0";
             }
         });
 
-// ==========================================
-        // SISTEM KAWAN (ADD FRIEND) - VERSI STABIL
-        // ==========================================
-        let namaPemainSaya = "";
+        // FLASHCARDS DATA & LOGIK 3D FLIP
+        const dataFlashcards = [
+            { en: "Poikilothermic", bm: "Poikiloterma", desc: "Organisma yang mempunyai suhu badan yang berubah-ubah mengikut suhu persekitaran." },
+            { en: "Homeothermic", bm: "Homeoterma", desc: "Organisma yang mempunyai suhu badan yang tetap dan bebas daripada pengaruh suhu persekitaran." },
+            { en: "Neutralisation", bm: "Peneutralan", desc: "Tindak balas antara asid dan alkali untuk menghasilkan garam dan air." },
+            { en: "Pathogen", bm: "Patogen", desc: "Mikroorganisma berbahaya yang menyebabkan penyakit." }
+        ];
 
-        // Dapatkan nama pengguna secara automatik apabila auth atau input siap
+        let fcIndex = 0;
+        window.kadSeterusnya = function(dir) {
+            fcIndex = (fcIndex + dir + dataFlashcards.length) % dataFlashcards.length;
+            const container = document.getElementById("cardDLPContainer");
+            if (container) container.classList.remove('flipped');
+            
+            setTimeout(() => {
+                document.getElementById("fcTajukEn").innerText = dataFlashcards[fcIndex].en;
+                document.getElementById("fcMaksudBm").innerText = dataFlashcards[fcIndex].bm;
+                document.getElementById("fcPenerangan").innerText = dataFlashcards[fcIndex].desc;
+                document.getElementById("fcNombor").innerText = `${fcIndex + 1} / ${dataFlashcards.length}`;
+            }, 200);
+        };
+
+        // QUESTS HARIAN & DAILY STREAK
+        window.tuntutQuest = function(qId) {
+            if (!window.namaPemainSaya) return;
+            const safeKey = getSafeKey(window.namaPemainSaya);
+            const reward = qId === 1 ? 20 : 15;
+            
+            tambahXPPemain(safeKey, reward);
+            showToast(`Misi ${qId} Diselesaikan! +${reward} XP 🎉`, "success");
+            const btn = document.getElementById(`btnQuest${qId}`);
+            if (btn) { 
+                btn.disabled = true; 
+                btn.innerText = "Done ✅"; 
+                btn.style.background = "#aaa"; 
+            }
+        };
+
+        // KEDAI XP (GELARAN & BINGKAI)
+        window.beliGelaran = function(gelaran, kos) {
+            if (!window.namaPemainSaya) return;
+            const safeKey = getSafeKey(window.namaPemainSaya);
+            
+            get(ref(db, "kawan_sistem_v2/" + safeKey + "/xp")).then((snap) => {
+                const xp = snap.val() || 0;
+                if (xp >= kos) {
+                    set(ref(db, "kawan_sistem_v2/" + safeKey + "/xp"), xp - kos);
+                    set(ref(db, "kawan_sistem_v2/" + safeKey + "/gelaran"), gelaran);
+                    showToast(`Gelaran '${gelaran}' ditebus!`, "success");
+                } else {
+                    showToast(`XP tidak mencukupi! Perlu ${kos} XP.`, "error");
+                }
+            });
+        };
+
+        window.beliBingkai = function(bingkaiClass, kos) {
+            if (!window.namaPemainSaya) return;
+            const safeKey = getSafeKey(window.namaPemainSaya);
+            
+            get(ref(db, "kawan_sistem_v2/" + safeKey + "/xp")).then((snap) => {
+                const xp = snap.val() || 0;
+                if (xp >= kos) {
+                    set(ref(db, "kawan_sistem_v2/" + safeKey + "/xp"), xp - kos);
+                    set(ref(db, "kawan_sistem_v2/" + safeKey + "/bingkai"), bingkaiClass);
+                    showToast(`Bingkai ditebus & dipakai!`, "success");
+                } else {
+                    showToast(`XP tidak mencukupi! Perlu ${kos} XP.`, "error");
+                }
+            });
+        };
+
+        // 4. Bank Soalan Kuiz Sains Form 2
+        const senaraiSoalan = [
+            { bab: 1, soalan: "1. Which of the following is an example of a poikilothermic vertebrate?", pilihan: ["A) Cat", "B) Frog", "C) Eagle", "D) Whale"], jawapan: 1 },
+            { bab: 1, soalan: "2. What is the importance of biodiversity to humans?", pilihan: ["A) Providing food sources", "B) Reducing species diversity", "C) Increasing pollution", "D) Eliminating an ecosystem"], jawapan: 0 },
+            { bab: 2, soalan: "3. Which interaction benefits one organism while the other is neither harmed nor benefited?", pilihan: ["A) Mutualism", "B) Commensalism", "C) Parasitism", "D) Competition"], jawapan: 1 },
+            { bab: 3, soalan: "4. Which enzyme is secreted in the stomach to digest proteins?", pilihan: ["A) Amylase", "B) Lipase", "C) Pepsin", "D) Maltase"], jawapan: 2 },
+            { bab: 4, soalan: "5. Which component of blood plays a major role in clotting wounds?", pilihan: ["A) Red blood cells", "B) White blood cells", "C) Platelets", "D) Plasma"], jawapan: 2 },
+            { bab: 4, soalan: "6. Which of the following diseases is classified as a non-infectious disease?", pilihan: ["A) Dengue fever", "B) Tuberculosis", "C) Diabetes", "D) Influenza"], jawapan: 2 },
+            { bab: 5, soalan: "7. What is the pH value of a neutral solution such as pure water?", pilihan: ["A) pH 2", "B) pH 7", "C) pH 11", "D) pH 14"], jawapan: 1 },
+            { bab: 5, soalan: "8. What is the universal solvent commonly used to dissolve ionic and polar substances?", pilihan: ["A) Alcohol", "B) Kerosene", "C) Water", "D) Acetone"], jawapan: 2 },
+            { bab: 6, soalan: "9. What color does blue litmus paper turn when dipped into an acidic solution?", pilihan: ["A) Red", "B) Yellow", "C) Green", "D) Remains Blue"], jawapan: 0 },
+            { bab: 6, soalan: "10. What reaction occurs when an acid reacts with an alkali?", pilihan: ["A) Evaporation", "B) Neutralisation", "C) Condensation", "D) Oxidation"], jawapan: 1 }
+        ];
+
+        let soalanSemasaIndex = 0;
+        let senaraiSoalanFiltered = [...senaraiSoalan];
+
+        const dropdownBab = document.getElementById("pilihBabKuiz");
+        if (dropdownBab) {
+            dropdownBab.addEventListener("change", function(e) {
+                const val = e.target.value;
+                if (val === "semua") {
+                    senaraiSoalanFiltered = [...senaraiSoalan];
+                } else {
+                    senaraiSoalanFiltered = senaraiSoalan.filter(q => q.bab == val);
+                }
+                soalanSemasaIndex = 0;
+                if (senaraiSoalanFiltered.length > 0) {
+                    paparkanSoalanKuiz(getSafeKey(window.namaPemainSaya));
+                } else {
+                    const teks = document.getElementById("teksSoalan");
+                    const bekas = document.getElementById("bekasPilihan");
+                    if (teks) teks.innerText = "Tiada soalan untuk bab ini lagi.";
+                    if (bekas) bekas.innerHTML = "";
+                }
+            });
+        }
+
+        function paparkanSoalanKuiz(safeKeyNama) {
+            if (senaraiSoalanFiltered.length === 0) return;
+            const q = senaraiSoalanFiltered[soalanSemasaIndex];
+            const teks = document.getElementById("teksSoalan");
+            const bekas = document.getElementById("bekasPilihan");
+            if (!teks || !bekas) return;
+
+            teks.innerText = q.soalan;
+            bekas.innerHTML = "";
+
+            q.pilihan.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "quiz-opt-btn";
+                btn.innerText = opt;
+                btn.onclick = () => semakJawapanKuiz(idx, q.jawapan, safeKeyNama);
+                bekas.appendChild(btn);
+            });
+        }
+
+        function semakJawapanKuiz(pilihanPemain, jawapanBetul, safeKeyNama) {
+            if (pilihanPemain === jawapanBetul) {
+                playSFX('correct');
+                showToast("Jawapan Tepat! Anda mendapat +50 XP 🎉", "success");
+                tambahXPPemain(safeKeyNama, 50);
+                soalanSemasaIndex = (soalanSemasaIndex + 1) % senaraiSoalanFiltered.length;
+                setTimeout(() => paparkanSoalanKuiz(safeKeyNama), 1000);
+            } else {
+                playSFX('wrong');
+                showToast("Jawapan kurang tepat. Cuba lagi!", "error");
+            }
+        }
+
+        // Sebutan Audio DLP (Text-to-Speech)
+        window.sebutSoalan = function() {
+            if (senaraiSoalanFiltered.length === 0) return;
+            const q = senaraiSoalanFiltered[soalanSemasaIndex];
+            if (!q) return;
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(q.soalan);
+                utter.lang = 'en-US';
+                utter.rate = 0.9;
+                window.speechSynthesis.speak(utter);
+            } else {
+                showToast("Fungsi sebutan audio tidak disokong di pelayar ini.", "error");
+            }
+        };
+
+        function tambahXPPemain(safeKeyNama, amaunXP) {
+            const rujukanXP = ref(db, "kawan_sistem_v2/" + safeKeyNama + "/xp");
+            get(rujukanXP).then((snap) => {
+                const xpSemasa = snap.val() || 0;
+                const xpBaru = xpSemasa + amaunXP;
+                set(rujukanXP, xpBaru);
+                kemaskiniLencanaPemain(safeKeyNama, xpBaru);
+            });
+        }
+
+        function muatKuizDanXP(safeKeyNama) {
+            const rujukanXP = ref(db, "kawan_sistem_v2/" + safeKeyNama + "/xp");
+            onValue(rujukanXP, (snap) => {
+                const xp = snap.val() || 0;
+                const paparan = document.getElementById("paparanXP");
+                if (paparan) paparan.innerText = `⭐ ${xp} XP`;
+                kemaskiniLencanaPemain(safeKeyNama, xp);
+            });
+
+            paparkanSoalanKuiz(safeKeyNama);
+        }
+
+        function kemaskiniLencanaPemain(safeKeyNama, xp) {
+            const bekasLencana = document.getElementById("bekasLencana");
+            const fill = document.getElementById("xpBarFill");
+            const peratusTeks = document.getElementById("teksPeratusXP");
+            if (!bekasLencana) return;
+            let htmlLencana = "";
+
+            let targetXP = 300;
+            let peratus = Math.min(Math.round((xp / targetXP) * 100), 100);
+            if (fill) fill.style.width = peratus + "%";
+            if (peratusTeks) peratusTeks.innerText = peratus + "%";
+
+            if (xp >= 50) htmlLencana += `<span class="badge-pill">🥉 Junior Scientist</span>`;
+            if (xp >= 150) htmlLencana += `<span class="badge-pill">🥈 Bio Explorer</span>`;
+            if (xp >= 300) htmlLencana += `<span class="badge-pill">🥇 Master Chemist</span>`;
+
+            if (htmlLencana === "") {
+                bekasLencana.innerHTML = `<span style="font-size: 12px; color: #888888;">Belum ada lencana (Kumpul 50 XP untuk Lencana Pertama)</span>`;
+            } else {
+                bekasLencana.innerHTML = htmlLencana;
+            }
+        }
+
+        // Tukar Avatar
+        window.tukarAvatarPemain = function(avatarIkon) {
+            if (!window.namaPemainSaya) return;
+            const safeKeyNama = getSafeKey(window.namaPemainSaya);
+            set(ref(db, "kawan_sistem_v2/" + safeKeyNama + "/avatar"), avatarIkon).then(() => {
+                showToast("Avatar ditukar ke " + avatarIkon, "success");
+            });
+        };
+
+        // 5. Leaderboard Top 5 & Hall of Fame Spotlight
+        function muatLeaderboard() {
+            const rujukanKawanSistem = ref(db, "kawan_sistem_v2");
+            onValue(rujukanKawanSistem, (snapshot) => {
+                const data = snapshot.val();
+                const bekas = document.getElementById("senaraiLeaderboard");
+                if (!bekas) return;
+                bekas.innerHTML = "";
+
+                if (!data) {
+                    bekas.innerHTML = "<div style='color:#888888; padding: 10px; text-align:center;'>Belum ada data saintis.</div>";
+                    return;
+                }
+
+                let senaraiPemain = [];
+                for (let key in data) {
+                    let userObj = data[key];
+                    let namaFormat = userObj.nama_asal || key.replace(/_/g, " ");
+                    let xpVal = userObj.xp || 0;
+                    let av = userObj.avatar || "👨‍🔬";
+                    let gelaranVal = userObj.gelaran || "";
+                    let bingkaiVal = userObj.bingkai || "";
+                    senaraiPemain.push({ nama: namaFormat, xp: xpVal, avatar: av, gelaran: gelaranVal, bingkai: bingkaiVal });
+                }
+
+                senaraiPemain.sort((a, b) => b.xp - a.xp);
+
+                if (senaraiPemain.length > 0) {
+                    const spotlightElem = document.getElementById("hallOfFameSpotlight");
+                    if (spotlightElem) {
+                        spotlightElem.innerText = `🏆 ${senaraiPemain[0].nama} ${senaraiPemain[0].gelaran ? '(' + senaraiPemain[0].gelaran + ')' : ''} — ${senaraiPemain[0].xp} XP`;
+                    }
+                }
+
+                const top5 = senaraiPemain.slice(0, 5);
+                top5.forEach((p, index) => {
+                    let pingat = `${index + 1}.`;
+                    if (index === 0) pingat = "🥇";
+                    if (index === 1) pingat = "🥈";
+                    if (index === 2) pingat = "🥉";
+
+                    const div = document.createElement("div");
+                    div.className = "leaderboard-item";
+                    div.innerHTML = `
+                        <span>${pingat} <span class="${p.bingkai}">${p.avatar}</span> ${p.nama} <small style="color:#8e24aa;">${p.gelaran ? '[' + p.gelaran + ']' : ''}</small></span>
+                        <span style="color: #ffb300;">⭐ ${p.xp} XP</span>
+                    `;
+                    bekas.appendChild(div);
+                });
+            });
+        }
+
+        muatLeaderboard();
+
+        // 6. Pengurusan Sesi, Kawan & Chat Realtime
+        window.namaPemainSaya = "";
+        let chatIDSemasa = "";
+        let unsubscribeChatListener = null;
+        let friendStatusListeners = {};
+
+        // SISTER ARENA QUIZ BATTLE REAL-TIME
+        let activeBattleRoomId = null;
+
         onAuthStateChanged(auth, (user) => {
+            const butangLogin = document.getElementById("btnLogMasuk");
+
             if (user) {
                 user.reload().then(() => {
-                    namaPemainSaya = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
-                    mulakanSistemKawan(namaPemainSaya);
+                    window.namaPemainSaya = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+                    mulakanSistemKawan(window.namaPemainSaya);
+                    
+                    if (butangLogin) {
+                        butangLogin.innerHTML = `Logout (${window.namaPemainSaya}) 🚪`;
+                        butangLogin.href = "#";
+                        butangLogin.onclick = function(e) {
+                            e.preventDefault();
+                            if(confirm("Adakah kitak pasti mahu log keluar?")) {
+                                if (window.namaPemainSaya) {
+                                    var safeKeyNama = getSafeKey(window.namaPemainSaya);
+                                    set(ref(db, "kawan_sistem_v2/" + safeKeyNama + "/status_online"), false);
+                                }
+
+                                signOut(auth).then(() => {
+                                    sessionStorage.clear();
+                                    localStorage.clear();
+                                    showToast("Sesi ditamatkan. Berjaya log keluar!", "success");
+                                    setTimeout(() => { window.location.href = "login.html"; }, 1500);
+                                }).catch((error) => {
+                                    showToast("Ralat log keluar: " + error, "error");
+                                });
+                            }
+                        };
+                    }
                 });
             } else {
-                // Jika pelawat biasa, minta atau guna nama sementara
-                namaPemainSaya = prompt("Sila masukkan nama Saintis (Nickname) kitak:") || "Junior Scientist";
-                mulakanSistemKawan(namaPemainSaya);
+                localStorage.removeItem("saintis_nickname");
+
+                let savedName = sessionStorage.getItem("saintis_nickname");
+                if (!savedName) {
+                    savedName = prompt("Sila masukkan nama Saintis (Nickname) kitak:") || "Junior_Scientist";
+                    sessionStorage.setItem("saintis_nickname", savedName);
+                }
+                window.namaPemainSaya = savedName;
+                mulakanSistemKawan(window.namaPemainSaya);
+                
+                if (butangLogin) {
+                    butangLogin.innerHTML = "Login 👨‍🔬";
+                    butangLogin.href = "login.html";
+                    butangLogin.onclick = null;
+                }
             }
         });
 
         function mulakanSistemKawan(namaSahih) {
-            // Bersihkan nama untuk jadikan kunci database yang sah
-            var safeKeyNama = namaSahih.trim().replace(/[.#$\[\]\/]/g, "_");
+            var safeKeyNama = getSafeKey(namaSahih);
             
-            // Dengar jemputan masuk berdasarkan nama
+            set(ref(db, "kawan_sistem_v2/" + safeKeyNama + "/nama_asal"), namaSahih);
+
+            onValue(ref(db, "kawan_sistem_v2/" + safeKeyNama), (snap) => {
+                const u = snap.val() || {};
+                let currentAv = u.avatar || "👨‍🔬";
+                let gelaranText = u.gelaran ? ` <i>[${u.gelaran}]</i>` : '';
+                let bingkaiClass = u.bingkai || '';
+                const statusProfilBox = document.getElementById("statusProfilSaya");
+                if (statusProfilBox) {
+                    statusProfilBox.innerHTML = `👤 Profil Saya: <span class="avatar-badge ${bingkaiClass}">${currentAv}</span><b>${namaSahih}</b>${gelaranText} | Status: 🟢 <span style="color: #28a745;">Online</span>`;
+                }
+            });
+
+            const statusOnlineSaya = ref(db, "kawan_sistem_v2/" + safeKeyNama + "/status_online");
+            const connectedRef = ref(db, ".info/connected");
+
+            onValue(connectedRef, (snap) => {
+                if (snap.val() === true) {
+                    set(statusOnlineSaya, true);
+                    onDisconnect(statusOnlineSaya).set(false);
+                }
+            });
+
             dengarJemputanKawan(safeKeyNama);
             muatSenaraiKawan(safeKeyNama);
+            muatKuizDanXP(safeKeyNama);
+            dengarCabaranMasuk(safeKeyNama);
         }
 
-        // 1. Fungsi Hantar Jemputan Kawan Terus ke Nama Sasaran
-        window.hantarJemputanKawan = function() {
-            var namaPenerima = document.getElementById("cariNamaKawan").value.trim();
-            if (namaPenerima === "") {
-                alert("Sila masukkan nama rakan yang ingin dicari!");
-                return;
-            }
-
-            if (namaPenerima.toLowerCase() === namaPemainSaya.toLowerCase()) {
-                alert("Kitak tidak boleh menghantar jemputan kepada diri sendiri!");
-                return;
-            }
-
-            var safeKeyPenerima = namaPenerima.replace(/[.#$\[\]\/]/g, "_");
-            var safeKeyPengirim = namaPemainSaya.replace(/[.#$\[\]\/]/g, "_");
-
-            // Simpan terus ke nod pangkalan data penerima
-            var rujukanJemputan = ref(db, "kawan_sistem_v2/" + safeKeyPenerima + "/jemputan_masuk/" + safeKeyPengirim);
+        // LOGIK MOD CABARAN 1-LAWAN-1 (QUIZ BATTLE ARENA)
+        window.cabarKawan = function(safeTargetKey, namaKawan) {
+            if (!window.namaPemainSaya) return;
+            const safeKeySaya = getSafeKey(window.namaPemainSaya);
+            const roomId = [safeKeySaya, safeTargetKey].sort().join("_VS_");
             
-            set(rujukanJemputan, {
-                namaPengirim: namaPemainSaya,
-                tarikh: new Date().toLocaleTimeString()
+            set(ref(db, "battle_v2/" + roomId), {
+                status: "waiting",
+                pemainA: window.namaPemainSaya,
+                pemainAKey: safeKeySaya,
+                pemainB: namaKawan,
+                pemainBKey: safeTargetKey,
+                skorA: 0,
+                skorB: 0,
+                soalanIdx: 0
             }).then(() => {
-                alert("Jemputan kawan berjaya dihantar kepada " + namaPenerima + "!");
-                document.getElementById("cariNamaKawan").value = "";
-            }).catch((err) => {
-                alert("Ralat menghantar jemputan: " + err);
+                set(ref(db, "kawan_sistem_v2/" + safeTargetKey + "/cabaran_masuk/" + safeKeySaya), {
+                    namaPengirim: window.namaPemainSaya,
+                    roomId: roomId,
+                    pengirimKey: safeKeySaya
+                });
+                showToast("Cabaran dihantar ke " + namaKawan + "! Menunggu rintangan...", "info");
+                pantauLobbyBattle(roomId);
             });
         };
 
-        // 2. Fungsi Dengar Jemputan Masuk Secara Live
-        function dengarJemputanKawan(safeKeyNamaSaya) {
-            var rujukanJemputanSaya = ref(db, "kawan_sistem_v2/" + safeKeyNamaSaya + "/jemputan_masuk");
+        function dengarCabaranMasuk(safeKeyNamaSaya) {
+            onValue(ref(db, "kawan_sistem_v2/" + safeKeyNamaSaya + "/cabaran_masuk"), (snap) => {
+                const data = snap.val();
+                if (data) {
+                    for (let key in data) {
+                        const cab = data[key];
+                        playSFX('chat');
+                        
+                        const container = document.getElementById("toast-container");
+                        if (container) {
+                            const toast = document.createElement("div");
+                            toast.className = "toast-msg info";
+                            toast.style.flexDirection = "column";
+                            toast.style.alignItems = "flex-start";
+                            toast.innerHTML = `
+                                <div><b>⚔️ ${cab.namaPengirim} mencabar kitak Kuiz Battle!</b></div>
+                                <div style="margin-top:8px; display:flex; gap:8px;">
+                                    <button onclick="window.terimaCabaranBattle('${cab.roomId}', '${key}')" style="background:#28a745; color:white; border:none; padding:5px 12px; border-radius:4px; font-weight:bold; cursor:pointer;">Terima ⚔️</button>
+                                    <button onclick="window.tolakCabaranBattle('${key}')" style="background:#dc3545; color:white; border:none; padding:5px 12px; border-radius:4px; font-weight:bold; cursor:pointer;">Tolak ❌</button>
+                                </div>
+                            `;
+                            container.appendChild(toast);
+                        }
+                    }
+                }
+            });
+        }
+
+        window.terimaCabaranBattle = function(roomId, pengirimKey) {
+            remove(ref(db, "kawan_sistem_v2/" + getSafeKey(window.namaPemainSaya) + "/cabaran_masuk/" + pengirimKey));
+            update(ref(db, "battle_v2/" + roomId), { status: "active" }).then(() => {
+                pantauLobbyBattle(roomId);
+            });
+        };
+
+        window.tolakCabaranBattle = function(pengirimKey) {
+            remove(ref(db, "kawan_sistem_v2/" + getSafeKey(window.namaPemainSaya) + "/cabaran_masuk/" + pengirimKey));
+        };
+
+        function pantauLobbyBattle(roomId) {
+            activeBattleRoomId = roomId;
             
-            onValue(rujukanJemputanSaya, function(snapshot) {
+            onValue(ref(db, "battle_v2/" + roomId), (snap) => {
+                const bData = snap.val();
+                if (!bData) {
+                    document.getElementById("modalQuizBattle").style.display = "none";
+                    return;
+                }
+
+                if (bData.status === "active") {
+                    document.getElementById("modalQuizBattle").style.display = "flex";
+                    kemaskiniPaparanBattle(bData);
+                }
+            });
+        }
+
+        function kemaskiniPaparanBattle(bData) {
+            const myKey = getSafeKey(window.namaPemainSaya);
+            const isA = (myKey === bData.pemainAKey);
+            
+            const myScore = isA ? bData.skorA : bData.skorB;
+            const oppScore = isA ? bData.skorB : bData.skorA;
+            const oppName = isA ? bData.pemainB : bData.pemainA;
+
+            document.getElementById("skorSayaBattle").innerText = `Kitak (${window.namaPemainSaya}): ${myScore} pts`;
+            document.getElementById("skorLawanBattle").innerText = `${oppName}: ${oppScore} pts`;
+
+            const currentQIdx = bData.soalanIdx || 0;
+            if (currentQIdx >= senaraiSoalan.length) {
+                let pemenangTeks = "⚔️ BATTLE SELATAN: SERI!";
+                if (myScore > oppScore) {
+                    pemenangTeks = `🎉 KITAK MENANG BATTLE TOK! (+100 XP Bonus)`;
+                    tambahXPPemain(myKey, 100);
+                } else if (oppScore > myScore) {
+                    pemenangTeks = `❌ ${oppName} Menang Battle Tok!`;
+                }
+                
+                document.getElementById("soalanBattleTeks").innerText = pemenangTeks;
+                document.getElementById("pilihanBattleContainer").innerHTML = `<p style="font-weight:bold; color:#0052D4;">Tamat 10 Soalan Cabaran Battle!</p>`;
+                return;
+            }
+
+            const q = senaraiSoalan[currentQIdx];
+            document.getElementById("soalanBattleTeks").innerText = `Soalan ${currentQIdx + 1}/${senaraiSoalan.length}: ${q.soalan}`;
+            
+            const container = document.getElementById("pilihanBattleContainer");
+            container.innerHTML = "";
+            q.pilihan.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "quiz-opt-btn";
+                btn.innerText = opt;
+                btn.onclick = () => jawabSoalanBattle(idx, q.jawapan, bData, isA);
+                container.appendChild(btn);
+            });
+        }
+
+        function jawabSoalanBattle(pilihanIdx, jawapanBetul, bData, isA) {
+            if (pilihanIdx === jawapanBetul) {
+                playSFX('correct');
+                showToast("Jawapan Tepat! +10 Mata Battle 🎉", "success");
+                if (isA) {
+                    update(ref(db, "battle_v2/" + activeBattleRoomId), {
+                        skorA: (bData.skorA || 0) + 10,
+                        soalanIdx: (bData.soalanIdx || 0) + 1
+                    });
+                } else {
+                    update(ref(db, "battle_v2/" + activeBattleRoomId), {
+                        skorB: (bData.skorB || 0) + 10,
+                        soalanIdx: (bData.soalanIdx || 0) + 1
+                    });
+                }
+            } else {
+                playSFX('wrong');
+                showToast("Jawapan Salah! Lanjut ke soalan seterusnya...", "error");
+                update(ref(db, "battle_v2/" + activeBattleRoomId), {
+                    soalanIdx: (bData.soalanIdx || 0) + 1
+                });
+            }
+        }
+
+        window.keluarBattle = function() {
+            document.getElementById("modalQuizBattle").style.display = "none";
+            if (activeBattleRoomId) {
+                remove(ref(db, "battle_v2/" + activeBattleRoomId));
+                activeBattleRoomId = null;
+            }
+        };
+
+        window.hantarJemputanKawan = function() {
+            if (!window.namaPemainSaya) return;
+
+            var namaPenerima = document.getElementById("cariNamaKawan").value.trim();
+            if (namaPenerima === "") {
+                showToast("Sila masukkan nama rakan yang ingin dicari!", "error");
+                return;
+            }
+
+            if (namaPenerima.toLowerCase() === window.namaPemainSaya.toLowerCase()) {
+                showToast("Kitak tidak boleh menghantar jemputan kepada diri sendiri!", "error");
+                return;
+            }
+
+            var safeKeyPenerima = getSafeKey(namaPenerima);
+            var safeKeyPengirim = getSafeKey(window.namaPemainSaya);
+
+            get(ref(db, "kawan_sistem_v2/" + safeKeyPengirim + "/senarai_kawan/" + safeKeyPenerima)).then((snap) => {
+                if (snap.exists()) {
+                    showToast(namaPenerima + " sudah wujud dalam senarai kawan anda!", "error");
+                    return;
+                }
+
+                set(ref(db, "kawan_sistem_v2/" + safeKeyPenerima + "/jemputan_masuk/" + safeKeyPengirim), {
+                    namaPengirim: window.namaPemainSaya,
+                    keyPengirim: safeKeyPengirim,
+                    tarikh: new Date().toLocaleTimeString()
+                }).then(() => {
+                    showToast("Jemputan berjaya dihantar kepada " + namaPenerima + "!", "success");
+                    document.getElementById("cariNamaKawan").value = "";
+                }).catch((err) => {
+                    showToast("Ralat menghantar jemputan: " + err, "error");
+                });
+            });
+        };
+
+        function dengarJemputanKawan(safeKeyNamaSaya) {
+            onValue(ref(db, "kawan_sistem_v2/" + safeKeyNamaSaya + "/jemputan_masuk"), function(snapshot) {
                 var dataJemputan = snapshot.val();
                 var containerJemputan = document.getElementById("senaraiJemputan");
 
@@ -348,9 +1586,15 @@
                     var html = "";
                     for (var pengirimKey in dataJemputan) {
                         var info = dataJemputan[pengirimKey];
-                        html += `<div style="background: #f0f8ff; padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #bce0fd;">
-                            <span style="font-weight: bold; color: #1a2a6c;">${info.namaPengirim}</span>
-                            <button onclick="terimaKawan('${safeKeyNamaSaya}', '${pengirimKey}', '${info.namaPengirim}')" style="background: #28a745; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">Accept</button>
+                        var safePengirimKey = getSafeKey(pengirimKey);
+                        var cleanNama = escapeHtmlAttr(info.namaPengirim);
+
+                        html += `<div class="senarai-box" style="padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #bce0fd;">
+                            <span class="nama-kawan-text" style="font-weight: bold; color: #1a2a6c;">${info.namaPengirim}</span>
+                            <div>
+                                <button onclick="window.terimaKawan('${safeKeyNamaSaya}', '${safePengirimKey}', '${cleanNama}')" style="background: #28a745; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; margin-right: 5px;">Accept</button>
+                                <button onclick="window.tolakKawan('${safeKeyNamaSaya}', '${safePengirimKey}')" style="background: #dc3545; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">Reject</button>
+                            </div>
                         </div>`;
                     }
                     containerJemputan.innerHTML = html;
@@ -360,42 +1604,137 @@
             });
         }
 
-        // 3. Fungsi Terima Kawan
         window.terimaKawan = function(myKey, pengirimKey, namaPengirim) {
-            var rujukanKawanSaya = ref(db, "kawan_sistem_v2/" + myKey + "/senarai_kawan/" + pengirimKey);
-            var rujukanKawanDia = ref(db, "kawan_sistem_v2/" + pengirimKey + "/senarai_kawan/" + myKey);
-            var rujukanHapusJemputan = ref(db, "kawan_sistem_v2/" + myKey + "/jemputan_masuk/" + pengirimKey);
+            var safeMyKey = getSafeKey(myKey);
+            var safePengirimKey = getSafeKey(pengirimKey);
+            var namaSayaSah = window.namaPemainSaya || safeMyKey;
 
-            set(rujukanKawanSaya, { nama: namaPengirim });
-            set(rujukanKawanDia, { nama: namaPemainSaya });
-            remove(rujukanHapusJemputan).then(() => {
-                alert("Tahniah! Anda kini berkawan dengan " + namaPengirim);
+            var updates = {};
+            updates["kawan_sistem_v2/" + safeMyKey + "/senarai_kawan/" + safePengirimKey] = { nama: namaPengirim, key: safePengirimKey };
+            updates["kawan_sistem_v2/" + safePengirimKey + "/senarai_kawan/" + safeMyKey] = { nama: namaSayaSah, key: safeMyKey };
+            updates["kawan_sistem_v2/" + safeMyKey + "/jemputan_masuk/" + safePengirimKey] = null;
+
+            update(ref(db), updates).then(() => {
+                showToast("Anda kini berkawan dengan " + namaPengirim + "!", "success");
             });
         };
 
-        // 4. Fungsi Muat Senarai Kawan Aktif
+        window.tolakKawan = function(myKey, pengirimKey) {
+            if (confirm("Adakah anda pasti mahu menolak jemputan ini?")) {
+                remove(ref(db, "kawan_sistem_v2/" + getSafeKey(myKey) + "/jemputan_masuk/" + getSafeKey(pengirimKey))).then(() => {
+                    showToast("Jemputan kawan telah ditolak.", "info");
+                });
+            }
+        };
+
         function muatSenaraiKawan(safeKeyNamaSaya) {
-            var rujukanKawan = ref(db, "kawan_sistem_v2/" + safeKeyNamaSaya + "/senarai_kawan");
-            onValue(rujukanKawan, function(snapshot) {
+            onValue(ref(db, "kawan_sistem_v2/" + safeKeyNamaSaya + "/senarai_kawan"), function(snapshot) {
                 var dataKawan = snapshot.val();
                 var containerKawan = document.getElementById("senaraiKawanContainer");
 
+                for (let key in friendStatusListeners) {
+                    if (friendStatusListeners[key]) {
+                        off(ref(db, "kawan_sistem_v2/" + key + "/status_online"));
+                    }
+                }
+                friendStatusListeners = {};
+
                 if (dataKawan) {
-                    var html = "";
+                    containerKawan.innerHTML = ""; 
                     for (var kawanKey in dataKawan) {
                         var kInfo = dataKawan[kawanKey];
-                        html += `<div style="background: #e8f5e9; padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #a5d6a7;">
-                            <span style="font-weight: bold; color: #2e7d32;">🟢 ${kInfo.nama}</span>
-                            <span style="font-size: 11px; color: #555;">Connected</span>
-                        </div>`;
+                        var safeTargetKey = getSafeKey(kawanKey);
+                        var cleanNama = escapeHtmlAttr(kInfo.nama);
+                        
+                        var itemDiv = document.createElement("div");
+                        itemDiv.className = "senarai-box";
+                        itemDiv.style = "padding: 8px 10px; margin-bottom: 6px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #a5d6a7;";
+                        itemDiv.innerHTML = `
+                            <div>
+                                <span class="nama-kawan-text" style="font-weight: bold; color: #1a2a6c;">${kInfo.nama}</span>
+                                <span id="status-tag-${safeTargetKey}" style="font-size: 11px; margin-left: 5px;">⚪ Offline</span>
+                            </div>
+                            <div>
+                                <button onclick="window.cabarKawan('${safeTargetKey}', '${cleanNama}')" style="background: #ff9800; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; margin-right: 4px;">Cabar ⚔️</button>
+                                <button onclick="window.bukaKotakChat('${safeTargetKey}', '${cleanNama}')" style="background: #0052D4; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">Chat 💬</button>
+                            </div>
+                        `;
+                        containerKawan.appendChild(itemDiv);
+
+                        (function(targetKey) {
+                            friendStatusListeners[targetKey] = onValue(ref(db, "kawan_sistem_v2/" + targetKey + "/status_online"), (stSnap) => {
+                                var tag = document.getElementById("status-tag-" + targetKey);
+                                if (tag) {
+                                    tag.innerHTML = stSnap.val() === true ? "🟢 <span style='color: #28a745;'>Online</span>" : "⚪ <span style='color: #757575;'>Offline</span>";
+                                }
+                            });
+                        })(safeTargetKey);
                     }
-                    containerKawan.innerHTML = html;
                 } else {
                     containerKawan.innerHTML = "No friends added yet.";
                 }
             });
         }
-    </script>
 
+        // Chat Popup Logic
+        window.bukaKotakChat = function(kawanKey, namaKawan) {
+            if (!window.namaPemainSaya) return;
+
+            const safeKeySaya = getSafeKey(window.namaPemainSaya);
+            const safeKeyKawan = getSafeKey(kawanKey);
+            chatIDSemasa = [safeKeySaya, safeKeyKawan].sort().join("_CHAT_");
+
+            document.getElementById("tajukRakanChat").innerText = "💬 " + namaKawan;
+            document.getElementById("kotakSembangPopup").style.display = "flex";
+
+            if (unsubscribeChatListener) unsubscribeChatListener();
+
+            unsubscribeChatListener = onValue(ref(db, "chat_v2/" + chatIDSemasa), (snapshot) => {
+                const dataMesej = snapshot.val();
+                const bekas = document.getElementById("bekasMesejChat");
+                if (!bekas) return;
+                bekas.innerHTML = "";
+
+                if (dataMesej) {
+                    for (let id in dataMesej) {
+                        const m = dataMesej[id];
+                        const isMe = getSafeKey(m.pengirim) === getSafeKey(window.namaPemainSaya);
+                        
+                        const divBubble = document.createElement("div");
+                        divBubble.className = `chat-bubble ${isMe ? 'me' : 'them'}`;
+                        divBubble.innerHTML = `<div>${m.mesej}</div><div class="chat-time">${m.masa || ''}</div>`;
+                        bekas.appendChild(divBubble);
+                    }
+                    bekas.scrollTop = bekas.scrollHeight;
+                } else {
+                    bekas.innerHTML = `<div style="text-align: center; color: #888888; font-size: 12px; margin-top: 20px;">Belum ada mesej. Mulakan perbualan!</div>`;
+                }
+            });
+        };
+
+        window.tutupKotakChat = function() {
+            document.getElementById("kotakSembangPopup").style.display = "none";
+        };
+
+        window.hantarMesejChat = function() {
+            const input = document.getElementById("inputMesejChat");
+            if (!input) return;
+            const teks = input.value.trim();
+            if (teks === "" || !chatIDSemasa) return;
+
+            push(ref(db, "chat_v2/" + chatIDSemasa), {
+                pengirim: window.namaPemainSaya,
+                mesej: teks,
+                masa: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }).then(() => { 
+                playSFX('chat');
+                input.value = ""; 
+            });
+        };
+
+        window.jikaTekanEnter = function(e) {
+            if (e.key === 'Enter') hantarMesejChat();
+        };
+    </script>
 </body>
 </html>

@@ -5,14 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Lab - Science Portal</title>
     
+    <script>
+        // Semak status Mod Gelap seawal halaman dimuatkan
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-mode");
+                const btn = document.getElementById("btnDarkMode");
+                if (btn) btn.innerText = "☀️ Mod Terang";
+            }
+        });
+
+        // Fungsi Toggle Mod Gelap
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            const btn = document.getElementById("btnDarkMode");
+            if (btn) btn.innerText = isDark ? "☀️ Mod Terang" : "🌙 Mod Gelap";
+        }
+    </script>
+
     <style>
         /* Base Settings & Navbar */
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f8ff; display: flex; flex-direction: column; min-height: 100vh; }
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f0f8ff; 
+            color: #333333;
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            transition: background-color 0.3s, color 0.3s;
+        }
         .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
         .header-container img { transition: transform 0.3s; }
         .header-container img:hover { transform: scale(1.05); }
         
-        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
+        .navbar { background-color: #1a2a6c; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: sticky; top: 0; z-index: 100; }
         .navbar a { color: #e0e0e0; text-decoration: none; padding: 16px 24px; font-size: 16px; font-weight: bold; transition: background 0.3s, color 0.3s; }
         .navbar a:hover { background-color: #00c6ff; color: #fff; }
         
@@ -22,7 +51,7 @@
         .dropdown-content a:hover { background-color: #e3f2fd; padding-left: 24px; color: #0052D4; font-weight: bold; }
         .dropdown:hover .dropdown-content { display: block; }
         
-        .main-content { padding: 50px 20px; text-align: center; flex: 1; background-color: white; margin: 30px 200px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .main-content { padding: 50px 20px; text-align: center; flex: 1; background-color: white; margin: 30px 200px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: background-color 0.3s, color 0.3s; }
         @media (max-width: 900px) { .main-content { margin: 30px 20px; } }
         
         .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; line-height: 1.6; }
@@ -32,6 +61,69 @@
         /* Interactive Cards Hover Effect */
         .kad-interaktif { transition: transform 0.3s, box-shadow 0.3s; }
         .kad-interaktif:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important; }
+
+        /* Kotak Fakta Sains */
+        .kotak-fakta {
+            background-color: #e3f2fd; 
+            border: 2px dashed #0052D4; 
+            border-radius: 15px; 
+            padding: 30px; 
+            max-width: 600px; 
+            margin: 0 auto;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        /* MOD GELAP (DARK MODE) STYLES */
+        body.dark-mode {
+            background-color: #0f172a !important;
+            color: #f1f5f9 !important;
+        }
+        body.dark-mode .main-content {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+        body.dark-mode .main-content h2,
+        body.dark-mode .kotak-fakta h3 {
+            color: #38bdf8 !important;
+        }
+        body.dark-mode .main-content p {
+            color: #cbd5e1 !important;
+        }
+        body.dark-mode .kotak-fakta {
+            background-color: #0f172a !important;
+            border-color: #38bdf8 !important;
+        }
+        body.dark-mode #scienceFact {
+            color: #f1f5f9 !important;
+        }
+        body.dark-mode .dropdown-content {
+            background-color: #1e293b !important;
+        }
+        body.dark-mode .dropdown-content a {
+            color: #f1f5f9 !important;
+            border-bottom: 1px solid #334155;
+        }
+        body.dark-mode .dropdown-content a:hover {
+            background-color: #334155 !important;
+            color: #38bdf8 !important;
+        }
+
+        .btn-dark-toggle {
+            background-color: #334155;
+            color: #ffffff;
+            border: 2px solid #00c6ff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 8px;
+        }
+        .btn-dark-toggle:hover {
+            background-color: #00c6ff;
+            color: #0d1b2a;
+        }
     </style>
 </head>
 <body>
@@ -60,6 +152,9 @@
         <a href="performance.html">Scientist Analytics</a>
         <a href="contact.html">Ask a Teacher</a>
         <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a; border-radius: 0 0 8px 8px;">Login 👨‍🔬</a>
+
+        <!-- Butang Mod Gelap -->
+        <button onclick="toggleDarkMode()" class="btn-dark-toggle" id="btnDarkMode">🌙 Mod Gelap</button>
     </nav>
 
     <!-- Main Content Area -->
@@ -100,7 +195,7 @@
         </div>
 
         <!-- Section 2: Science Fun Facts Generator -->
-        <div style="background-color: #e3f2fd; border: 2px dashed #0052D4; border-radius: 15px; padding: 30px; max-width: 600px; margin: 0 auto;">
+        <div class="kotak-fakta">
             <h3 style="color: #1a2a6c; margin-top: 0;">Did You Know? 🧪</h3>
             <p id="scienceFact" style="font-size: 18px; font-weight: bold; color: #333; min-height: 60px; display: flex; align-items: center; justify-content: center; margin: 20px 0;">
                 Click the button below to discover amazing Form 2 Science facts!
