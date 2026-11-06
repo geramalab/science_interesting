@@ -24,7 +24,7 @@
         }
     </script>
 
-    <!-- 1. PUSAT KAWALAN FIREBASE -->
+    <!-- PUSAT KAWALAN FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, update, onDisconnect, remove, push } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
@@ -76,6 +76,8 @@
             flex-direction: column; 
             min-height: 100vh; 
             transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .header-container { display: flex; align-items: center; justify-content: center; padding: 30px; background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC); border-bottom: 4px solid rgba(255, 255, 255, 0.5); box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3); }
         .header-container img { transition: transform 0.3s; }
@@ -92,38 +94,51 @@
         .dropdown:hover .dropdown-content { display: block; }
         
         .main-content { 
-            padding: 50px 20px; 
+            padding: 40px 20px; 
             text-align: center; 
             flex: 1; 
             background-color: white; 
-            margin: 30px 150px; 
+            margin: 30px 100px; 
             border-radius: 15px; 
             box-shadow: 0 5px 20px rgba(0,0,0,0.05); 
             transition: background-color 0.3s, color 0.3s;
         }
-        .footer { background-color: #0d1b2a; color: #ccc; text-align: center; padding: 25px 20px; font-size: 14px; line-height: 1.6; }
-        .footer span.highlight { color: #00c6ff; font-weight: bold; }
 
-        .butang-bab { background-color: #0052D4; color: white; padding: 15px 10px; margin: 10px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 280px; min-height: 100px; vertical-align: middle; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .butang-bab { background-color: #0052D4; color: white; padding: 15px 10px; margin: 10px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 280px; min-height: 95px; vertical-align: middle; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .butang-bab:hover { background-color: #0040a8; transform: translateY(-5px); }
         .b1 { background-color: #0052D4; } .b2 { background-color: #11998e; } .b3 { background-color: #f2994a; }
         .b4 { background-color: #eb5757; } .b5 { background-color: #8e44ad; } .b6 { background-color: #2980b9; }
+        .b7 { background-color: #f39c12; } .b8 { background-color: #d35400; } .b9 { background-color: #27ae60; }
+        .b10 { background-color: #16a085; } .b11 { background-color: #9b59b6; } .b12 { background-color: #34495e; }
+        .b13 { background-color: #c0392b; }
 
         #zonPeta { display: none; margin-top: 20px; }
-        .bar-kawalan { display: flex; justify-content: space-between; max-width: 800px; margin: 0 auto 10px auto; }
+        .bar-kawalan { display: flex; justify-content: space-between; max-width: 850px; margin: 0 auto 10px auto; }
         .butang-aksi { padding: 8px 16px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s; color: white; }
         .btn-keluar { background-color: #dc3545; } .btn-keluar:hover { background-color: #c82333; transform: scale(1.05); }
         .btn-muzik { background-color: #00c6ff; color: #0d1b2a; } .btn-muzik:hover { background-color: #00a2d4; transform: scale(1.05); }
 
-        .bar-nyawa { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto 15px auto; padding: 10px 20px; background-color: #f8f9fa; border-radius: 10px; border: 2px solid #ddd; transition: background 0.3s, border-color 0.3s; }
-        .kamera-skrin { position: relative; width: 100%; max-width: 800px; height: 500px; background-color: #e3f2fd; border: 15px solid #0052D4; border-radius: 15px; margin: 0 auto; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.3); transition: background 0.3s, border-color 0.3s; }
-        .dunia-peta { position: absolute; width: 2000px; height: 1500px; background-color: #eaf4fc; background-image: radial-gradient(#bce0fd 15%, transparent 16%), radial-gradient(#bce0fd 15%, transparent 16%); background-size: 60px 60px; background-position: 0 0, 30px 30px; border: 10px dashed #0052D4; box-sizing: border-box; transition: background 0.3s; }
+        .bar-nyawa { display: flex; justify-content: space-between; align-items: center; max-width: 850px; margin: 0 auto 15px auto; padding: 10px 20px; background-color: #f8f9fa; border-radius: 10px; border: 2px solid #ddd; transition: background 0.3s, border-color 0.3s; }
+        .kamera-skrin { position: relative; width: 100%; max-width: 850px; height: 500px; background-color: #e3f2fd; border: 12px solid #0052D4; border-radius: 15px; margin: 0 auto; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.3); transition: background 0.3s, border-color 0.3s; touch-action: none; }
         
-        /* HIASAN LANDSKAP: POKOK & SUNGAI */
+        .dunia-peta { position: absolute; width: 2000px; height: 1500px; background-color: #eaf4fc; background-image: radial-gradient(#bce0fd 15%, transparent 16%), radial-gradient(#bce0fd 15%, transparent 16%); background-size: 60px 60px; background-position: 0 0, 30px 30px; border: 10px dashed #0052D4; box-sizing: border-box; transition: background-color 0.5s ease; }
+        
         .elemen-sungai { position: absolute; background: linear-gradient(90deg, #74b9ff, #0984e3, #74b9ff); height: 120px; width: 2000px; top: 700px; left: 0; opacity: 0.75; z-index: 1; border-top: 4px dashed #fff; border-bottom: 4px dashed #fff; }
         .elemen-pokok { position: absolute; font-size: 45px; z-index: 2; user-select: none; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2)); }
 
-        .avatar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 100; transition: transform 0.2s ease; }
+        /* AVATAR & ANIMASI LOMPAT SMOOTH */
+        .avatar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 100; }
+
+        @keyframes lompatSmooth {
+            0%   { transform: translate(-50%, -50%) translateY(0px); }
+            40%  { transform: translate(-50%, -50%) translateY(-45px); }
+            100% { transform: translate(-50%, -50%) translateY(0px); }
+        }
+
+        .avatar.sedang-lompat {
+            animation: lompatSmooth 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
         .avatar .nama { background: rgba(255,255,255,0.95); padding: 4px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 2px solid #00c6ff; margin-bottom: 5px; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap; }
         #spritePemain { display: inline-block; font-size: 60px; width: 60px; height: 60px; line-height: 60px; filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.2)); }
 
@@ -133,7 +148,7 @@
         .bola-misi.selesai { animation: none; }
         @keyframes lompatKecil { from { transform: translateY(0px); } to { transform: translateY(-8px); } }
 
-        .modal-latar { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-latar { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.75); z-index: 1000; justify-content: center; align-items: center; }
         .modal-kandungan { background-color: white; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: background 0.3s, color 0.3s; }
         .teks-soalan { font-size: 20px; color: #1a2a6c; font-weight: bold; margin-bottom: 25px; }
         .susunan-pilihan { display: flex; flex-direction: column; gap: 12px; }
@@ -142,104 +157,36 @@
         .jawapan-salah { background-color: #dc3545 !important; color: white !important; border-color: #bd2130 !important; animation: gegar 0.4s; }
         @keyframes gegar { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } 100% { transform: translateX(0); } }
 
+        /* KOTAK NOTA PEMBETULAN FLASHCARD */
+        #kotakNotaPembetulan { display: none; margin-top: 15px; padding: 12px; background: #fff3cd; border: 2px solid #ffeba2; color: #856404; border-radius: 8px; font-size: 14px; text-align: left; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
         .papan-markah { font-size: 24px; color: #2c3e50; font-weight: bold; display: none; padding: 30px; background-color: #f8f9fa; border-radius: 15px; border: 3px solid #00c6ff; max-width: 500px; margin: 0 auto; transition: background 0.3s, color 0.3s; }
-        @media (max-width: 900px) { .main-content { margin: 30px 20px; } }
 
-        #zonJoystick { display: none; position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); width: 35vw; height: 35vw; max-width: 140px; max-height: 140px; background-color: rgba(0, 0, 0, 0.2); border-radius: 50%; z-index: 1000; touch-action: none; border: 2px solid rgba(255,255,255,0.5); user-select: none; }
-        #joystickKnob { position: absolute; top: 50%; left: 50%; width: 14vw; height: 14vw; max-width: 55px; max-height: 55px; background-color: rgba(255, 255, 255, 0.9); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; user-select: none; }
-        #butangAksiBulat { display: none; position: absolute; bottom: 5%; right: 5%; width: 22vw; height: 22vw; max-width: 90px; max-height: 90px; background-color: rgba(0, 82, 212, 0.85); border-radius: 50%; z-index: 1000; border: 4px solid rgba(255,255,255,0.7); color: white; font-size: 4vw; font-weight: bold; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); user-select: none; touch-action: manipulation; cursor: pointer; }
-        #butangAksiBulat:active { transform: scale(0.9); background-color: rgba(0, 60, 160, 1); }
+        /* JOYSTICK & BUTTONS */
+        #zonJoystick { display: block; position: absolute; bottom: 30px; left: 30px; width: 110px; height: 110px; background-color: rgba(0, 0, 0, 0.35); border-radius: 50%; z-index: 1000; touch-action: none; border: 3px solid rgba(255,255,255,0.85); user-select: none; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        #joystickKnob { position: absolute; top: 50%; left: 50%; width: 48px; height: 48px; background-color: rgba(0, 198, 255, 0.95); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 10px rgba(0,0,0,0.4); pointer-events: none; }
+        #butangAksiBulat { display: flex; position: absolute; bottom: 30px; right: 30px; width: 80px; height: 80px; background-color: rgba(0, 82, 212, 0.9); border-radius: 50%; z-index: 1000; border: 4px solid rgba(255,255,255,0.85); color: white; font-size: 14px; font-weight: bold; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); user-select: none; touch-action: manipulation; cursor: pointer; }
+        #butangAksiBulat:active { transform: scale(0.92); background-color: rgba(0, 60, 160, 1); }
 
-        /* MOD GELAP (DARK MODE) STYLES */
-        body.dark-mode {
-            background-color: #0f172a !important;
-            color: #f1f5f9 !important;
-        }
-        body.dark-mode .main-content {
-            background-color: #1e293b !important;
-            color: #f1f5f9 !important;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-        }
-        body.dark-mode .main-content h2,
-        body.dark-mode #kotakKomenLive h3,
-        body.dark-mode .modal-kandungan h2 {
-            color: #38bdf8 !important;
-        }
-        body.dark-mode .main-content p,
-        body.dark-mode #tajukKuiz {
-            color: #cbd5e1 !important;
-        }
-        body.dark-mode .bar-nyawa {
-            background-color: #0f172a !important;
-            border-color: #334155 !important;
-            color: #f1f5f9 !important;
-        }
-        body.dark-mode .kamera-skrin {
-            background-color: #0f172a !important;
-            border-color: #38bdf8 !important;
-        }
-        body.dark-mode .dunia-peta {
-            background-color: #1e293b !important;
-            background-image: radial-gradient(#334155 15%, transparent 16%), radial-gradient(#334155 15%, transparent 16%) !important;
-            border-color: #38bdf8 !important;
-        }
-        body.dark-mode .modal-kandungan {
-            background-color: #1e293b !important;
-            color: #f1f5f9 !important;
-            border-color: #334155 !important;
-        }
-        body.dark-mode .teks-soalan {
-            color: #38bdf8 !important;
-        }
-        body.dark-mode .butang-pilihan {
-            background-color: #0f172a !important;
-            color: #f1f5f9 !important;
-            border-color: #334155 !important;
-        }
-        body.dark-mode #kotakKomenLive {
-            background-color: #1e293b !important;
-            border-color: #334155 !important;
-        }
-        body.dark-mode input[type="text"],
-        body.dark-mode textarea {
-            background: #0f172a !important;
-            color: #ffffff !important;
-            border-color: #334155 !important;
-        }
-        body.dark-mode .papan-markah {
-            background-color: #1e293b !important;
-            border-color: #38bdf8 !important;
-            color: #f1f5f9 !important;
-        }
-        body.dark-mode .dropdown-content {
-            background-color: #1e293b !important;
-        }
-        body.dark-mode .dropdown-content a {
-            color: #f1f5f9 !important;
-            border-bottom: 1px solid #334155;
-        }
-        body.dark-mode .dropdown-content a:hover {
-            background-color: #334155 !important;
-            color: #38bdf8 !important;
-        }
+        /* MOD GELAP STYLES */
+        body.dark-mode { background-color: #0f172a !important; color: #f1f5f9 !important; }
+        body.dark-mode .main-content { background-color: #1e293b !important; color: #f1f5f9 !important; box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+        body.dark-mode .main-content h2, body.dark-mode #kotakKomenLive h3, body.dark-mode .modal-kandungan h2 { color: #38bdf8 !important; }
+        body.dark-mode .main-content p, body.dark-mode #tajukKuiz { color: #cbd5e1 !important; }
+        body.dark-mode .bar-nyawa { background-color: #0f172a !important; border-color: #334155 !important; color: #f1f5f9 !important; }
+        body.dark-mode .kamera-skrin { background-color: #0f172a !important; border-color: #38bdf8 !important; }
+        body.dark-mode .modal-kandungan { background-color: #1e293b !important; color: #f1f5f9 !important; border-color: #334155 !important; }
+        body.dark-mode .teks-soalan { color: #38bdf8 !important; }
+        body.dark-mode .butang-pilihan { background-color: #0f172a !important; color: #f1f5f9 !important; border-color: #334155 !important; }
+        body.dark-mode #kotakKomenLive { background-color: #1e293b !important; border-color: #334155 !important; }
+        body.dark-mode input[type="text"], body.dark-mode textarea { background: #0f172a !important; color: #ffffff !important; border-color: #334155 !important; }
+        body.dark-mode .papan-markah { background-color: #1e293b !important; border-color: #38bdf8 !important; color: #f1f5f9 !important; }
 
-        .btn-dark-toggle {
-            background-color: #334155;
-            color: #ffffff;
-            border: 2px solid #00c6ff;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            margin: 8px;
-        }
-        .btn-dark-toggle:hover {
-            background-color: #00c6ff;
-            color: #0d1b2a;
-        }
+        .btn-dark-toggle { background-color: #334155; color: #ffffff; border: 2px solid #00c6ff; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 8px; }
+        .btn-dark-toggle:hover { background-color: #00c6ff; color: #0d1b2a; }
 
-        @media (max-width: 800px) { .main-content { margin: 10px; padding: 15px; } .kamera-skrin { height: 50vh; border-width: 5px; border-radius: 10px; } .navbar { flex-wrap: wrap; justify-content: center; } .navbar a { padding: 10px 12px; font-size: 13px; } #zonJoystick { display: block !important; } #butangAksiBulat { display: flex !important; } }
+        @media (max-width: 850px) { .main-content { margin: 10px; padding: 15px; } .kamera-skrin { height: 55vh; border-width: 6px; } .navbar { flex-wrap: wrap; justify-content: center; } .navbar a { padding: 10px 12px; font-size: 13px; } }
     </style>
 </head>
 <body>
@@ -260,6 +207,13 @@
                 <a href="science_chap4.html">Chapter 4: Human Health</a>
                 <a href="science_chap5.html">Chapter 5: Water and Solution</a>
                 <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+                <a href="science_chap7.html">Chapter 7: Energy and Power</a>
+                <a href="science_chap8.html">Chapter 8: Rate of Reaction</a>
+                <a href="science_chap9.html">Chapter 9: Speed</a>
+                <a href="science_chap10.html">Chapter 10: Sound Waves</a>
+                <a href="science_chap11.html">Chapter 11: Stars and Galaxies</a>
+                <a href="science_chap12.html">Chapter 12: The Solar System</a>
+                <a href="science_chap13.html">Chapter 13: Meteoroid, Asteroid and Comet</a>
             </div>
         </div>
         <a href="interactive_lab.html">Interactive Lab</a>
@@ -267,7 +221,6 @@
         <a href="contact.html">Ask a Teacher</a>
         <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a;">Login 👨‍🔬</a>
 
-        <!-- Butang Mod Gelap -->
         <button onclick="toggleDarkMode()" class="btn-dark-toggle" id="btnDarkMode">🌙 Mod Gelap</button>
     </nav>
 
@@ -277,13 +230,21 @@
         </h2>
         <p id="tajukKuiz" style="color: #555; margin-bottom: 30px;">Collect all science beacons under 1 minute to achieve 👑 LEGEND rank!</p>
 
+        <!-- MENU KUIZ BAB 1 HINGGA 13 -->
         <div id="menuKuiz" style="display: block; margin-bottom: 40px;">
             <button class="butang-bab b1" onclick="tanyaNama(1)">🧬 Chapter 1:<br>Biodiversity</button>
             <button class="butang-bab b2" onclick="tanyaNama(2)">🌿 Chapter 2:<br>Ecosystem</button><br>
             <button class="butang-bab b3" onclick="tanyaNama(3)">🍎 Chapter 3:<br>Nutrition</button>
             <button class="butang-bab b4" onclick="tanyaNama(4)">🛡️ Chapter 4:<br>Human Health</button><br>
             <button class="butang-bab b5" onclick="tanyaNama(5)">💧 Chapter 5:<br>Water & Solution</button>
-            <button class="butang-bab b6" onclick="tanyaNama(6)">⚗️ Chapter 6:<br>Acids & Alkalis</button>
+            <button class="butang-bab b6" onclick="tanyaNama(6)">⚗️ Chapter 6:<br>Acids & Alkalis</button><br>
+            <button class="butang-bab b7" onclick="tanyaNama(7)">⚡ Chapter 7:<br>Energy & Power</button>
+            <button class="butang-bab b8" onclick="tanyaNama(8)">⏱️ Chapter 8:<br>Rate of Reaction</button><br>
+            <button class="butang-bab b9" onclick="tanyaNama(9)">🚀 Chapter 9:<br>Speed</button>
+            <button class="butang-bab b10" onclick="tanyaNama(10)">🔊 Chapter 10:<br>Sound Waves</button><br>
+            <button class="butang-bab b11" onclick="tanyaNama(11)">✨ Chapter 11:<br>Stars & Galaxies</button>
+            <button class="butang-bab b12" onclick="tanyaNama(12)">🪐 Chapter 12:<br>The Solar System</button><br>
+            <button class="butang-bab b13" onclick="tanyaNama(13)">☄️ Chapter 13:<br>Meteoroid, Asteroid, Comet</button>
         </div>
 
         <div id="zonPeta">
@@ -300,14 +261,15 @@
             
             <div class="kamera-skrin" id="kameraSkrin">
                 <div class="dunia-peta" id="duniaPeta">
-                    <!-- Sungai & Hiasan Pokok -->
-                    <div class="elemen-sungai"></div>
-                    <div class="elemen-pokok" style="top: 200px; left: 300px;">🌲</div>
-                    <div class="elemen-pokok" style="top: 250px; left: 1500px;">🌳</div>
-                    <div class="elemen-pokok" style="top: 550px; left: 800px;">🌲</div>
-                    <div class="elemen-pokok" style="top: 900px; left: 400px;">🌳</div>
-                    <div class="elemen-pokok" style="top: 1000px; left: 1600px;">🌲</div>
-                    <div class="elemen-pokok" style="top: 400px; left: 1200px;">🌳</div>
+                    <div class="elemen-sungai" id="elemenSungai"></div>
+                    <div id="bekasPokok">
+                        <div class="elemen-pokok" style="top: 200px; left: 300px;">🌲</div>
+                        <div class="elemen-pokok" style="top: 250px; left: 1500px;">🌳</div>
+                        <div class="elemen-pokok" style="top: 550px; left: 800px;">🌲</div>
+                        <div class="elemen-pokok" style="top: 900px; left: 400px;">🌳</div>
+                        <div class="elemen-pokok" style="top: 1000px; left: 1600px;">🌲</div>
+                        <div class="elemen-pokok" style="top: 400px; left: 1200px;">🌳</div>
+                    </div>
                 </div>
                 <div class="avatar" id="pemain">
                     <div class="nama" id="namaDiAtasKepala">Scientist</div>
@@ -319,7 +281,7 @@
         </div>
 
         <!-- KOTAK PAPAN KOMEN LIVE -->
-        <div id="kotakKomenLive" style="display: none; max-width: 800px; margin: 40px auto 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left; border: 2px solid #bce0fd;">
+        <div id="kotakKomenLive" style="display: none; max-width: 850px; margin: 40px auto 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left; border: 2px solid #bce0fd;">
             <h3 style="color: #1a2a6c; margin-top: 0; border-bottom: 2px solid #00c6ff; padding-bottom: 8px;">💬 Scientist Live Guestbook</h3>
             <div style="margin-bottom: 20px;">
                 <input type="text" id="namaKomen" placeholder="Your Name / Nickname" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #bce0fd; border-radius: 6px; box-sizing: border-box; font-size: 14px;">
@@ -343,7 +305,7 @@
             </div>
         </div>
 
-        <!-- POPUP SOALAN -->
+        <!-- POPUP SOALAN BERSERTA FLASHCARD NOTA -->
         <div class="modal-latar" id="modalSoalan">
             <div class="modal-kandungan">
                 <div class="teks-soalan" id="soalan">Science question displayed here...</div>
@@ -353,19 +315,34 @@
                     <button class="butang-pilihan" onclick="semakJawapan(2, this)" id="pilihan2">C</button>
                     <button class="butang-pilihan" onclick="semakJawapan(3, this)" id="pilihan3">D</button>
                 </div>
+                <!-- KOTAK NOTA PEMBETULAN -->
+                <div id="kotakNotaPembetulan">
+                    <strong>💡 Nota Sains KSSM:</strong> <span id="teksNotaSains">...</span>
+                </div>
             </div>
         </div>
         
-        <!-- POPUP KEMENANGAN -->
+        <!-- POPUP KEMENANGAN & SIJIL DIGITAL -->
         <div class="modal-latar" id="modalMenang">
-            <div class="modal-kandungan" style="border: 4px solid #00c6ff;">
+            <div class="modal-kandungan" style="border: 4px solid #00c6ff; max-width: 550px;">
                 <h1 style="font-size: 60px; margin: 0;" id="ikonRanking">👑</h1>
-                <h2 style="color: #28a745; font-size: 28px; margin-top: 10px;">Congratulations! Lab Mission Cleared!</h2>
+                <h2 style="color: #28a745; font-size: 26px; margin-top: 10px;">Congratulations! Lab Mission Cleared!</h2>
+                
+                <!-- LENCANA KHAS BAB -->
+                <div style="background: #f0f8ff; padding: 12px; border-radius: 10px; margin: 15px 0; border: 2px dashed #00c6ff;">
+                    <div style="font-size: 14px; color: #555;">Badge Earned:</div>
+                    <div id="lencanaBabPaparan" style="font-size: 20px; font-weight: bold; color: #0052D4;">🧬 Master Biodiversiti</div>
+                </div>
+
                 <p style="font-size: 18px; margin-top: 10px;">Rank Awarded: <strong id="teksRanking" style="color:#e67e22; font-size: 22px;">Rank: LEGEND</strong></p>
                 <p style="font-size: 16px; color: #555;">Record Time: <span id="masaAkhirMenang" style="font-weight: bold;">00:00</span></p>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button onclick="terusMerayau()" style="flex: 1; background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;">Explore Free World 🌳</button>
-                    <button onclick="keluarKeMenu()" style="flex: 1; background-color: #333; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;">Choose Chapter 🔄</button>
+                
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                    <button onclick="janaSijilDigital()" style="background-color: #f39c12; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">📜 Muat Turun Sijil Digital (PDF/Print)</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="terusMerayau()" style="flex: 1; background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px;">Explore World 🌳</button>
+                        <button onclick="keluarKeMenu()" style="flex: 1; background-color: #333; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 15px;">Choose Chapter 🔄</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -379,93 +356,20 @@
         </div>
     </div>
 
-    <!-- SKRIP UTAMA GAME -->
+            <!-- PANGGIL DATA SOALAN EXTERNAL -->
+<script src="soalan_sains.js"></script>
+
+            <!-- SKRIP UTAMA GAME 2D -->
     <script>
-        var soalanBab1 = [
-            { soalan: "What is the definition of Biodiversity?", pilihan: ["The variety of living organisms on Earth", "The study of rocks and minerals", "The measurement of weather conditions", "The recycling of plastic waste"], jawapanBetul: 0 },
-            { soalan: "Which country is recognized as one of the 12 mega-biodiverse countries in the world?", pilihan: ["United Kingdom", "Malaysia", "Japan", "Iceland"], jawapanBetul: 1 },
-            { soalan: "Which of the following is an example of an invertebrate?", pilihan: ["Frog", "Earthworm", "Bird", "Fish"], jawapanBetul: 1 },
-            { soalan: "Which vertebrate group has moist skin and reproduces via external fertilization in water?", pilihan: ["Mammals", "Reptiles", "Amphibians", "Birds"], jawapanBetul: 2 },
-            { soalan: "Plants that produce seeds inside cones (without flowers) are called...", pilihan: ["Conifers (Gymnosperms)", "Flowering plants (Angiosperms)", "Ferns", "Mosses"], jawapanBetul: 0 },
-            { soalan: "Which animal breathes through moist skin and lungs?", pilihan: ["Whale", "Frog", "Shark", "Crocodile"], jawapanBetul: 1 },
-            { soalan: "What is the main importance of biodiversity to ecosystems?", pilihan: ["Ensures ecological balance and nutrient cycling", "Increases global warming", "Reduces oxygen supply", "Causes soil erosion"], jawapanBetul: 0 },
-            { soalan: "Which of the following organisms reproduces by producing spores?", pilihan: ["Hibiscus", "Fern and Moss", "Mango tree", "Orchid"], jawapanBetul: 1 },
-            { soalan: "Endemic species are defined as species that...", pilihan: ["Can be found all over the world", "Live in a specific and restricted geographical area", "Only live in captivity", "Are extinct"], jawapanBetul: 1 },
-            { soalan: "Which action helps in the conservation and preservation of biodiversity?", pilihan: ["Illegal logging", "Uncontrolled poaching", "Establishing forest reserves and national parks", "Open burning"], jawapanBetul: 2 }
-        ];
-
-        var soalanBab2 = [
-            { soalan: "What is a species?", pilihan: ["A group of similar organisms that can interbreed and produce offspring", "All animals living in a forest", "Non-living components of an environment", "Any green plant"], jawapanBetul: 0 },
-            { soalan: "What term describes all the different populations living and interacting in a habitat?", pilihan: ["Species", "Community", "Ecosystem", "Niche"], jawapanBetul: 1 },
-            { soalan: "An organism that makes its own food through photosynthesis is called a...", pilihan: ["Consumer", "Decomposer", "Producer", "Carnivore"], jawapanBetul: 2 },
-            { soalan: "Which of the following is an example of a secondary consumer?", pilihan: ["Padi plant", "Caterpillar", "Frog (eats insects)", "Eagle"], jawapanBetul: 2 },
-            { soalan: "What does a food web represent?", pilihan: ["A single linear food chain", "Interconnected food chains in an ecosystem", "The amount of water in soil", "Weather patterns"], jawapanBetul: 1 },
-            { soalan: "Which interaction describes a relationship where both organisms benefit?", pilihan: ["Parasitism", "Mutualism", "Commensalism", "Competition"], jawapanBetul: 1 },
-            { soalan: "A tapefish living inside the intestine of a human is an example of...", pilihan: ["Mutualism", "Commensalism", "Parasitism", "Symbiosis"], jawapanBetul: 2 },
-            { soalan: "What is the role of decomposers like bacteria and fungi in an ecosystem?", pilihan: ["Produce food using sunlight", "Break down dead organisms into simple nutrients", "Hunt herbivores", "Absorb carbon dioxide"], jawapanBetul: 1 },
-            { soalan: "Biological control is a method used to...", pilihan: ["Kill pests using synthetic chemicals", "Control pest populations using their natural predators", "Fertilize soil", "Increase water pH"], jawapanBetul: 1 },
-            { soalan: "Which factor is an abiotic component of an ecosystem?", pilihan: ["Green plants", "Light intensity and pH", "Herbivores", "Decomposers"], jawapanBetul: 1 }
-        ];
-
-        var soalanBab3 = [
-            { soalan: "What is the primary function of carbohydrates in the human body?", pilihan: ["Supply energy", "Build new cells for growth", "Protect organs", "Regulate body temperature"], jawapanBetul: 0 },
-            { soalan: "Which nutrient is essential for growth and repairing damaged tissues?", pilihan: ["Carbohydrate", "Fats", "Protein", "Vitamin C"], jawapanBetul: 2 },
-            { soalan: "What disease is caused by a deficiency of Vitamin C?", pilihan: ["Rickets", "Scurvy", "Beriberi", "Goitre"], jawapanBetul: 1 },
-            { soalan: "Calorific value is defined as...", pilihan: ["The amount of heat energy released when 1g of food is completely oxidized", "The weight of food in grams", "The amount of water in food", "The sweetness level of food"], jawapanBetul: 0 },
-            { soalan: "What is the unit of measurement for energy content in food?", pilihan: ["Kilogram (kg)", "Joule or Kilojoule (kJ)", "Celsius (°C)", "Mililitre (ml)"], jawapanBetul: 1 },
-            { soalan: "Which food test uses Iodine solution to test for the presence of starch?", pilihan: ["Millon's test", "Benedict's test", "Iodine test", "Alcohol-emulsion test"], jawapanBetul: 2 },
-            { soalan: "What color change indicates a positive result when testing for reducing sugar using Benedict's solution?", pilihan: ["Blue to Brick-red precipitate", "Brown to Yellow", "Clear to Purple", "Green to Black"], jawapanBetul: 0 },
-            { soalan: "Dietary fibre (roughage) is important because it...", pilihan: ["Provides instant energy", "Prevents constipation by aiding peristalsis", "Builds strong bones", "Fights infections"], jawapanBetul: 1 },
-            { soalan: "Which organ in the human alimentary canal produces bile to emulsify fats?", pilihan: ["Stomach", "Pancreas", "Liver", "Small intestine"], jawapanBetul: 2 },
-            { soalan: "Where does the absorption of digested food mainly take place?", pilihan: ["Stomach", "Large intestine", "Small intestine", "Oesophagus"], jawapanBetul: 2 }
-        ];
-
-        var soalanBab4 = [
-            { soalan: "What is an infectious disease?", pilihan: ["A disease that can be transmitted from one host to another", "A disease caused by genetic mutation", "A disease caused by poor lifestyle habits", "Heart attack"], jawapanBetul: 0 },
-            { soalan: "Pathogens are defined as...", pilihan: ["Beneficial bacteria in the gut", "Microorganisms that cause diseases", "Vitamins and minerals", "White blood cells"], jawapanBetul: 1 },
-            { soalan: "Which of the following diseases is classified as non-infectious?", pilihan: ["Dengue fever", "Hypertension and Diabetes", "Tuberculosis", "COVID-19"], jawapanBetul: 1 },
-            { soalan: "What is the function of white blood cells in the body's defense mechanism?", pilihan: ["Transport oxygen", "Destroy pathogens via phagocytosis and antibody production", "Clot blood", "Digest food"], jawapanBetul: 1 },
-            { soalan: "Active immunity is acquired when...", pilihan: ["A person receives antibodies directly from an injection", "The body's own immune system produces antibodies after infection or vaccination", "A person takes painkillers", "Eating healthy food"], jawapanBetul: 1 },
-            { soalan: "What is a vaccine?", pilihan: ["A cure for cancer", "A suspension containing weakened or dead pathogens", "An antibiotic medicine", "A vitamin supplement"], jawapanBetul: 1 },
-            { soalan: "Which vector transmits the dengue virus to humans?", pilihan: ["Housefly", "Aedes mosquito", "Anopheles mosquito", "Rat flea"], jawapanBetul: 1 },
-            { soalan: "What type of pathogen causes Ringpox and Athlete's foot?", pilihan: ["Bacteria", "Virus", "Fungi", "Protozoa"], jawapanBetul: 2 },
-            { soalan: "Antibiotics are effective against which type of pathogen?", pilihan: ["Bacteria", "Viruses", "Fungi", "All pathogens"], jawapanBetul: 0 },
-            { soalan: "What is personal hygiene?", pilihan: ["Practices that maintain cleanliness and promote health", "Exercising daily", "Sleeping 8 hours a day", "Taking vitamins"], jawapanBetul: 0 }
-        ];
-
-        var soalanBab5 = [
-            { soalan: "What are the two elements that make up a water molecule (H2O)?", pilihan: ["Hydrogen and Oxygen", "Hydrogen and Carbon", "Oxygen and Nitrogen", "Carbon and Helium"], jawapanBetul: 0 },
-            { soalan: "What is the physical process where liquid water turns into water vapour at any temperature?", pilihan: ["Boiling", "Evaporation", "Condensation", "Melting"], jawapanBetul: 1 },
-            { soalan: "Why does ice float on liquid water?", pilihan: ["Ice is denser than water", "Ice is less dense than liquid water due to its open crystalline structure", "Ice contains air bubbles", "Water pushes ice up"], jawapanBetul: 1 },
-            { soalan: "What is a dilute solution?", pilihan: ["A solution that contains a large amount of solute", "A solution that contains a small amount of solute dissolved in solvent", "A solution that cannot dissolve anymore solute", "Pure water"], jawapanBetul: 1 },
-            { soalan: "What is a saturated solution?", pilihan: ["A solution that has dissolved maximum amount of solute at a given temperature", "A very watery solution", "An acidic solution", "A solution with no solute"], jawapanBetul: 0 },
-            { soalan: "Which substance is a universal solvent in daily life?", pilihan: ["Ethanol", "Water", "Benzene", "Cooking oil"], jawapanBetul: 1 },
-            { soalan: "What factor increases the rate of dissolving of salt in water?", pilihan: ["Stirring and increasing water temperature", "Cooling the water", "Using large rock salt without crushing", "Leaving it still"], jawapanBetul: 0 },
-            { soalan: "What is water purification?", pilihan: ["The process of removing impurities, microorganisms, and suspended particles from water", "Adding sugar to water", "Freezing water", "Boiling milk"], jawapanBetul: 0 },
-            { soalan: "Which water treatment process kills harmful microorganisms?", pilihan: ["Filtration", "Chlorination and Boiling", "Sedimentation", "Coagulation"], jawapanBetul: 1 },
-            { soalan: "What is solute?", pilihan: ["The liquid that dissolves a substance", "The substance that dissolves in a solvent", "The resulting mixture", "An insoluble solid"], jawapanBetul: 1 }
-        ];
-
-        var soalanBab6 = [
-            { soalan: "What is the pH value range for acidic substances?", pilihan: ["pH 7", "pH more than 7 up to 14", "pH less than 7", "pH 14"], jawapanBetul: 2 },
-            { soalan: "Which substance turns moist blue litmus paper red?", pilihan: ["Acid", "Alkali", "Neutral salt solution", "Pure water"], jawapanBetul: 0 },
-            { soalan: "What is the taste characteristic of acids?", pilihan: ["Sweet", "Sour", "Bitter", "Salty"], jawapanBetul: 1 },
-            { soalan: "Alkalis are defined as bases that...", pilihan: ["Do not dissolve in water", "Dissolve in water to produce hydroxide ions (OH-)", "Turn red litmus paper red", "Have a pH of 2"], jawapanBetul: 1 },
-            { soalan: "What color does Universal Indicator show in a neutral solution (pH 7)?", pilihan: ["Red", "Yellow", "Green", "Purple"], jawapanBetul: 2 },
-            { soalan: "What is neutralization?", pilihan: ["Reaction between an acid and an alkali to form salt and water", "Reaction between metal and water", "Evaporation of acid", "Dissolving salt in water"], jawapanBetul: 0 },
-            { soalan: "What are the products of a neutralization reaction?", pilihan: ["Acid and Alkali", "Salt and Water", "Gas and Metal", "Sugar and Oxygen"], jawapanBetul: 1 },
-            { soalan: "Which of the following substances is an alkali?", pilihan: ["Lemon juice", "Vinegar", "Sodium hydroxide (Soap/Bleach)", "Pure water"], jawapanBetul: 2 },
-            { soalan: "What is the use of antacids in medical treatment?", pilihan: ["To increase stomach acid", "To neutralize excess stomach acid and relieve indigestion", "To kill bacteria in food", "To lower body temperature"], jawapanBetul: 1 },
-            { soalan: "Phenolphthalein indicator turns what color in an alkaline solution?", pilihan: ["Colorless", "Pink / Magenta", "Yellow", "Red"], jawapanBetul: 1 }
-        ];
-
+        
         var senaraiSoalanSemasa = [];
         var indeksSoalanDipilih = 0;
         var misiDiselesaikan = [];
         var jumlahNyawa = 5; 
         var bolehMenjawab = true;
         
-        var pX = 1000, pY = 750;
+        var pX = 1000 + Math.floor(Math.random() * 80 - 40);
+        var pY = 750 + Math.floor(Math.random() * 80 - 40);
         var kelajuanSmooth = 7; 
         var sedangJalan = false;
         var menghadapKanan = true;
@@ -473,11 +377,11 @@
         var frameSemasa = 0;
         var babDipilihSementera = 0; 
         var kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+        var joyVector = { x: 0, y: 0 }; 
         var lokasiBola = [];
         var pemasaDetik;
         var saatBerlalu = 0;
 
-        // Pembolehubah Musuh & Power-up Sanitizer
         var musuhX = 500, musuhY = 500;
         var arahMusuhX = 2;
         var statusHostPemain = false; 
@@ -500,6 +404,62 @@
                 butang.style.color = "white";
             }
         }
+
+        function tukarTemaPeta(bab) {
+    var dunia = document.getElementById("duniaPeta");
+    var bekasPokok = document.getElementById("bekasPokok");
+    var sungai = document.getElementById("elemenSungai");
+
+    if (bab === 1 || bab === 2) {
+        dunia.style.backgroundColor = "#eaf4fc";
+        dunia.style.backgroundImage = "radial-gradient(#bce0fd 15%, transparent 16%), radial-gradient(#bce0fd 15%, transparent 16%)";
+        sungai.style.display = "block";
+        bekasPokok.innerHTML = `
+            <div class="elemen-pokok" style="top: 200px; left: 300px;">🌲</div>
+            <div class="elemen-pokok" style="top: 250px; left: 1500px;">🌳</div>
+            <div class="elemen-pokok" style="top: 550px; left: 800px;">🌲</div>
+            <div class="elemen-pokok" style="top: 900px; left: 400px;">🌴</div>
+        `;
+    } else if (bab === 3 || bab === 4) {
+        dunia.style.backgroundColor = "#fff5f5";
+        dunia.style.backgroundImage = "radial-gradient(#fed7d7 15%, transparent 16%), radial-gradient(#fed7d7 15%, transparent 16%)";
+        sungai.style.display = "none";
+        bekasPokok.innerHTML = `
+            <div class="elemen-pokok item-bonus" data-jenis="nyawa" style="top: 200px; left: 300px; cursor:pointer;">🍎</div>
+            <div class="elemen-pokok item-bonus" data-jenis="laju" style="top: 300px; left: 1400px; cursor:pointer;">🥗</div>
+            <div class="elemen-pokok item-bonus" data-jenis="kebal" style="top: 600px; left: 700px; cursor:pointer;">🛡️</div>
+            <div class="elemen-pokok item-bonus" data-jenis="nyawa" style="top: 950px; left: 450px; cursor:pointer;">🩺</div>
+        `;
+    } else if (bab === 5 || bab === 6) {
+        dunia.style.backgroundColor = "#e0f2fe";
+        dunia.style.backgroundImage = "radial-gradient(#bae6fd 15%, transparent 16%), radial-gradient(#bae6fd 15%, transparent 16%)";
+        sungai.style.display = "none";
+        bekasPokok.innerHTML = `
+            <div class="elemen-pokok item-bonus" data-jenis="kebal" style="top: 200px; left: 300px;">💧</div>
+            <div class="elemen-pokok item-bonus" data-jenis="laju" style="top: 300px; left: 1400px;">⚗️</div>
+            <div class="elemen-pokok item-bonus" data-jenis="nyawa" style="top: 600px; left: 700px;">🧪</div>
+        `;
+    } else if (bab >= 7 && bab <= 10) {
+        dunia.style.backgroundColor = "#fffde7";
+        dunia.style.backgroundImage = "radial-gradient(#fff9c4 15%, transparent 16%), radial-gradient(#fff9c4 15%, transparent 16%)";
+        sungai.style.display = "none";
+        bekasPokok.innerHTML = `
+            <div class="elemen-pokok item-bonus" data-jenis="laju" style="top: 200px; left: 300px;">⚡</div>
+            <div class="elemen-pokok item-bonus" data-jenis="nyawa" style="top: 300px; left: 1400px;">⏱️</div>
+            <div class="elemen-pokok item-bonus" data-jenis="laju" style="top: 600px; left: 700px;">🚀</div>
+            <div class="elemen-pokok item-bonus" data-jenis="kebal" style="top: 950px; left: 450px;">🔊</div>
+        `;
+    } else {
+        dunia.style.backgroundColor = "#0f172a";
+        dunia.style.backgroundImage = "radial-gradient(#38bdf8 15%, transparent 16%), radial-gradient(#38bdf8 15%, transparent 16%)";
+        sungai.style.display = "none";
+        bekasPokok.innerHTML = `
+            <div class="elemen-pokok item-bonus" data-jenis="laju" style="top: 200px; left: 300px;">✨</div>
+            <div class="elemen-pokok item-bonus" data-jenis="kebal" style="top: 300px; left: 1400px;">🪐</div>
+            <div class="elemen-pokok item-bonus" data-jenis="nyawa" style="top: 600px; left: 700px;">☄️</div>
+        `;
+    }
+}
 
         function tanyaNama(nomborBab) {
             babDipilihSementera = nomborBab; 
@@ -536,15 +496,26 @@
             if (nomborBab === 4) senaraiSoalanSemasa = soalanBab4; 
             if (nomborBab === 5) senaraiSoalanSemasa = soalanBab5; 
             if (nomborBab === 6) senaraiSoalanSemasa = soalanBab6; 
+            if (nomborBab === 7) senaraiSoalanSemasa = soalanBab7; 
+            if (nomborBab === 8) senaraiSoalanSemasa = soalanBab8; 
+            if (nomborBab === 9) senaraiSoalanSemasa = soalanBab9; 
+            if (nomborBab === 10) senaraiSoalanSemasa = soalanBab10; 
+            if (nomborBab === 11) senaraiSoalanSemasa = soalanBab11; 
+            if (nomborBab === 12) senaraiSoalanSemasa = soalanBab12; 
+            if (nomborBab === 13) senaraiSoalanSemasa = soalanBab13; 
+
+            tukarTemaPeta(nomborBab);
 
             var jumlahSoalan = senaraiSoalanSemasa.length;
             misiDiselesaikan = [];
             for (var i = 0; i < jumlahSoalan; i++) { misiDiselesaikan.push(false); }
             
             jumlahNyawa = 5;
-            pX = 1000; pY = 750;
+            pX = 1000 + Math.floor(Math.random() * 80 - 40); 
+            pY = 750 + Math.floor(Math.random() * 80 - 40);
             menghadapKanan = true;
             kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+            joyVector = { x: 0, y: 0 };
             adaKuasaSuper = false;
 
             document.getElementById("jumlahMisiPaparan").innerHTML = jumlahSoalan;
@@ -567,8 +538,6 @@
 
             document.getElementById("laguGame").play();
             document.getElementById("butangMuzik").innerHTML = "🔊 Music ON";
-            document.getElementById("butangMuzik").style.backgroundColor = "#00c6ff";
-            document.getElementById("butangMuzik").style.color = "#0d1b2a";
 
             clearInterval(pemasaDetik); 
             saatBerlalu = 0;
@@ -591,11 +560,7 @@
 
         document.addEventListener('keydown', function(event) {
             var kekunci = event.key.toLowerCase();
-            
-            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                return; 
-            }
-
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
             if (document.getElementById("modalSoalan").style.display === "flex" || document.getElementById("modalMenang").style.display === "flex") return;
                 
             if (document.getElementById("modalNama").style.display === "flex") {
@@ -617,10 +582,7 @@
 
         document.addEventListener('keyup', function(event) {
             var kekunci = event.key.toLowerCase();
-
-            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                return; 
-            }
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
 
             if(['arrowup', 'w'].includes(kekunci)) kekunciDitekan.atas = false;
             if(['arrowdown', 's'].includes(kekunci)) kekunciDitekan.bawah = false;
@@ -628,81 +590,100 @@
             if(['arrowright', 'd'].includes(kekunci)) kekunciDitekan.kanan = false;
         });
 
+        // ==========================================
+        // KAWALAN JOYSTICK TERAMAT HALUS & LISUT (SMOOTH)
+        // ==========================================
         var zonJoystick = document.getElementById("zonJoystick");
         var joystickKnob = document.getElementById("joystickKnob");
-        var joystickMulaX = 0, joystickMulaY = 0;
-        var sedangSentuh = false;
+        var joyPointerId = null;
+        var joyCenterX = 0, joyCenterY = 0;
+        var joystickActive = false;
 
-        function mulaDrag(e) {
-            e.preventDefault(); 
-            sedangSentuh = true;
-            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            
-            var kotak = zonJoystick.getBoundingClientRect();
-            joystickMulaX = kotak.left + kotak.width / 2;
-            joystickMulaY = kotak.top + kotak.height / 2;
-            kiraPergerakanJoystick(clientX, clientY);
-        }
-
-        function gerakDrag(e) {
-            if (!sedangSentuh) return;
-            e.preventDefault();
-            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            kiraPergerakanJoystick(clientX, clientY);
-        }
-
-        function lepasDrag(e) {
-            if (!sedangSentuh) return;
-            e.preventDefault();
-            sedangSentuh = false;
-            joystickKnob.style.transform = "translate(-50%, -50%)";
-            kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
-            sedangJalan = false;
-        }
-
-        zonJoystick.addEventListener('touchstart', mulaDrag, { passive: false });
-        zonJoystick.addEventListener('touchmove', gerakDrag, { passive: false });
-        zonJoystick.addEventListener('touchend', lepasDrag);
-        zonJoystick.addEventListener('mousedown', mulaDrag);
-        window.addEventListener('mousemove', gerakDrag);
-        window.addEventListener('mouseup', lepasDrag);
-
-        function kiraPergerakanJoystick(x, y) {
-            var dX = x - joystickMulaX;
-            var dY = y - joystickMulaY;
+        function kemaskiniPosisiJoystick(clientX, clientY) {
+            var dX = clientX - joyCenterX;
+            var dY = clientY - joyCenterY;
             var jarak = Math.sqrt(dX*dX + dY*dY);
             var maxJarak = 40;
 
-            if (jarak > maxJarak) {
-                dX = (dX / jarak) * maxJarak;
-                dY = (dY / jarak) * maxJarak;
+            if (jarak > 0) {
+                var nisbah = Math.min(jarak, maxJarak) / maxJarak;
+                joyVector.x = (dX / jarak) * nisbah;
+                joyVector.y = (dY / jarak) * nisbah;
+            } else {
+                joyVector.x = 0;
+                joyVector.y = 0;
             }
 
-            joystickKnob.style.transform = `translate(calc(-50% + ${dX}px), calc(-50% + ${dY}px))`;
-            kekunciDitekan = { atas: false, bawah: false, kiri: false, kanan: false };
+            if (joyVector.x > 0.2) menghadapKanan = true;
+            if (joyVector.x < -0.2) menghadapKanan = false;
 
-            if (jarak > 10) {
-                if (dY < -10) kekunciDitekan.atas = true;
-                if (dY > 10) kekunciDitekan.bawah = true;
-                if (dX < -10) { kekunciDitekan.kiri = true; menghadapKanan = false; }
-                if (dX > 10) { kekunciDitekan.kanan = true; menghadapKanan = true; }
-            }
+            var knobX = joyVector.x * maxJarak;
+            var knobY = joyVector.y * maxJarak;
+            joystickKnob.style.transform = `translate(calc(-50% + ${knobX}px), calc(-50% + ${knobY}px))`;
         }
 
+        zonJoystick.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            joyPointerId = e.pointerId;
+            zonJoystick.setPointerCapture(e.pointerId);
+            var rect = zonJoystick.getBoundingClientRect();
+            joyCenterX = rect.left + rect.width / 2;
+            joyCenterY = rect.top + rect.height / 2;
+            joystickActive = true;
+            kemaskiniPosisiJoystick(e.clientX, e.clientY);
+        });
+
+        zonJoystick.addEventListener('pointermove', function(e) {
+            if (!joystickActive || e.pointerId !== joyPointerId) return;
+            e.preventDefault();
+            kemaskiniPosisiJoystick(e.clientX, e.clientY);
+        });
+
+        function lepasJoystick(e) {
+            if (!joystickActive) return;
+            if (e && e.pointerId !== joyPointerId) return;
+            joystickActive = false;
+            joyPointerId = null;
+            joystickKnob.style.transform = "translate(-50%, -50%)";
+            joyVector = { x: 0, y: 0 };
+        }
+
+        zonJoystick.addEventListener('pointerup', lepasJoystick);
+        zonJoystick.addEventListener('pointercancel', lepasJoystick);
+
+        // ==========================================
+        // LOGIK UTAMA PERGERAKAN HALUS (SMOOTH GAME LOOP)
+        // ==========================================
         function gameLoop() {
             if (document.getElementById("zonPeta").style.display === "block" && 
                 document.getElementById("modalSoalan").style.display !== "flex" && 
                 document.getElementById("modalNama").style.display !== "flex" &&
                 document.getElementById("modalMenang").style.display !== "flex") {
                 
-                var adaGerak = false;
-                if (kekunciDitekan.atas) { pY -= kelajuanSmooth; adaGerak = true; }
-                if (kekunciDitekan.bawah) { pY += kelajuanSmooth; adaGerak = true; }
-                if (kekunciDitekan.kiri) { pX -= kelajuanSmooth; adaGerak = true; }
-                if (kekunciDitekan.kanan) { pX += kelajuanSmooth; adaGerak = true; }
-                sedangJalan = adaGerak;
+                var moveX = 0;
+                var moveY = 0;
+
+                if (kekunciDitekan.atas) moveY -= 1;
+                if (kekunciDitekan.bawah) moveY += 1;
+                if (kekunciDitekan.kiri) moveX -= 1;
+                if (kekunciDitekan.kanan) moveX += 1;
+
+                moveX += joyVector.x;
+                moveY += joyVector.y;
+
+                var panjang = Math.sqrt(moveX * moveX + moveY * moveY);
+                if (panjang > 1) {
+                    moveX /= panjang;
+                    moveY /= panjang;
+                }
+
+                if (panjang > 0.05) {
+                    pX += moveX * kelajuanSmooth;
+                    pY += moveY * kelajuanSmooth;
+                    sedangJalan = true;
+                } else {
+                    sedangJalan = false;
+                }
                 
                 if (pX < 50) pX = 50; if (pX > 1950) pX = 1950;
                 if (pY < 50) pY = 50; if (pY > 1450) pY = 1450;
@@ -711,6 +692,7 @@
                 semakPelanggaran();
                 semakSentuhanMusuh(); 
                 semakAmbilPowerUp();
+                semakKutipItemBonus();
             }
             requestAnimationFrame(gameLoop); 
         }
@@ -733,7 +715,6 @@
             if (adaKuasaSuper) {
                 sprite.innerHTML = "🦸‍♂️";
             } else if (sedangLompatKita) {
-                avatarKita.style.transform = "translate(-50%, -50%) translateY(-35px)";
                 sprite.style.transform = arahTransform;
                 return;
             } else if (sedangJalan) {
@@ -744,9 +725,9 @@
                 sprite.innerHTML = "🧍‍♂️"; 
                 frameSemasa = 0;
             }
-            avatarKita.style.transform = "translate(-50%, -50%) translateY(0px)";
+            
             sprite.style.transform = arahTransform;
-        }, 150); 
+        }, 150);
 
         var indeksBolaBerdekatan = -1;
 
@@ -756,7 +737,6 @@
                 if (misiDiselesaikan[i]) continue; 
                 var jarakX = Math.abs(pX - lokasiBola[i].x);
                 var jarakY = Math.abs(pY - lokasiBola[i].y);
-                
                 if (jarakX < 60 && jarakY < 60) {
                     indeksBolaBerdekatan = i; 
                 }
@@ -810,6 +790,33 @@
             }
         }
 
+        // 📍 LETAK FUNGSI LANGKAH 2 DI SINI:
+        function semakKutipItemBonus() {
+            var senaraiItem = document.querySelectorAll('.item-bonus');
+            senaraiItem.forEach(function(item) {
+                if (item.style.display === "none") return;
+                var itemX = parseInt(item.style.left);
+                var itemY = parseInt(item.style.top);
+                var jarakX = Math.abs(pX - itemX);
+                var jarakY = Math.abs(pY - itemY);
+
+                if (jarakX < 50 && jarakY < 50) {
+                    item.style.display = "none";
+                    var jenis = item.getAttribute("data-jenis");
+                    if (jenis === "nyawa" && jumlahNyawa < 5) {
+                        jumlahNyawa++;
+                        kemaskiniUI();
+                    } else if (jenis === "laju") {
+                        kelajuanSmooth = 12;
+                        setTimeout(() => { kelajuanSmooth = 7; }, 5000);
+                    } else if (jenis === "kebal") {
+                        adaKuasaSuper = true;
+                        setTimeout(() => { adaKuasaSuper = false; }, 5000);
+                    }
+                }
+            });
+        }
+
         function tekanButangAksi() {
             if (document.getElementById("modalSoalan").style.display === "flex") return; 
 
@@ -818,10 +825,16 @@
                 sedangJalan = false;
                 bukaSoalan(indeksBolaBerdekatan);
             } else {
-                sedangLompatKita = true;
-                setTimeout(function() {
-                    sedangLompatKita = false;
-                }, 350);
+                var avatar = document.getElementById("pemain");
+                if (!avatar.classList.contains("sedang-lompat")) {
+                    avatar.classList.add("sedang-lompat");
+                    sedangLompatKita = true;
+                    
+                    setTimeout(function() {
+                        avatar.classList.remove("sedang-lompat");
+                        sedangLompatKita = false;
+                    }, 400);
+                }
             }
         }
 
@@ -843,6 +856,8 @@
             indeksSoalanDipilih = indeks;
             var soalanSemasa = senaraiSoalanSemasa[indeks];
             document.getElementById("soalan").innerHTML = soalanSemasa.soalan;
+            document.getElementById("kotakNotaPembetulan").style.display = "none";
+
             for(var i=0; i<4; i++) {
                 var butang = document.getElementById("pilihan" + i);
                 butang.innerHTML = ["A) ", "B) ", "C) ", "D) "][i] + soalanSemasa.pilihan[i];
@@ -855,31 +870,42 @@
         function semakJawapan(pilihanPelajar, butangDitekan) {
             if (!bolehMenjawab) return;
             bolehMenjawab = false;
-            var jawapanBetul = senaraiSoalanSemasa[indeksSoalanDipilih].jawapanBetul;
+            var objSoalan = senaraiSoalanSemasa[indeksSoalanDipilih];
+            var jawapanBetul = objSoalan.jawapanBetul;
 
             if (pilihanPelajar === jawapanBetul) {
                 butangDitekan.className = "butang-pilihan jawapan-betul";
                 misiDiselesaikan[indeksSoalanDipilih] = true;
                 document.getElementById("bola_" + indeksSoalanDipilih).className = "bola-misi selesai";
                 pY += 30; 
+                
+                setTimeout(function() {
+                    tutupModalSoalanDanSemakStatus();
+                }, 1000);
             } else {
                 jumlahNyawa--;
                 butangDitekan.className = "butang-pilihan jawapan-salah";
                 document.getElementById("pilihan" + jawapanBetul).className = "butang-pilihan jawapan-betul";
+                
+                document.getElementById("teksNotaSains").innerText = objSoalan.nota || "Sila semak semula tajuk KSSM ini!";
+                document.getElementById("kotakNotaPembetulan").style.display = "block";
                 pY += 50; 
+
+                setTimeout(function() {
+                    tutupModalSoalanDanSemakStatus();
+                }, 3000); 
             }
             kemaskiniKamera();
             kemaskiniUI();
+        }
 
-            setTimeout(function() {
-                document.getElementById("modalSoalan").style.display = "none";
-                
-                var jumlahBerjaya = misiDiselesaikan.filter(Boolean).length;
-                var totalSoalan = senaraiSoalanSemasa.length;
-                
-                if (jumlahNyawa <= 0) tamatKalah(); 
-                else if (jumlahBerjaya === totalSoalan) tamatMenang(); 
-            }, 1500); 
+        function tutupModalSoalanDanSemakStatus() {
+            document.getElementById("modalSoalan").style.display = "none";
+            var jumlahBerjaya = misiDiselesaikan.filter(Boolean).length;
+            var totalSoalan = senaraiSoalanSemasa.length;
+            
+            if (jumlahNyawa <= 0) tamatKalah(); 
+            else if (jumlahBerjaya === totalSoalan) tamatMenang(); 
         }
 
         function kemaskiniUI() {
@@ -890,11 +916,21 @@
             document.getElementById("skorMisi").innerHTML = misiDiselesaikan.filter(Boolean).length;
         }
 
+        var namaLencanaKhas = "🧬 Master Biodiversiti";
+
         function tamatMenang() {
             clearInterval(pemasaDetik); 
             var ranking = "LEGEND"; var ikon = "👑";
             if (saatBerlalu > 60 && saatBerlalu <= 120) { ranking = "PRO"; ikon = "🌟"; }    
             else if (saatBerlalu > 120) { ranking = "ROOKIE"; ikon = "👍"; }                        
+
+            var senaraiLencana = [
+                "", "🧬 Master Biodiversiti", "🌿 Wira Ekosistem", "🍎 Pakar Nutrisi", "🛡️ Pejuang Kesihatan",
+                "💧 Ahli Hidrologi", "⚗️ Pakar Kimia", "⚡ Jaguh Tenaga", "⏱️ Master Tindak Balas",
+                "🚀 Jaguh Fizik", "🔊 Master Akustik", "✨ Penjelajah Bintang", "🪐 Wira Sistem Suria", "☄️ Pemburu Asteroid"
+            ];
+            namaLencanaKhas = senaraiLencana[babDipilihSementera] || "🔬 Young Scientist";
+            document.getElementById("lencanaBabPaparan").innerText = namaLencanaKhas;
 
             var namaAsal = document.getElementById("inputNamaPelajar").value;
             if (namaAsal.trim() === "") namaAsal = "Junior Scientist";
@@ -912,10 +948,56 @@
                     masaTeks: document.getElementById("paparanMasa").innerHTML,
                     jumlahSaat: saatBerlalu,
                     pangkat: ranking,
-                    ikon: ikon,
+                    lencana: namaLencanaKhas,
                     bab: babDipilihSementera
                 });
             }
+        }
+
+        function janaSijilDigital() {
+            var namaPelajar = document.getElementById("inputNamaPelajar").value || "Junior Scientist";
+            var masaRecord = document.getElementById("paparanMasa").innerHTML;
+            var tarikhHariIni = new Date().toLocaleDateString("en-MY");
+
+            var tetingkapSijil = window.open('', '_blank');
+            tetingkapSijil.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Sijil Pencapaian - ${namaPelajar}</title>
+                    <style>
+                        body { font-family: 'Georgia', serif; text-align: center; padding: 40px; background: #fdfbf7; color: #1a2a6c; }
+                        .sijil-box { border: 10px double #0052D4; padding: 30px; border-radius: 15px; background: white; max-width: 750px; margin: 0 auto; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+                        h1 { font-size: 36px; color: #0052D4; text-transform: uppercase; margin-bottom: 5px; }
+                        h3 { font-size: 20px; color: #555; font-weight: normal; margin-top: 0; }
+                        .nama { font-size: 32px; font-weight: bold; color: #d35400; border-bottom: 2px solid #d35400; display: inline-block; padding: 5px 30px; margin: 20px 0; }
+                        .penerangan { font-size: 18px; line-height: 1.6; color: #333; margin: 20px 0; }
+                        .badge-box { background: #e3f2fd; padding: 10px 20px; border-radius: 20px; display: inline-block; font-size: 20px; font-weight: bold; color: #0052D4; margin: 15px 0; }
+                        .footer { margin-top: 40px; display: flex; justify-content: space-between; font-size: 14px; color: #777; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="sijil-box">
+                        <h1>CERTIFICATE OF ACHIEVEMENT</h1>
+                        <h3>Science ZEP Challenge - Form 2 KSSM</h3>
+                        <p style="margin-top: 30px;">This certificate is proudly awarded to:</p>
+                        <div class="nama">${namaPelajar}</div>
+                        <div class="penerangan">
+                            For successfully completing all Science Beacons in <strong>Chapter ${babDipilihSementera}</strong><br>
+                            with an outstanding record time of <strong>${masaRecord}</strong>!
+                        </div>
+                        <div class="badge-box">${namaLencanaKhas}</div>
+                        <div class="footer">
+                            <div>Date: ${tarikhHariIni}</div>
+                            <div>Verified by: Science ZEP Portal</div>
+                        </div>
+                    </div>
+                    <br>
+                    <button class="no-print" onclick="window.print()" style="background: #0052D4; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer;">🖨️ Print / Save as PDF</button>
+                </body>
+                </html>
+            `);
         }
 
         function tamatKalah() {
@@ -952,7 +1034,7 @@
         }
 
         // ==========================================
-        // KOMEN LIVE & GUESTBOOK
+        // KOMEN LIVE FIREBASE
         // ==========================================
         function hantarKomen() {
             var nama = document.getElementById("namaKomen").value;
@@ -1012,9 +1094,7 @@
             }
         }, 300);
 
-        // ==========================================
-        // SISTEM MULTIPLAYER & POWER-UP & MUSUH LANTUN
-        // ==========================================
+        // MULTIPLAYER FIREBASE
         var myPlayerId = ""; 
         var loopMultiplayerSistem = null;
         var sambunganPemainSediaAda = false;
@@ -1137,7 +1217,7 @@
 
                                 if (!elemenMusuh) {
                                     var htmlMusuh = '<div id="spriteMusuhUtama" style="position: absolute; left: ' + musuhX + 'px; top: ' + musuhY + 'px; transform: translate(-50%, -50%); z-index: 75; text-align: center; transition: left 0.1s linear, top 0.1s linear;">' +
-                                        '<span style="font-size: 55px; filter: drop-shadow(0px 8px 4px rgba(0,0,0,0.3)); display: inline-block; animation: putarMusuh 1.5s infinite alternate;">🦠</span>' +
+                                        '<span style="font-size: 55px; filter: drop-shadow(0px 8px 4px rgba(0,0,0,0.3)); display: inline-block;">🦠</span>' +
                                         '<span style="font-size: 11px; background: rgba(220,53,69,0.9); color: white; padding: 2px 8px; border-radius: 10px; font-weight: bold; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); white-space: nowrap;">Virus Enemy</span>' +
                                         '</div>';
                                     document.getElementById("duniaPeta").insertAdjacentHTML('beforeend', htmlMusuh);

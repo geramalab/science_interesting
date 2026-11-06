@@ -7,9 +7,7 @@
     
     <style>
         /* Base & Layout Settings */
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -35,13 +33,8 @@
             text-align: center;
         }
 
-        .header-container img {
-            transition: transform 0.3s ease;
-        }
-
-        .header-container img:hover {
-            transform: scale(1.05);
-        }
+        .header-container img { transition: transform 0.3s ease; }
+        .header-container img:hover { transform: scale(1.05); }
 
         /* Navigation Bar */
         .navbar {
@@ -70,11 +63,7 @@
         }
 
         /* Dropdown Menu */
-        .dropdown { 
-            position: relative; 
-            display: inline-block; 
-        }
-
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-content {
             display: none;
             position: absolute;
@@ -105,9 +94,7 @@
             font-weight: bold;
         }
 
-        .dropdown:hover .dropdown-content { 
-            display: block; 
-        }
+        .dropdown:hover .dropdown-content { display: block; }
 
         /* Main Content Container */
         .main-content {
@@ -121,10 +108,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        @media (max-width: 1100px) {
-            .main-content { margin: 30px 50px; }
-        }
-
+        @media (max-width: 1100px) { .main-content { margin: 30px 50px; } }
         @media (max-width: 800px) {
             .main-content { margin: 20px 15px; padding: 25px 15px; }
             .navbar { flex-wrap: wrap; justify-content: center; }
@@ -169,10 +153,7 @@
             line-height: 1.6;
         }
 
-        .footer span.highlight { 
-            color: #00c6ff; 
-            font-weight: bold; 
-        }
+        .footer span.highlight { color: #00c6ff; font-weight: bold; }
         
         .visitor-counter {
             display: inline-block;
@@ -218,30 +199,14 @@
         .toast-msg.error { border-left-color: #dc3545; }
         .toast-msg.info { border-left-color: #0052D4; }
 
-        .toast-msg span.icon {
-            font-size: 20px;
-            margin-right: 12px;
-        }
+        .toast-msg span.icon { font-size: 20px; margin-right: 12px; }
 
-        @keyframes slideIn {
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateX(100%); }
-        }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
 
         /* Mod Gelap Styles */
-        body.dark-mode {
-            background-color: #0f172a !important;
-            color: #f1f5f9 !important;
-        }
-
-        body.dark-mode .main-content {
-            background-color: #1e293b !important;
-            color: #f1f5f9 !important;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-        }
+        body.dark-mode { background-color: #0f172a !important; color: #f1f5f9 !important; }
+        body.dark-mode .main-content { background-color: #1e293b !important; color: #f1f5f9 !important; box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
 
         body.dark-mode .main-content h1, 
         body.dark-mode .main-content h2, 
@@ -255,373 +220,115 @@
         body.dark-mode .leaderboard-panel h3,
         body.dark-mode .quest-panel h3,
         body.dark-mode .flashcard-panel h3,
-        body.dark-mode .shop-panel h3 {
-            color: #38bdf8 !important;
+        body.dark-mode .shop-panel h3 { color: #38bdf8 !important; }
+
+        body.dark-mode .main-content p, body.dark-mode .quote-text { color: #cbd5e1 !important; }
+        body.dark-mode .panel-kawan, body.dark-mode .leaderboard-panel, body.dark-mode .quest-panel, body.dark-mode .flashcard-panel, body.dark-mode .shop-panel {
+            background: #0f172a !important; border-color: #334155 !important;
         }
 
-        body.dark-mode .main-content p,
-        body.dark-mode .quote-text {
-            color: #cbd5e1 !important;
+        body.dark-mode .senarai-box, body.dark-mode .leaderboard-item, body.dark-mode .shop-item, body.dark-mode .quest-item {
+            background: #1e293b !important; border-color: #334155 !important; color: #f1f5f9 !important;
         }
 
-        body.dark-mode .panel-kawan,
-        body.dark-mode .leaderboard-panel,
-        body.dark-mode .quest-panel,
-        body.dark-mode .flashcard-panel,
-        body.dark-mode .shop-panel {
-            background: #0f172a !important;
-            border-color: #334155 !important;
-        }
-
-        body.dark-mode .senarai-box,
-        body.dark-mode .leaderboard-item,
-        body.dark-mode .shop-item,
-        body.dark-mode .quest-item {
-            background: #1e293b !important;
-            border-color: #334155 !important;
-            color: #f1f5f9 !important;
-        }
-
-        body.dark-mode .nama-kawan-text {
-            color: #38bdf8 !important;
-        }
-
-        body.dark-mode input[type="text"],
-        body.dark-mode select {
-            background: #0f172a !important;
-            color: #ffffff !important;
-            border-color: #334155 !important;
-        }
-
-        body.dark-mode .card-shortcut {
-            background-color: #0f172a !important;
-            border-color: #334155 !important;
-        }
-
-        body.dark-mode .quote-container {
-            background-color: #0f172a !important;
-            border-left-color: #00c6ff !important;
-        }
+        body.dark-mode .nama-kawan-text { color: #38bdf8 !important; }
+        body.dark-mode input[type="text"], body.dark-mode select { background: #0f172a !important; color: #ffffff !important; border-color: #334155 !important; }
+        body.dark-mode .card-shortcut { background-color: #0f172a !important; border-color: #334155 !important; }
+        body.dark-mode .quote-container { background-color: #0f172a !important; border-left-color: #00c6ff !important; }
 
         .btn-dark-toggle {
-            background-color: #334155;
-            color: #ffffff;
-            border: 2px solid #00c6ff;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            margin: 8px;
+            background-color: #334155; color: #ffffff; border: 2px solid #00c6ff;
+            padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 8px;
         }
+        .btn-dark-toggle:hover { background-color: #00c6ff; color: #0d1b2a; }
 
-        .btn-dark-toggle:hover {
-            background-color: #00c6ff;
-            color: #0d1b2a;
-        }
-
-        /* Panel Standard Box (Modular) */
+        /* Panel Standard Box */
         .panel-box {
-            max-width: 500px;
-            margin: 30px auto;
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid #e2e8f0;
-            text-align: left;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: background 0.3s, border-color 0.3s;
+            max-width: 500px; margin: 30px auto; background: #ffffff; padding: 25px;
+            border-radius: 15px; border: 2px solid #e2e8f0; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: background 0.3s, border-color 0.3s;
         }
 
         /* Quiz Panel & XP */
         .quiz-panel {
-            max-width: 500px;
-            margin: 30px auto;
-            background: #fff8e1;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid #ffe082;
-            text-align: left;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        body.dark-mode .quiz-panel {
-            background: #1e293b !important;
-            border-color: #334155 !important;
+            max-width: 500px; margin: 30px auto; background: #fff8e1; padding: 25px;
+            border-radius: 15px; border: 2px solid #ffe082; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: background 0.3s, border-color 0.3s;
         }
 
         .badge-pill {
-            display: inline-block;
-            background: #e0f2f1;
-            color: #004d40;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-right: 5px;
-            margin-top: 5px;
+            display: inline-block; background: #e0f2f1; color: #004d40; padding: 4px 12px;
+            border-radius: 20px; font-size: 12px; font-weight: bold; margin-right: 5px; margin-top: 5px;
         }
-
-        body.dark-mode .badge-pill {
-            background: #334155 !important;
-            color: #38bdf8 !important;
-        }
+        body.dark-mode .badge-pill { background: #334155 !important; color: #38bdf8 !important; }
 
         .quiz-opt-btn {
-            display: block;
-            width: 100%;
-            text-align: left;
-            background: #ffffff;
-            border: 1px solid #ffe082;
-            padding: 10px 14px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-            font-weight: 500;
+            display: block; width: 100%; text-align: left; background: #ffffff; border: 1px solid #ffe082;
+            padding: 10px 14px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.2s; font-weight: 500;
         }
-
-        .quiz-opt-btn:hover {
-            background: #fff3e0;
-            border-color: #ffb300;
-        }
-
-        body.dark-mode .quiz-opt-btn {
-            background: #0f172a !important;
-            color: #f1f5f9 !important;
-            border-color: #334155 !important;
-        }
-
-        body.dark-mode .quiz-opt-btn:hover {
-            background: #334155 !important;
-            border-color: #38bdf8 !important;
-        }
+        .quiz-opt-btn:hover { background: #fff3e0; border-color: #ffb300; }
+        body.dark-mode .quiz-opt-btn { background: #0f172a !important; color: #f1f5f9 !important; border-color: #334155 !important; }
+        body.dark-mode .quiz-opt-btn:hover { background: #334155 !important; border-color: #38bdf8 !important; }
 
         /* XP Progress Bar */
-        .xp-bar-bg {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            height: 12px;
-            overflow: hidden;
-            margin-top: 6px;
-            margin-bottom: 12px;
-        }
-
-        .xp-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #ffb300, #ff8f00);
-            transition: width 0.4s ease-in-out;
-        }
+        .xp-bar-bg { width: 100%; background-color: #e0e0e0; border-radius: 10px; height: 12px; overflow: hidden; margin-top: 6px; margin-bottom: 12px; }
+        .xp-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ffb300, #ff8f00); transition: width 0.4s ease-in-out; }
 
         /* Avatar Selector */
-        .avatar-badge {
-            font-size: 20px;
-            vertical-align: middle;
-            margin-right: 6px;
-        }
-
+        .avatar-badge { font-size: 20px; vertical-align: middle; margin-right: 6px; }
         .avatar-opt-btn {
-            background: #e3f2fd;
-            border: 1px solid #90caf9;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
+            background: #e3f2fd; border: 1px solid #90caf9; border-radius: 50%;
+            width: 32px; height: 32px; font-size: 16px; cursor: pointer; transition: 0.2s;
         }
+        .avatar-opt-btn:hover { transform: scale(1.2); background: #00c6ff; }
 
-        .avatar-opt-btn:hover {
-            transform: scale(1.2);
-            background: #00c6ff;
-        }
-
-        /* Bingkai Avatar Profile */
+        /* Bingkai Avatar */
         .frame-none { border: none; }
         .frame-gold { border: 3px solid #ffd700 !important; box-shadow: 0 0 10px #ffd700; border-radius: 50%; padding: 2px; }
         .frame-neon { border: 3px solid #00e5ff !important; box-shadow: 0 0 10px #00e5ff; border-radius: 50%; padding: 2px; }
 
-        /* FLASHCARD 3D FLIP STYLING */
-        .flashcard-container {
-            perspective: 1000px;
-            width: 100%;
-            height: 160px;
-            margin: 15px 0;
-            cursor: pointer;
-        }
-
+        /* FLASHCARD 3D FLIP */
+        .flashcard-container { perspective: 1000px; width: 100%; height: 160px; margin: 15px 0; cursor: pointer; }
         .flashcard-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            border-radius: 12px;
-            background: #e3f2fd;
-            border: 2px solid #90caf9;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d; border-radius: 12px; background: #e3f2fd; border: 2px solid #90caf9; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
-        .flashcard-container.flipped .flashcard-inner {
-            transform: rotateY(180deg);
-        }
-
+        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
         .flashcard-front, .flashcard-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
+            position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden;
+            backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px;
         }
-
-        .flashcard-back {
-            background: #e8f5e9;
-            border-radius: 12px;
-            transform: rotateY(180deg);
-            color: #1b5e20;
-        }
-
-        body.dark-mode .flashcard-inner {
-            background: #0f172a !important;
-            border-color: #334155 !important;
-            color: #f1f5f9 !important;
-        }
-
-        body.dark-mode .flashcard-back {
-            background: #1e293b !important;
-            color: #4ade80 !important;
-        }
+        .flashcard-back { background: #e8f5e9; border-radius: 12px; transform: rotateY(180deg); color: #1b5e20; }
+        body.dark-mode .flashcard-inner { background: #0f172a !important; border-color: #334155 !important; color: #f1f5f9 !important; }
+        body.dark-mode .flashcard-back { background: #1e293b !important; color: #4ade80 !important; }
 
         /* Mini Chat Popup */
         #kotakSembangPopup {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 320px;
-            height: 420px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-            z-index: 999;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            border: 2px solid #00c6ff;
-            transition: background 0.3s;
+            position: fixed; bottom: 20px; left: 20px; width: 320px; height: 420px;
+            background-color: #ffffff; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 999;
+            display: none; flex-direction: column; overflow: hidden; border: 2px solid #00c6ff; transition: background 0.3s;
         }
-
-        body.dark-mode #kotakSembangPopup {
-            background-color: #1e293b !important;
-            border-color: #38bdf8 !important;
-        }
-
+        body.dark-mode #kotakSembangPopup { background-color: #1e293b !important; border-color: #38bdf8 !important; }
         .chat-header {
-            background: linear-gradient(135deg, #1a2a6c, #0052D4);
-            color: #ffffff;
-            padding: 12px 15px;
-            font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: linear-gradient(135deg, #1a2a6c, #0052D4); color: #ffffff;
+            padding: 12px 15px; font-weight: bold; font-size: 14px; display: flex; justify-content: space-between; align-items: center;
         }
-
-        .chat-messages {
-            flex: 1;
-            padding: 12px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: #f8fbff;
-        }
-
-        body.dark-mode .chat-messages {
-            background: #0f172a !important;
-        }
-
-        .chat-bubble {
-            max-width: 80%;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 13px;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        .chat-bubble.me {
-            align-self: flex-end;
-            background-color: #0052D4;
-            color: #ffffff;
-            border-bottom-right-radius: 2px;
-        }
-
-        .chat-bubble.them {
-            align-self: flex-start;
-            background-color: #e2e8f0;
-            color: #1e293b;
-            border-bottom-left-radius: 2px;
-        }
-
-        body.dark-mode .chat-bubble.them {
-            background-color: #334155 !important;
-            color: #f1f5f9 !important;
-        }
-
-        .chat-time {
-            font-size: 10px;
-            opacity: 0.7;
-            margin-top: 3px;
-            text-align: right;
-        }
-
-        .chat-input-box {
-            display: flex;
-            padding: 8px;
-            background: #ffffff;
-            border-top: 1px solid #dddddd;
-            gap: 6px;
-        }
-
-        body.dark-mode .chat-input-box {
-            background: #1e293b !important;
-            border-color: #334155 !important;
-        }
+        .chat-messages { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #f8fbff; }
+        body.dark-mode .chat-messages { background: #0f172a !important; }
+        .chat-bubble { max-width: 80%; padding: 8px 12px; border-radius: 12px; font-size: 13px; line-height: 1.4; word-wrap: break-word; }
+        .chat-bubble.me { align-self: flex-end; background-color: #0052D4; color: #ffffff; border-bottom-right-radius: 2px; }
+        .chat-bubble.them { align-self: flex-start; background-color: #e2e8f0; color: #1e293b; border-bottom-left-radius: 2px; }
+        body.dark-mode .chat-bubble.them { background-color: #334155 !important; color: #f1f5f9 !important; }
+        .chat-time { font-size: 10px; opacity: 0.7; margin-top: 3px; text-align: right; }
+        .chat-input-box { display: flex; padding: 8px; background: #ffffff; border-top: 1px solid #dddddd; gap: 6px; }
+        body.dark-mode .chat-input-box { background: #1e293b !important; border-color: #334155 !important; }
 
         /* Leaderboard Panel */
         .leaderboard-panel {
-            max-width: 500px;
-            margin: 30px auto;
-            background: #f3e5f5;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid #ce93d8;
-            text-align: left;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: background 0.3s, border-color 0.3s;
+            max-width: 500px; margin: 30px auto; background: #f3e5f5; padding: 25px;
+            border-radius: 15px; border: 2px solid #ce93d8; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: background 0.3s, border-color 0.3s;
         }
-
         .leaderboard-item {
-            background: #ffffff;
-            padding: 10px 14px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #e1bee7;
-            font-weight: bold;
-            font-size: 14px;
+            background: #ffffff; padding: 10px 14px; margin-bottom: 8px; border-radius: 8px;
+            display: flex; justify-content: space-between; align-items: center; border: 1px solid #e1bee7; font-weight: bold; font-size: 14px;
         }
     </style>
 </head>
@@ -646,6 +353,13 @@
                 <a href="science_chap4.html">Chapter 4: Human Health</a>
                 <a href="science_chap5.html">Chapter 5: Water and Solution</a>
                 <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+                <a href="science_chap7.html">Chapter 7: Energy and Power</a>
+                <a href="science_chap8.html">Chapter 8: Rate of Reaction</a>
+                <a href="science_chap9.html">Chapter 9: Speed</a>
+                <a href="science_chap10.html">Chapter 10: Sound Waves</a>
+                <a href="science_chap11.html">Chapter 11: Stars and Galaxies</a>
+                <a href="science_chap12.html">Chapter 12: The Solar System</a>
+                <a href="science_chap13.html">Chapter 13: Meteoroid, Asteroid and Comet</a>
             </div>
         </div>
 
@@ -667,7 +381,7 @@
             Discover the wonders of biodiversity, human biology, and chemical reactions through interactive simulations and virtual ZEP zones.
         </p>
 
-        <!-- Three Shortcut Boxes -->
+        <!-- Shortcut Cards -->
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin-bottom: 50px;">
             <a href="science_chap1.html" class="card-shortcut" style="background-color: #e3f2fd; border: 2px solid #90caf9;">
                 <h1 style="font-size: 45px; margin: 0;">🧬</h1>
@@ -688,7 +402,7 @@
             </a>
         </div>
 
-        <!-- Science Motivation Quote -->
+        <!-- Quote -->
         <div class="quote-container">
             <p class="quote-text" style="margin: 0; font-size: 16px; font-style: italic; line-height: 1.6;">
                 "Science is a way of thinking much more than it is a body of knowledge." <br> 
@@ -760,7 +474,6 @@
                 <span id="paparanXP" style="background: #ffecb3; color: #b78103; font-weight: bold; padding: 4px 12px; border-radius: 20px; font-size: 14px;">⭐ 0 XP</span>
             </div>
 
-            <!-- Chapter Selection Dropdown -->
             <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                 <label style="font-size: 12px; font-weight: bold; color: #b78103;">Pilih Bab:</label>
                 <select id="pilihBabKuiz" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #ffb300; font-size: 12px; flex: 1;">
@@ -774,7 +487,6 @@
                 </select>
             </div>
 
-            <!-- XP Progress Bar -->
             <div>
                 <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; color: #888888;">
                     <span>Kemajuan Lencana</span>
@@ -785,7 +497,6 @@
                 </div>
             </div>
 
-            <!-- Badges Container -->
             <div style="margin-bottom: 15px;">
                 <span style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">🎖️ Lencana Pencapaian:</span>
                 <div id="bekasLencana">
@@ -793,7 +504,6 @@
                 </div>
             </div>
 
-            <!-- Quiz Question Box -->
             <div id="kotakSoalanKuiz">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
                     <h4 id="teksSoalan" style="margin: 10px 0; font-size: 15px; flex: 1;">Memuatkan soalan harian...</h4>
@@ -803,7 +513,7 @@
             </div>
         </div>
 
-        <!-- KEDAI XP (GELARAN & BINGKAI PROFIL) -->
+        <!-- KEDAI XP -->
         <div class="panel-box shop-panel" style="background: #e0f7fa; border-color: #80deea;">
             <h3 style="margin-top: 0; color: #00838f; border-bottom: 2px solid #4dd0e1; padding-bottom: 6px;">🛍️ Kedai XP (Gelaran & Bingkai)</h3>
             <p style="font-size: 12px; color: #555; margin-bottom: 10px;">Gunakan XP untuk membuka gelaran khas & bingkai avatar!</p>
@@ -828,12 +538,10 @@
         <div class="panel-kawan" style="max-width: 500px; margin: 0 auto; background: #f8fbff; padding: 25px; border-radius: 15px; border: 2px solid #bce0fd; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
             <h3 style="margin-top: 0; border-bottom: 2px solid #00c6ff; padding-bottom: 8px;">👥 Scientist Friend System</h3>
             
-            <!-- User Status Profile Box -->
             <div id="statusProfilSaya" style="font-size: 13px; font-weight: bold; margin-bottom: 10px; padding: 10px 14px; background: #e3f2fd; border-radius: 8px; border: 1px solid #90caf9; color: #0052D4;">
                 👤 Profil Saya: <b>Memuatkan...</b>
             </div>
 
-            <!-- Avatar Selector -->
             <div style="margin-bottom: 15px; padding: 8px; background: #ffffff; border-radius: 8px; border: 1px dashed #bce0fd;">
                 <span style="font-size: 11px; font-weight: bold; color: #555555; display: block; margin-bottom: 5px;">Pilih Avatar Saintis Kitak:</span>
                 <div style="display: flex; gap: 6px; justify-content: center;">
@@ -846,7 +554,6 @@
                 </div>
             </div>
 
-            <!-- Add Friend -->
             <div style="margin-bottom: 15px;">
                 <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 5px;">Add Friend by Name:</label>
                 <div style="display: flex; gap: 8px;">
@@ -855,13 +562,11 @@
                 </div>
             </div>
 
-            <!-- Pending Requests -->
             <div style="margin-bottom: 15px;">
                 <h4 style="font-size: 14px; margin-bottom: 5px;">📥 Friend Requests:</h4>
                 <div id="senaraiJemputan" class="senarai-box" style="font-size: 13px; background: white; padding: 10px; border-radius: 6px; border: 1px solid #eeeeee; min-height: 35px;">No pending requests</div>
             </div>
 
-            <!-- Friends List -->
             <div>
                 <h4 style="font-size: 14px; margin-bottom: 5px;">🌟 My Friends List:</h4>
                 <div id="senaraiKawanContainer" style="font-size: 13px; min-height: 35px;">No friends added yet.</div>
@@ -885,6 +590,24 @@
             <div id="pilihanBattleContainer"></div>
 
             <button onclick="keluarBattle()" style="margin-top:20px; background:#757575; color:white; border:none; padding:10px 20px; border-radius:6px; font-weight:bold; cursor:pointer;">Keluar Battle 🚪</button>
+        </div>
+    </div>
+
+    <!-- POPUP PENDAFTARAN NAMA & LOKASI (LANGKAH 1A) -->
+    <div class="modal-latar" id="modalNama" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+        <div class="modal-kandungan" style="background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 420px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-align: center;">
+            <h2 style="color: #0052D4; margin-top: 0;">👨‍🔬 Pendaftaran Saintis ZEP</h2>
+            
+            <input type="text" id="inputNamaPelajar" placeholder="Nama / Nickname (Cth: Fatimah)" style="width: 100%; padding: 10px; margin-bottom: 8px; border: 2px solid #ccc; border-radius: 8px; font-size: 15px; box-sizing: border-box;">
+            <input type="text" id="inputSekolah" placeholder="Nama Sekolah (Cth: SMK Seri Bintang)" style="width: 100%; padding: 10px; margin-bottom: 8px; border: 2px solid #ccc; border-radius: 8px; font-size: 15px; box-sizing: border-box;">
+            
+            <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                <input type="text" id="inputDaerah" placeholder="Daerah (Cth: Kinta)" style="flex: 1; padding: 10px; border: 2px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+                <input type="text" id="inputNegeri" placeholder="Negeri (Cth: Perak)" style="flex: 1; padding: 10px; border: 2px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <button onclick="sahkanNamaDanMula()" style="background-color: #0052D4; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%;">Enter ZEP Mission 🚀</button>
+            <button onclick="batalIsiNama()" style="background-color: #dc3545; color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; width: 100%; margin-top: 8px;">Cancel</button>
         </div>
     </div>
 
@@ -936,19 +659,17 @@
         const db = getDatabase(app);
         const auth = getAuth(app); 
 
-        // Penormalan Kunci Firebase
         function getSafeKey(nama) {
             if (!nama) return "guest";
             return nama.trim().toLowerCase().replace(/[.#$\[\]\/ ]/g, "_");
         }
 
-        // Pembersihan Teks untuk HTML Onclick
         function escapeHtmlAttr(str) {
             if (!str) return "";
             return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
         }
 
-        // Kesan Bunyi Interaktif (SFX Web Audio)
+        /* Sound Effects */
         window.playSFX = function(type) {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -985,7 +706,7 @@
             } catch(e) {}
         };
 
-        // 1. Mod Gelap Toggle
+        /* Mod Gelap Toggle */
         window.toggleDarkMode = function() {
             document.body.classList.toggle("dark-mode");
             const isDark = document.body.classList.contains("dark-mode");
@@ -1000,7 +721,7 @@
             if (btn) btn.innerText = "☀️ Mod Terang";
         }
 
-        // 2. Toast System
+        /* Toast System */
         window.showToast = function(message, type = 'info') {
             const container = document.getElementById("toast-container");
             if (!container) return;
@@ -1020,17 +741,15 @@
             }, 3000);
         };
 
-        // 3. Counter Pelawat Realtime
+        /* Pelawat Realtime */
         const rujukanPelawat = ref(db, "statistik_sains/jumlah_pelawat");
         onValue(rujukanPelawat, (snapshot) => {
             const jumlahTerkini = snapshot.val();
             const elem = document.getElementById("angkaPelawat");
-            if (elem) {
-                elem.innerText = jumlahTerkini ? jumlahTerkini.toLocaleString() : "0";
-            }
+            if (elem) elem.innerText = jumlahTerkini ? jumlahTerkini.toLocaleString() : "0";
         });
 
-        // FLASHCARDS DATA & LOGIK 3D FLIP
+        /* Flashcards Data & 3D Flip */
         const dataFlashcards = [
             { en: "Poikilothermic", bm: "Poikiloterma", desc: "Organisma yang mempunyai suhu badan yang berubah-ubah mengikut suhu persekitaran." },
             { en: "Homeothermic", bm: "Homeoterma", desc: "Organisma yang mempunyai suhu badan yang tetap dan bebas daripada pengaruh suhu persekitaran." },
@@ -1040,6 +759,7 @@
 
         let fcIndex = 0;
         window.kadSeterusnya = function(dir) {
+            window.telahFlipKadHariIni = true; // <-- Tambah baris tok
             fcIndex = (fcIndex + dir + dataFlashcards.length) % dataFlashcards.length;
             const container = document.getElementById("cardDLPContainer");
             if (container) container.classList.remove('flipped');
@@ -1052,23 +772,87 @@
             }, 200);
         };
 
-        // QUESTS HARIAN & DAILY STREAK
+/* Quests Harian (Versi Selamat & Firebase Sync) */
+
+        // Helper untuk dapatkan tarikh hari ini (Cth: 2026-11-6)
+        function getTarikhHariIni() {
+            const d = new Date();
+            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        }
+
+        // Semak & kemaskini rupa bentuk butang Quest dari Firebase apabila halaman dibuka
+        function muatStatusQuestHarian(safeKey) {
+            const tarikh = getTarikhHariIni();
+            const rujukanQuest = ref(db, `kawan_sistem_v2/${safeKey}/quest_harian/${tarikh}`);
+
+            get(rujukanQuest).then((snap) => {
+                const data = snap.val() || {};
+                
+                // Misi 1
+                if (data.q1) {
+                    const btn1 = document.getElementById("btnQuest1");
+                    if (btn1) { btn1.disabled = true; btn1.innerText = "Done ✅"; btn1.style.background = "#aaa"; }
+                }
+                // Misi 2
+                if (data.q2) {
+                    const btn2 = document.getElementById("btnQuest2");
+                    if (btn2) { btn2.disabled = true; btn2.innerText = "Done ✅"; btn2.style.background = "#aaa"; }
+                }
+            });
+        }
+
+        // Penanda syarat penyelesaian misi dalam sesi
+        window.telahJawabKuizHariIni = false;
+        window.telahFlipKadHariIni = false;
+
+        // Fungsi tuntut quest yang telah diperbaiki
         window.tuntutQuest = function(qId) {
-            if (!window.namaPemainSaya) return;
-            const safeKey = getSafeKey(window.namaPemainSaya);
-            const reward = qId === 1 ? 20 : 15;
-            
-            tambahXPPemain(safeKey, reward);
-            showToast(`Misi ${qId} Diselesaikan! +${reward} XP 🎉`, "success");
-            const btn = document.getElementById(`btnQuest${qId}`);
-            if (btn) { 
-                btn.disabled = true; 
-                btn.innerText = "Done ✅"; 
-                btn.style.background = "#aaa"; 
+            if (!window.namaPemainSaya) {
+                showToast("Sila mendaftar / log masuk akaun dahulu!", "error");
+                return;
             }
+
+            const safeKey = getSafeKey(window.namaPemainSaya);
+            const tarikh = getTarikhHariIni();
+            const reward = qId === 1 ? 20 : 15;
+            const rujukanMisi = ref(db, `kawan_sistem_v2/${safeKey}/quest_harian/${tarikh}/q${qId}`);
+
+            // 1. Semak Firebase jika sudah pernah tuntut hari ini
+            get(rujukanMisi).then((snap) => {
+                if (snap.exists() && snap.val() === true) {
+                    showToast(`Misi ${qId} sudah pun dituntut hari ini!`, "info");
+                    return;
+                }
+
+                // 2. Semak jika pengguna BETUL-BETUL sudah laksanakan tugasan
+                let layak = false;
+                if (qId === 1 && window.telahJawabKuizHariIni) layak = true;
+                if (qId === 2 && window.telahFlipKadHariIni) layak = true;
+
+                if (!layak) {
+                    const mesej = (qId === 1) 
+                        ? "⚠️ Kitak perlu jawab sekurang-kurangnya 1 soalan kuiz dahulu!" 
+                        : "⚠️ Kitak perlu klik & semak sekurang-kurangnya 1 Kad Imbasan DLP dahulu!";
+                    showToast(mesej, "error");
+                    return;
+                }
+
+                // 3. Simpan ke Firebase & tambah XP jika layak
+                set(rujukanMisi, true).then(() => {
+                    tambahXPPemain(safeKey, reward);
+                    showToast(`Misi ${qId} Diselesaikan! +${reward} XP 🎉`, "success");
+
+                    const btn = document.getElementById(`btnQuest${qId}`);
+                    if (btn) { 
+                        btn.disabled = true; 
+                        btn.innerText = "Done ✅"; 
+                        btn.style.background = "#aaa"; 
+                    }
+                });
+            });
         };
 
-        // KEDAI XP (GELARAN & BINGKAI)
+        /* Kedai XP */
         window.beliGelaran = function(gelaran, kos) {
             if (!window.namaPemainSaya) return;
             const safeKey = getSafeKey(window.namaPemainSaya);
@@ -1101,7 +885,7 @@
             });
         };
 
-        // 4. Bank Soalan Kuiz Sains Form 2
+        /* Soalan Kuiz Sains Form 2 */
         const senaraiSoalan = [
             { bab: 1, soalan: "1. Which of the following is an example of a poikilothermic vertebrate?", pilihan: ["A) Cat", "B) Frog", "C) Eagle", "D) Whale"], jawapan: 1 },
             { bab: 1, soalan: "2. What is the importance of biodiversity to humans?", pilihan: ["A) Providing food sources", "B) Reducing species diversity", "C) Increasing pollution", "D) Eliminating an ecosystem"], jawapan: 0 },
@@ -1160,6 +944,9 @@
 
         function semakJawapanKuiz(pilihanPemain, jawapanBetul, safeKeyNama) {
             if (pilihanPemain === jawapanBetul) {
+// 👇 LETAK BARIS NIK DI SINI:
+                window.telahJawabKuizHariIni = true;
+                window.telahJawabKuizHariIni = true; // <-- Tambah baris tok
                 playSFX('correct');
                 showToast("Jawapan Tepat! Anda mendapat +50 XP 🎉", "success");
                 tambahXPPemain(safeKeyNama, 50);
@@ -1171,7 +958,6 @@
             }
         }
 
-        // Sebutan Audio DLP (Text-to-Speech)
         window.sebutSoalan = function() {
             if (senaraiSoalanFiltered.length === 0) return;
             const q = senaraiSoalanFiltered[soalanSemasaIndex];
@@ -1233,7 +1019,6 @@
             }
         }
 
-        // Tukar Avatar
         window.tukarAvatarPemain = function(avatarIkon) {
             if (!window.namaPemainSaya) return;
             const safeKeyNama = getSafeKey(window.namaPemainSaya);
@@ -1242,7 +1027,7 @@
             });
         };
 
-        // 5. Leaderboard Top 5 & Hall of Fame Spotlight
+        /* Leaderboard & Hall of Fame Spotlight */
         function muatLeaderboard() {
             const rujukanKawanSistem = ref(db, "kawan_sistem_v2");
             onValue(rujukanKawanSistem, (snapshot) => {
@@ -1296,14 +1081,122 @@
 
         muatLeaderboard();
 
-        // 6. Pengurusan Sesi, Kawan & Chat Realtime
+        /* ENJIN PERMAINAN 2D ZEP & ITEM BONUS */
+var pX = 100, pY = 100; // Koordinat asal avatar
+var kelajuanSmooth = 7;
+var jumlahNyawa = 5;
+var adaKuasaSuper = false;
+
+// Semak sentuhan item bonus/power-up (ikon bab)
+function semakKutipItemBonus() {
+    var senaraiItem = document.querySelectorAll('.item-bonus');
+    senaraiItem.forEach(function(item) {
+        if (item.style.display === "none") return;
+
+        var itemX = parseInt(item.style.left);
+        var itemY = parseInt(item.style.top);
+
+        var jarakX = Math.abs(pX - itemX);
+        var jarakY = Math.abs(pY - itemY);
+
+        // Jika avatar menyentuh item bonus
+        if (jarakX < 50 && jarakY < 50) {
+            item.style.display = "none"; // Item hilang dari peta selepas disentuh
+            playSFX('correct');
+
+            var jenis = item.getAttribute("data-jenis");
+            if (jenis === "nyawa" && jumlahNyawa < 5) {
+                jumlahNyawa++;
+                showToast("Nyawa bertambah! ❤️", "success");
+            } else if (jenis === "laju") {
+                kelajuanSmooth = 12;
+                showToast("Kelajuan ekstra aktif! ⚡", "info");
+                setTimeout(() => { kelajuanSmooth = 7; }, 5000);
+            } else if (jenis === "kebal") {
+                adaKuasaSuper = true;
+                showToast("Mod Kebal aktif! 🛡️", "info");
+                setTimeout(() => { adaKuasaSuper = false; }, 5000);
+            }
+        }
+    });
+}
+
+        /* SISTEM DAILY STREAK HARIAN */
+        function semakDailyStreak(safeKeyNama) {
+            const d = new Date();
+            const tarikhHariIni = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            
+            const semalamObj = new Date();
+            semalamObj.setDate(semalamObj.getDate() - 1);
+            const tarikhSemalam = `${semalamObj.getFullYear()}-${String(semalamObj.getMonth() + 1).padStart(2, '0')}-${String(semalamObj.getDate()).padStart(2, '0')}`;
+
+            const rujukanStreak = ref(db, "kawan_sistem_v2/" + safeKeyNama + "/streak_info");
+
+            get(rujukanStreak).then((snap) => {
+                let dataStreak = snap.val() || { streak: 0, tarikh_terakhir: "" };
+
+                if (dataStreak.tarikh_terakhir === tarikhHariIni) {
+                    // Sudah log masuk hari ini - tiada perubahan
+                } else if (dataStreak.tarikh_terakhir === tarikhSemalam) {
+                    // Log masuk berturut-turut semalam & hari ini!
+                    dataStreak.streak += 1;
+                    dataStreak.tarikh_terakhir = tarikhHariIni;
+                    set(rujukanStreak, dataStreak);
+                    
+                    // Hadiah bonus harian (Contoh: +15 XP)
+                    tambahXPPemain(safeKeyNama, 15);
+                    showToast(`🔥 Daily Streak ${dataStreak.streak} Hari! Bonus +15 XP dituntut! 🎉`, "success");
+                } else {
+                    // Terputus streak atau log masuk kali pertama
+                    dataStreak.streak = 1;
+                    dataStreak.tarikh_terakhir = tarikhHariIni;
+                    set(rujukanStreak, dataStreak);
+                    
+                    showToast(`🔥 Daily Streak Bermula: 1 Hari!`, "info");
+                }
+
+                // Kemaskini paparan di UI
+                const paparan = document.getElementById("paparanStreak");
+                if (paparan) {
+                    paparan.innerText = `🔥 ${dataStreak.streak} Day Streak`;
+                }
+            });
+        }
+
+        /* Pengurusan Sesi, Kawan & Chat Realtime */
         window.namaPemainSaya = "";
         let chatIDSemasa = "";
         let unsubscribeChatListener = null;
         let friendStatusListeners = {};
-
-        // SISTER ARENA QUIZ BATTLE REAL-TIME
         let activeBattleRoomId = null;
+
+        /* LOGIK BORANG LOKASI (MODAL NAMA) */
+        window.sahkanNamaDanMula = function() {
+            var namaInput = document.getElementById("inputNamaPelajar").value.trim();
+            var sekolahInput = document.getElementById("inputSekolah").value.trim();
+            var daerahInput = document.getElementById("inputDaerah").value.trim();
+            var negeriInput = document.getElementById("inputNegeri").value.trim();
+
+            if (namaInput === "") {
+                showToast("Sila masukkan nama saintis kitak!", "error");
+                return;
+            }
+
+            sessionStorage.setItem("saintis_nickname", namaInput);
+            sessionStorage.setItem("saintis_sekolah", sekolahInput || "SMK Sains Malaysia");
+            sessionStorage.setItem("saintis_daerah", daerahInput || "Pusat");
+            sessionStorage.setItem("saintis_negeri", negeriInput || "W.P");
+
+            window.namaPemainSaya = namaInput;
+            mulakanSistemKawan(namaInput);
+
+            document.getElementById("modalNama").style.display = "none";
+            showToast("Pendaftaran Berjaya! Selamat datang, " + namaInput + " 🚀", "success");
+        };
+
+        window.batalIsiNama = function() {
+            document.getElementById("modalNama").style.display = "none";
+        };
 
         onAuthStateChanged(auth, (user) => {
             const butangLogin = document.getElementById("btnLogMasuk");
@@ -1337,15 +1230,13 @@
                     }
                 });
             } else {
-                localStorage.removeItem("saintis_nickname");
-
                 let savedName = sessionStorage.getItem("saintis_nickname");
                 if (!savedName) {
-                    savedName = prompt("Sila masukkan nama Saintis (Nickname) kitak:") || "Junior_Scientist";
-                    sessionStorage.setItem("saintis_nickname", savedName);
+                    document.getElementById("modalNama").style.display = "flex";
+                } else {
+                    window.namaPemainSaya = savedName;
+                    mulakanSistemKawan(window.namaPemainSaya);
                 }
-                window.namaPemainSaya = savedName;
-                mulakanSistemKawan(window.namaPemainSaya);
                 
                 if (butangLogin) {
                     butangLogin.innerHTML = "Login 👨‍🔬";
@@ -1359,6 +1250,9 @@
             var safeKeyNama = getSafeKey(namaSahih);
             
             set(ref(db, "kawan_sistem_v2/" + safeKeyNama + "/nama_asal"), namaSahih);
+            set(ref(db, "kawan_sistem_v2/" + safeKeyNama + "/sekolah"), sessionStorage.getItem("saintis_sekolah") || "SMK Sains Malaysia");
+            set(ref(db, "kawan_sistem_v2/" + safeKeyNama + "/daerah"), sessionStorage.getItem("saintis_daerah") || "Pusat");
+            set(ref(db, "kawan_sistem_v2/" + safeKeyNama + "/negeri"), sessionStorage.getItem("saintis_negeri") || "W.P");
 
             onValue(ref(db, "kawan_sistem_v2/" + safeKeyNama), (snap) => {
                 const u = snap.val() || {};
@@ -1385,9 +1279,11 @@
             muatSenaraiKawan(safeKeyNama);
             muatKuizDanXP(safeKeyNama);
             dengarCabaranMasuk(safeKeyNama);
+// 👇 TAMBAH BARIS NIK DI BAHAGIAN BAWAH FUNGSI:
+            semakDailyStreak(safeKeyNama);
         }
 
-        // LOGIK MOD CABARAN 1-LAWAN-1 (QUIZ BATTLE ARENA)
+        /* 1-LAWAN-1 QUIZ BATTLE */
         window.cabarKawan = function(safeTargetKey, namaKawan) {
             if (!window.namaPemainSaya) return;
             const safeKeySaya = getSafeKey(window.namaPemainSaya);
@@ -1676,7 +1572,7 @@
             });
         }
 
-        // Chat Popup Logic
+        /* Chat Popup Logic */
         window.bukaKotakChat = function(kawanKey, namaKawan) {
             if (!window.namaPemainSaya) return;
 

@@ -36,6 +36,7 @@
                 
                 var namaPelajar = document.getElementById("namaPengirim").value;
                 var emelPelajar = document.getElementById("emailPengirim").value;
+                var babPelajar = document.getElementById("babSoalan").value;
                 var teksMesej = document.getElementById("mesejPengirim").value;
                 var masaKini = new Date().toLocaleString("en-MY");
                 
@@ -45,10 +46,11 @@
                 set(rekodBaru, {
                     nama: namaPelajar,
                     emel: emelPelajar,
+                    bab: babPelajar,
                     mesej: teksMesej,
                     tarikh: masaKini
                 }).then(() => {
-                    alert("Thank you " + namaPelajar + "! Your message has been successfully recorded in our science database. 🚀");
+                    alert("Thank you " + namaPelajar + "! Your question regarding [" + babPelajar + "] has been successfully recorded in our science database. 🚀");
                     document.getElementById("borangHubungi").reset();
                 }).catch((error) => {
                     alert("Oops! An error occurred while sending your message: " + error);
@@ -147,8 +149,23 @@
             transition: background 0.3s, border-color 0.3s;
         }
         .kotak-borang label { font-weight: bold; color: #1a2a6c; display: block; margin-bottom: 5px; }
-        .kotak-borang input, .kotak-borang textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #bbb; border-radius: 8px; font-family: inherit; font-size: 15px; box-sizing: border-box; transition: background 0.3s, color 0.3s, border-color 0.3s; }
-        .kotak-borang input:focus, .kotak-borang textarea:focus { border-color: #0052D4; outline: none; box-shadow: 0 0 5px rgba(0,82,212,0.3); }
+        .kotak-borang input, .kotak-borang select, .kotak-borang textarea { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 20px; 
+            border: 1px solid #bbb; 
+            border-radius: 8px; 
+            font-family: inherit; 
+            font-size: 15px; 
+            box-sizing: border-box; 
+            background-color: white;
+            transition: background 0.3s, color 0.3s, border-color 0.3s; 
+        }
+        .kotak-borang input:focus, .kotak-borang select:focus, .kotak-borang textarea:focus { 
+            border-color: #0052D4; 
+            outline: none; 
+            box-shadow: 0 0 5px rgba(0,82,212,0.3); 
+        }
         
         .butang-hantar { background-color: #0052D4; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,82,212,0.2); }
         .butang-hantar:hover { background-color: #003cc8; transform: translateY(-2px); }
@@ -182,6 +199,7 @@
         }
         body.dark-mode input[type="text"],
         body.dark-mode input[type="email"],
+        body.dark-mode select,
         body.dark-mode textarea {
             background: #1e293b !important;
             color: #ffffff !important;
@@ -240,6 +258,13 @@
                 <a href="science_chap4.html">Chapter 4: Human Health</a>
                 <a href="science_chap5.html">Chapter 5: Water and Solution</a>
                 <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+                <a href="science_chap7.html">Chapter 7: Energy and Power</a>
+                <a href="science_chap8.html">Chapter 8: Rate of Reaction</a>
+                <a href="science_chap9.html">Chapter 9: Speed</a>
+                <a href="science_chap10.html">Chapter 10: Sound Waves</a>
+                <a href="science_chap11.html">Chapter 11: Stars and Galaxies</a>
+                <a href="science_chap12.html">Chapter 12: The Solar System</a>
+                <a href="science_chap13.html">Chapter 13: Meteoroid, Asteroid and Comet</a>
             </div>
         </div>
         <a href="interactive_lab.html">Interactive Lab</a>
@@ -285,6 +310,24 @@
                     <label for="emailPengirim">Email (Optional):</label>
                     <input type="email" id="emailPengirim" placeholder="E.g: fatimah@moe-dl.edu.my">
                     
+                    <label for="babSoalan">Select Chapter / Topic:</label>
+                    <select id="babSoalan" required>
+                        <option value="General Question / Feedback">General Question / Feedback</option>
+                        <option value="Chapter 1: Biodiversity">Chapter 1: Biodiversity</option>
+                        <option value="Chapter 2: Ecosystem">Chapter 2: Ecosystem</option>
+                        <option value="Chapter 3: Nutrition">Chapter 3: Nutrition</option>
+                        <option value="Chapter 4: Human Health">Chapter 4: Human Health</option>
+                        <option value="Chapter 5: Water and Solution">Chapter 5: Water and Solution</option>
+                        <option value="Chapter 6: Acids and Alkalis">Chapter 6: Acids and Alkalis</option>
+                        <option value="Chapter 7: Energy and Power">Chapter 7: Energy and Power</option>
+                        <option value="Chapter 8: Rate of Reaction">Chapter 8: Rate of Reaction</option>
+                        <option value="Chapter 9: Speed">Chapter 9: Speed</option>
+                        <option value="Chapter 10: Sound Waves">Chapter 10: Sound Waves</option>
+                        <option value="Chapter 11: Stars and Galaxies">Chapter 11: Stars and Galaxies</option>
+                        <option value="Chapter 12: The Solar System">Chapter 12: The Solar System</option>
+                        <option value="Chapter 13: Meteoroid, Asteroid and Comet">Chapter 13: Meteoroid, Asteroid and Comet</option>
+                    </select>
+
                     <label for="mesejPengirim">Your Question / Message:</label>
                     <textarea id="mesejPengirim" rows="4" placeholder="Type your science question or feedback here..." required></textarea>
                     

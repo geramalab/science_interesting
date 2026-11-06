@@ -24,11 +24,11 @@
         }
     </script>
 
-    <!-- PUSAT KAWALAN FIREBASE -->
+<!-- PUSAT KAWALAN FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBAtbX6wmdNwmXkgUvewnfRRXRTfyq5IZ8",
@@ -44,15 +44,40 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        // 1. SEMAK SIAPA YANG SEDANG LOG MASUK
+        // FUNGSI BANTUAN IKON RANK
+        function dapatkanIkonRank(pangkat) {
+            if (pangkat === "LEGEND") return "👑";
+            if (pangkat === "PRO") return "🌟";
+            return "👍";
+        }
+
+        // 1. SEMAK STATUS LOG MASUK & BUTANG LOGIN/LOGOUT
         onAuthStateChanged(auth, (user) => {
+            const btnLogin = document.getElementById("btnAuthNav");
             if (user) {
-                const namaUser = user.displayName || user.email.split('@')[0];
-                document.getElementById("namaProfilLogin").innerText = namaUser;
-                tarikAnalisisPeribadi(namaUser);
+                user.reload().then(() => {
+                    const namaUser = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+                    document.getElementById("namaProfilLogin").innerText = namaUser;
+                    tarikAnalisisPeribadi(namaUser);
+
+                    if (btnLogin) {
+                        btnLogin.innerText = `Logout (${namaUser}) 🚪`;
+                        btnLogin.href = "#";
+                        btnLogin.onclick = (e) => {
+                            e.preventDefault();
+                            if (confirm("Adakah anda pasti mahu log keluar?")) {
+                                signOut(auth).then(() => window.location.reload());
+                            }
+                        };
+                    }
+                });
             } else {
                 document.getElementById("namaProfilLogin").innerText = "Guest Scientist (Not Logged In)";
                 document.getElementById("analisisPeribadiCard").innerHTML = "<p style='color: #888;'>Please login or play a ZEP mission to track your personal performance analytics! 🔬</p>";
+                if (btnLogin) {
+                    btnLogin.innerText = "Login 👨‍🔬";
+                    btnLogin.href = "login.html";
+                }
             }
         });
 
@@ -64,7 +89,7 @@
                 let rekodPemain = [];
 
                 for (let id in data) {
-                    if (data[id].nama.toLowerCase() === namaPemain.toLowerCase()) {
+                    if (data[id].nama && data[id].nama.toLowerCase() === namaPemain.toLowerCase()) {
                         rekodPemain.push(data[id]);
                     }
                 }
@@ -72,6 +97,7 @@
                 if (rekodPemain.length > 0) {
                     rekodPemain.sort((a, b) => a.jumlahSaat - b.jumlahSaat);
                     let terbaik = rekodPemain[0];
+                    let ikonRank = dapatkanIkonRank(terbaik.pangkat);
 
                     let htmlPeribadi = `
                         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
@@ -85,10 +111,10 @@
                             </div>
                             <div class="stat-card stat-yellow">
                                 <div style="font-size: 14px; opacity: 0.8;">Highest Rank Awarded</div>
-                                <div style="font-size: 24px; font-weight: bold;">${terbaik.ikon} ${terbaik.pangkat}</div>
+                                <div style="font-size: 24px; font-weight: bold;">${ikonRank} ${terbaik.pangkat}</div>
                             </div>
                         </div>
-                        <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">Last cleared: Chapter ${terbaik.bab} | Keep up the excellent work, Scientist!</p>
+                        <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">Best achievement: ${terbaik.lencana || ('Chapter ' + terbaik.bab)} | Keep up the excellent work, Scientist!</p>
                     `;
                     document.getElementById("analisisPeribadiCard").innerHTML = htmlPeribadi;
                 } else {
@@ -97,17 +123,25 @@
             });
         }
 
-        // 3. TARIK DATA GLOBAL UNTUK PAPAN JUARA (LEADERBOARD)
+        // 3. TARIK DATA GLOBAL UNTUK PAPAN JUARA (1 REKOD TERBAIK SETIAP PEMAIN)
         const rujukanGlobal = ref(db, "markah_science_zep");
         onValue(rujukanGlobal, (snapshot) => {
             const data = snapshot.val();
             let htmlJadual = "";
-            let senaraiPemain = [];
+            let petaPemainTerbaik = {};
 
+            // Ambil hanya masa terpantas bagi setiap pemain
             for (let id in data) {
-                senaraiPemain.push(data[id]);
+                let rec = data[id];
+                if (!rec.nama) continue;
+                let keyNama = rec.nama.trim().toLowerCase();
+
+                if (!petaPemainTerbaik[keyNama] || rec.jumlahSaat < petaPemainTerbaik[keyNama].jumlahSaat) {
+                    petaPemainTerbaik[keyNama] = rec;
+                }
             }
 
+            let senaraiPemain = Object.values(petaPemainTerbaik);
             senaraiPemain.sort((a, b) => a.jumlahSaat - b.jumlahSaat);
 
             senaraiPemain.forEach((pemain, index) => {
@@ -117,18 +151,20 @@
                 else if (index === 2) pingat = "🥉";
                 else pingat = (index + 1) + ".";
 
+                let ikonRank = dapatkanIkonRank(pemain.pangkat);
+
                 htmlJadual += `
                     <tr>
                         <td style="font-size: 24px; text-align: center; font-weight: bold;">${pingat}</td>
                         <td style="font-weight: bold; font-size:18px;" class="player-name">${pemain.nama}</td>
                         <td style="text-align: center;"><span class="badge-chapter">Chapter ${pemain.bab}</span></td>
                         <td style="text-align: center; font-weight: bold; color: #e67e22;">⏱️ ${pemain.masaTeks}</td>
-                        <td style="text-align: center;">${pemain.ikon} ${pemain.pangkat}</td>
+                        <td style="text-align: center;">${ikonRank} ${pemain.pangkat}</td>
                     </tr>
                 `;
             });
 
-            if(senaraiPemain.length > 0) {
+            if (senaraiPemain.length > 0) {
                 document.getElementById("badanJadual").innerHTML = htmlJadual;
             } else {
                 document.getElementById("badanJadual").innerHTML = "<tr><td colspan='5' style='text-align:center; padding: 30px;'>No records yet. Be the first scientist to clear the lab! 🚀</td></tr>";
@@ -286,12 +322,19 @@
                     <a href="science_chap4.html">Chapter 4: Human Health</a>
                     <a href="science_chap5.html">Chapter 5: Water and Solution</a>
                     <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+                    <a href="science_chap7.html">Chapter 7: Energy and Power</a>
+                    <a href="science_chap8.html">Chapter 8: Rate of Reaction</a>
+                    <a href="science_chap9.html">Chapter 9: Speed</a>
+                    <a href="science_chap10.html">Chapter 10: Sound Waves</a>
+                    <a href="science_chap11.html">Chapter 11: Stars and Galaxies</a>
+                    <a href="science_chap12.html">Chapter 12: The Solar System</a>
+                    <a href="science_chap13.html">Chapter 13: Meteoroid, Asteroid and Comet</a>
                 </div>
             </div>
             <a href="interactive_lab.html">Interactive Lab</a>
             <a href="performance.html" style="background-color: #00c6ff; color: #0d1b2a;">Scientist Analytics</a>
             <a href="contact.html">Ask a Teacher</a>
-            <a href="login.html" style="background-color: #00c6ff; color: #0d1b2a;">Login 👨‍🔬</a>
+            <a href="login.html" id="btnAuthNav" style="background-color: #00c6ff; color: #0d1b2a;">Login 👨‍🔬</a>
         </div>
         <!-- Butang Mod Gelap -->
         <button onclick="toggleDarkMode()" class="btn-dark-toggle" id="btnDarkMode">🌙 Mod Gelap</button>

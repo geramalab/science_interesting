@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Lab - Science Portal</title>
     
+    <!-- PUSAT KAWALAN MOD GELAP SEAWAL DIMUATKAN -->
     <script>
-        // Semak status Mod Gelap seawal halaman dimuatkan
         document.addEventListener("DOMContentLoaded", () => {
             if (localStorage.getItem("theme") === "dark") {
                 document.body.classList.add("dark-mode");
@@ -15,7 +15,6 @@
             }
         });
 
-        // Fungsi Toggle Mod Gelap
         function toggleDarkMode() {
             document.body.classList.toggle("dark-mode");
             const isDark = document.body.classList.contains("dark-mode");
@@ -23,6 +22,82 @@
             const btn = document.getElementById("btnDarkMode");
             if (btn) btn.innerText = isDark ? "☀️ Mod Terang" : "🌙 Mod Gelap";
         }
+    </script>
+
+<!-- PUSAT KAWALAN FIREBASE & VISITOR COUNTER (SIGN-IN ONLY) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBAtbX6wmdNwmXkgUvewnfRRXRTfyq5IZ8",
+            authDomain: "jejak-sejarah-tingkatan-2.firebaseapp.com",
+            projectId: "jejak-sejarah-tingkatan-2",
+            storageBucket: "jejak-sejarah-tingkatan-2.firebasestorage.app",
+            messagingSenderId: "92872994798",
+            appId: "1:92872994798:web:9c205538a5eb8f388e68ff",
+            measurementId: "G-8RZ21D4FXY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        window.db = db;
+        window.ref = ref;
+        window.push = push;
+        window.set = set;
+        window.firebaseSedia = true;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const rujukanPelawat = ref(db, "jumlah_pelawat");
+
+            // 1. PAPARKAN BILANGAN PELAWAT REALTIME UNTUK SEMUA ORANG
+            onValue(rujukanPelawat, (snapshot) => {
+                const jumlah = snapshot.val() || 0;
+                const elem = document.getElementById("bilanganPelawatTeks");
+                if (elem) elem.innerText = "📡 Lab Visitor Count: " + jumlah.toLocaleString();
+            });
+
+            // 2. KIRA PELAWAT HANYA APABILA PENGGUNA TERBUKTI SUDAH SIGN IN
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // Semak jika pengguna ini belum dikira dalam sesi browser semasa
+                    if (!sessionStorage.getItem("pelawat_dikira")) {
+                        runTransaction(rujukanPelawat, (currentValue) => {
+                            return (currentValue || 0) + 1;
+                        });
+                        // Tandakan dalam sessionStorage supaya refresh tidak menambah kiraan
+                        sessionStorage.setItem("pelawat_dikira", "true");
+                    }
+                }
+            });
+
+            // 3. BACA PURATA RATING REALTIME DARI FIREBASE
+            const rujukanRating = ref(db, "portal_app_ratings");
+            onValue(rujukanRating, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    let jumlahBintang = 0;
+                    let count = 0;
+                    Object.values(data).forEach(item => {
+                        if (item.rating) {
+                            jumlahBintang += Number(item.rating);
+                            count++;
+                        }
+                    });
+
+                    if (count > 0) {
+                        const purata = (jumlahBintang / count).toFixed(1);
+                        const elemPurata = document.getElementById("purataSkorTeks");
+                        const elemCount = document.getElementById("jumlahPenilaiTeks");
+                        if (elemPurata) elemPurata.innerText = purata + " / 5.0 ⭐";
+                        if (elemCount) elemCount.innerText = "(" + count + " ratings received)";
+                    }
+                }
+            });
+        });
     </script>
 
     <style>
@@ -69,7 +144,19 @@
             border-radius: 15px; 
             padding: 30px; 
             max-width: 600px; 
+            margin: 0 auto 40px auto;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        /* Kotak Rating Portal */
+        .kotak-rating-app {
+            background: #fff8e1;
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 600px;
             margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.15);
             transition: background 0.3s, border-color 0.3s;
         }
 
@@ -94,6 +181,10 @@
             background-color: #0f172a !important;
             border-color: #38bdf8 !important;
         }
+        body.dark-mode .kotak-rating-app {
+            background-color: #0f172a !important;
+            border-color: #eab308 !important;
+        }
         body.dark-mode #scienceFact {
             color: #f1f5f9 !important;
         }
@@ -107,6 +198,11 @@
         body.dark-mode .dropdown-content a:hover {
             background-color: #334155 !important;
             color: #38bdf8 !important;
+        }
+        body.dark-mode input[type="text"] {
+            background: #1e293b !important;
+            color: #ffffff !important;
+            border-color: #3334155 !important;
         }
 
         .btn-dark-toggle {
@@ -146,6 +242,13 @@
                 <a href="science_chap4.html">Chapter 4: Human Health</a>
                 <a href="science_chap5.html">Chapter 5: Water and Solution</a>
                 <a href="science_chap6.html">Chapter 6: Acids and Alkalis</a>
+                <a href="science_chap7.html">Chapter 7: Energy and Power</a>
+                <a href="science_chap8.html">Chapter 8: Rate of Reaction</a>
+                <a href="science_chap9.html">Chapter 9: Speed</a>
+                <a href="science_chap10.html">Chapter 10: Sound Waves</a>
+                <a href="science_chap11.html">Chapter 11: Stars and Galaxies</a>
+                <a href="science_chap12.html">Chapter 12: The Solar System</a>
+                <a href="science_chap13.html">Chapter 13: Meteoroid, Asteroid and Comet</a>
             </div>
         </div>
         <a href="interactive_lab.html" style="background-color: #00c6ff; color: #0d1b2a;">Interactive Lab</a>
@@ -184,7 +287,7 @@
                 </div>
             </a>
 
-            <!-- Card 3: Coming Soon -->
+            <!-- Card 3: Virtual Microscope -->
             <a href="virtual_microscope.html" style="text-decoration: none; color: inherit;">
                 <div class="kad-interaktif" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); width: 200px; padding: 30px 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); color: white;">
                     <h1 style="margin: 0; font-size: 40px;">🔬</h1>
@@ -205,6 +308,26 @@
             </button>
         </div>
 
+        <!-- Section 3: Firebase 5-Star Portal Rating Card -->
+        <div class="kotak-rating-app">
+            <h3 style="color: #d35400; margin-top: 0; margin-bottom: 5px;">⭐ Rate Science Portal & ZEP Lab ⭐</h3>
+            <div style="font-size: 26px; font-weight: bold; color: #0052D4;" id="purataSkorTeks">5.0 / 5.0 ⭐</div>
+            <div style="font-size: 13px; color: #777; margin-bottom: 15px;" id="jumlahPenilaiTeks">(Loading ratings...)</div>
+
+            <div style="margin-bottom: 12px;">
+                <input type="text" id="namaPenilaiLobby" placeholder="Your Name / Nickname" style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-size: 14px;">
+            </div>
+
+            <div id="bekasBintangLobby" style="font-size: 36px; cursor: pointer; user-select: none; letter-spacing: 6px;">
+                <span onclick="hantarRatingLobby(1)" onmouseover="hoverBintangLobby(1)" onmouseout="resetBintangLobby()">☆</span>
+                <span onclick="hantarRatingLobby(2)" onmouseover="hoverBintangLobby(2)" onmouseout="resetBintangLobby()">☆</span>
+                <span onclick="hantarRatingLobby(3)" onmouseover="hoverBintangLobby(3)" onmouseout="resetBintangLobby()">☆</span>
+                <span onclick="hantarRatingLobby(4)" onmouseover="hoverBintangLobby(4)" onmouseout="resetBintangLobby()">☆</span>
+                <span onclick="hantarRatingLobby(5)" onmouseover="hoverBintangLobby(5)" onmouseout="resetBintangLobby()">☆</span>
+            </div>
+            <div id="statusRatingLobby" style="font-size: 14px; font-weight: bold; color: #555; margin-top: 8px;">Click a star to give your score!</div>
+        </div>
+
         <script>
             function generateFact() {
                 var facts = [
@@ -221,6 +344,49 @@
                 // Animation effect
                 document.getElementById("scienceFact").style.animation = "none";
                 setTimeout(function() { document.getElementById("scienceFact").style.animation = "bounceSmall 0.3s"; }, 10);
+            }
+
+            // LOGIK STAR RATING LOBBY FIREBASE
+            var ratingLobbyTelahDipilih = 0;
+
+            function hoverBintangLobby(n) {
+                if (ratingLobbyTelahDipilih > 0) return;
+                kemaskiniBintangLobby(n);
+            }
+
+            function resetBintangLobby() {
+                if (ratingLobbyTelahDipilih > 0) return;
+                kemaskiniBintangLobby(0);
+            }
+
+            function kemaskiniBintangLobby(n) {
+                var anak = document.getElementById("bekasBintangLobby").children;
+                for (var i = 0; i < 5; i++) {
+                    anak[i].innerHTML = (i < n) ? "★" : "☆";
+                    anak[i].style.color = (i < n) ? "#ffc107" : "#ccc";
+                }
+            }
+
+            function hantarRatingLobby(bintang) {
+                var nama = document.getElementById("namaPenilaiLobby").value.trim();
+                if (nama === "") nama = "Student Explorer";
+
+                ratingLobbyTelahDipilih = bintang;
+                kemaskiniBintangLobby(bintang);
+
+                var statusElem = document.getElementById("statusRatingLobby");
+                statusElem.innerHTML = "Thank you " + nama + " for giving " + bintang + " ⭐!";
+                statusElem.style.color = "#28a745";
+
+                if (window.firebaseSedia) {
+                    var rujukanFolder = window.ref(window.db, "portal_app_ratings");
+                    var rekodBaru = window.push(rujukanFolder);
+                    window.set(rekodBaru, {
+                        nama: nama,
+                        rating: bintang,
+                        tarikh: new Date().toLocaleString("en-MY")
+                    });
+                }
             }
         </script>
         
@@ -239,9 +405,9 @@
 
     </div>
 
-    <!-- Footer -->
+    <!-- Footer (Lab Visitor Count selaras dengan index.html) -->
     <footer class="footer">
-        <div class="visitor-counter">📡 Lab Visitor Count: Loading...</div>
+        <div class="visitor-counter" id="bilanganPelawatTeks">📡 Lab Visitor Count: Loading...</div>
         <br>
         All rights reserved &copy; <span class="highlight">Virtual Lab 2026</span>
         <br>
